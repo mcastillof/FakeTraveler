@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Fake Traveler</string>
+    <string name="iconLauncherLicense"><![CDATA[The icon launcher is derivative of Location, map, navigation, pointer iconby First Styles, used under CC 3.0 BY. The icon Launcher was created using Android Asset Studio, and is licensed under CC 3.0 BY, by Matías Castillo Felmer.\nhttps://www.iconfinder.com/icons/2135924/location_map_navigation_pointer_icon\nhttps://jgilfelt.github.io/AndroidAssetStudio/icons-launcher.html]]></string>
+</resources>
