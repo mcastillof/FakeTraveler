@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:autoLink="web"
-                android:text="Source code available in https://github.com/mcastillof/MockLocation"
+                android:text="Source code available in https://github.com/mcastillof/FakeTraveler"
                 android:textColor="@android:color/black"
                 android:textColorLink="@color/colorPrimary"
                 android:textSize="14sp" />
@@ -107,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:autoLink="web"
-                android:text="Reports bugs to https://github.com/mcastillof/MockLocation/issues"
+                android:text="Reports bugs to https://github.com/mcastillof/FakeTraveler/issues"
                 android:textColor="@android:color/black"
                 android:textColorLink="@color/colorPrimary"
                 android:textSize="14sp" />
