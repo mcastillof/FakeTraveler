@@ -27,9 +27,12 @@
 
 
         <service
-            android:name="cl.coders.faketraveler.ApplyMockService"
+            android:name="cl.coders.faketraveler.ApplyMockBroadcastReceiver"
             android:enabled="true"
             android:exported="true"></service>
+
+        <receiver android:name=".ApplyMockBroadcastReceiver"  android:exported="true">
+        </receiver>
     </application>
 
 </manifest>

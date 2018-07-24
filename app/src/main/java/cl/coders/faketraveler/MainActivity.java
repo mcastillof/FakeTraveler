@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.LocationManager;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     static int timesLeft;
     static int timeInterval;
     static int howManyTimes;
+    static long endTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +77,12 @@ public class MainActivity extends AppCompatActivity {
 
         editTextLat.setText(sharedPref.getString("Lat", ""));
         editTextLng.setText(sharedPref.getString("Lng", ""));
+        endTime = sharedPref.getLong("endTime", 0);
+
+        if(endTime > System.currentTimeMillis())
+        {
+            changeButtonToStop();
+        }
     }
 
     protected static void applyLocation()
@@ -108,16 +116,22 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        serviceIntent = new Intent(context, ApplyMockService.class);
-        pendingIntent = PendingIntent.getService(context, SCHEDULE_REQUEST_CODE, serviceIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        serviceIntent = new Intent(context, ApplyMockBroadcastReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(context, SCHEDULE_REQUEST_CODE, serviceIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         if (timesLeft - 1 > 0) {
 
             changeButtonToStop();
 
             try {
-                if (android.os.Build.VERSION.SDK_INT >= 19) {
-                    alarmManager.setExact(AlarmManager.RTC, System.currentTimeMillis() + timeInterval * 1000, pendingIntent);
+                if (Build.VERSION.SDK_INT >= 19) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC, System.currentTimeMillis() + timeInterval * 1000, pendingIntent);
+                    }
+                    else
+                    {
+                        alarmManager.setExact(AlarmManager.RTC, System.currentTimeMillis() + timeInterval * 1000, pendingIntent);
+                    }
                 } else {
                     alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + timeInterval * 1000, pendingIntent);
                 }
@@ -132,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("Lat", String.valueOf(lat));
         editor.putString("Lng", String.valueOf(lng));
+        editor.putLong("endTime", System.currentTimeMillis() + howManyTimes * timeInterval * 1000);
         editor.commit();
 
         timesLeft--;
@@ -140,6 +155,10 @@ public class MainActivity extends AppCompatActivity {
     protected static void stopMockingLocation()
     {
         changeButtonToApply();
+
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putLong("endTime", System.currentTimeMillis() - 1);
+        editor.commit();
 
         alarmManager.cancel(pendingIntent);
         Toast.makeText(context, "Mocking stopped", Toast.LENGTH_LONG).show();
