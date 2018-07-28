@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     static int timeInterval;
     static int howManyTimes;
     static long endTime;
+    WebAppInterface webAppInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
         webView = findViewById(R.id.webView0);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        webView.addJavascriptInterface(new WebAppInterface(this), "Android");
+        webAppInterface = new WebAppInterface(this, this);
+        webView.addJavascriptInterface(webAppInterface, "Android");
         webView.loadUrl("file:///android_asset/map.html");
         alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
         sharedPref = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
@@ -79,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         editTextLng.setText(sharedPref.getString("Lng", ""));
         endTime = sharedPref.getLong("endTime", 0);
 
-        if(endTime > System.currentTimeMillis())
+        if(pendingIntent != null && endTime > System.currentTimeMillis())
         {
             changeButtonToStop();
         }
@@ -189,4 +191,21 @@ public class MainActivity extends AppCompatActivity {
 
         });
     }
+
+    static void setLat(String s) {
+        editTextLat.setText(s);
+    }
+
+    static void setLng(String s) {
+        editTextLng.setText(s);
+    }
+
+    static String getLat() {
+        return editTextLat.getText().toString();
+    }
+
+    static String getLng() {
+        return editTextLng.getText().toString();
+    }
+
 }

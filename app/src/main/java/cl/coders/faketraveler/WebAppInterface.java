@@ -1,6 +1,7 @@
 package cl.coders.faketraveler;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.webkit.JavascriptInterface;
 import android.widget.EditText;
@@ -8,44 +9,49 @@ import android.widget.EditText;
 
 public class WebAppInterface {
     Context mContext;
+    MainActivity mainActivity;
 
     /** Instantiate the interface and set the context */
-    WebAppInterface(Context c) {
+    WebAppInterface(Context c, MainActivity mA) {
+        mainActivity = mA;
         mContext = c;
     }
 
     /** Show a toast from the web page */
     @JavascriptInterface
-    public void setPosition(String str) {
+    public void setPosition(final String str) {
 
-        EditText editText0 = ((Activity)mContext).getWindow().getDecorView().findViewById(R.id.editText0);
-        EditText editText1 = ((Activity)mContext).getWindow().getDecorView().findViewById(R.id.editText1);
+        mainActivity.runOnUiThread(new Runnable() {
 
-        editText0.setText(str.substring(str.indexOf('(') + 1, str.indexOf(',')));
-        editText1.setText(str.substring(str.indexOf(',') + 1, str.indexOf(')')));
+            @Override
+            public void run() {
+                MainActivity.setLat(str.substring(str.indexOf('(') + 1, str.indexOf(',')));
+                MainActivity.setLng(str.substring(str.indexOf(',') + 1, str.indexOf(')')));
+            }
+        });
     }
 
     @JavascriptInterface
     public double getLat(){
 
-        EditText editText0 = ((Activity)mContext).getWindow().getDecorView().findViewById(R.id.editText0);
+        String lat = MainActivity.getLat();
 
-        if (editText0.getText().toString().isEmpty())
+        if (lat.isEmpty())
             return(0);
         else
-            return(Double.parseDouble(editText0.getText().toString()));
+            return(Double.parseDouble(lat));
 
     }
 
     @JavascriptInterface
     public double getLng() {
 
-        EditText editText1 = ((Activity) mContext).getWindow().getDecorView().findViewById(R.id.editText1);
+        String lng = MainActivity.getLng();
 
-        if (editText1.getText().toString().isEmpty())
-            return (0);
+        if (lng.isEmpty())
+            return(0);
         else
-            return (Double.parseDouble(editText1.getText().toString()));
+            return(Double.parseDouble(lng));
 
     }
 
