@@ -3,7 +3,11 @@
 
 Fake where your phone is located (Mock location for Android).
 
-Sometimes you need to fake the location of your device (for privacy or test to app). Fake Traveler provides you a map to select the location where you want your phone to be.
+Sometimes you need to fake the location of your device (for privacy or to test an app). Fake Traveler provides you a map to select the location where you want your phone to be.
+
+[<img src="https://f-droid.org/badge/get-it-on.png"
+      alt="Get it on F-Droid"
+      height="80">](https://f-droid.org/app/YOUR.APP.ID)
 
 ## How does it work?
 
