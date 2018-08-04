@@ -27,7 +27,7 @@ public class MoreActivity extends AppCompatActivity {
         context = getApplicationContext();
         sharedPref = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
 
-        textView3 = findViewById(R.id.textView3)
+        textView3 = findViewById(R.id.textView3);
         textView3.setMovementMethod(LinkMovementMethod.getInstance());
 
         editText2 = findViewById(R.id.editText2);
