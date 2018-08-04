@@ -8,16 +8,12 @@ import android.widget.EditText;
 
 
 public class WebAppInterface {
-    Context mContext;
     MainActivity mainActivity;
 
-    /** Instantiate the interface and set the context */
     WebAppInterface(Context c, MainActivity mA) {
         mainActivity = mA;
-        mContext = c;
     }
 
-    /** Show a toast from the web page */
     @JavascriptInterface
     public void setPosition(final String str) {
 
@@ -32,14 +28,14 @@ public class WebAppInterface {
     }
 
     @JavascriptInterface
-    public double getLat(){
+    public double getLat() {
 
         String lat = MainActivity.getLat();
 
         if (lat.isEmpty())
-            return(0);
+            return (0);
         else
-            return(Double.parseDouble(lat));
+            return (Double.parseDouble(lat));
 
     }
 
@@ -49,9 +45,9 @@ public class WebAppInterface {
         String lng = MainActivity.getLng();
 
         if (lng.isEmpty())
-            return(0);
+            return (0);
         else
-            return(Double.parseDouble(lng));
+            return (Double.parseDouble(lng));
 
     }
 
