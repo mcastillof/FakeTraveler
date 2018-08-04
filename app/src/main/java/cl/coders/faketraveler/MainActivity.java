@@ -85,13 +85,14 @@ public class MainActivity extends AppCompatActivity {
         {
             changeButtonToStop();
         }
+
     }
 
     protected static void applyLocation()
     {
         if (editTextLat.getText().toString().isEmpty() || editTextLng.getText().toString().isEmpty())
         {
-            Toast.makeText(context, "No Lat or Lng value. Long press in the map where you want to be located", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, context.getResources().getString(R.string.MainActivity_NoLatLong), Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -111,10 +112,10 @@ public class MainActivity extends AppCompatActivity {
             mockNetwork.pushLocation(lat, lng);
             MockLocationProvider mockGps = new MockLocationProvider(LocationManager.GPS_PROVIDER, context);
             mockGps.pushLocation(lat, lng);
-            Toast.makeText(context, "Mocked location applied.", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, context.getResources().getString(R.string.MainActivity_MockApplied), Toast.LENGTH_LONG).show();
         }
         catch (Exception e) {
-            Toast.makeText(context, "Mocked location not applied. You must enable mock location in developer settings", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, context.getResources().getString(R.string.MainActivity_MockNotApplied), Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -138,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
                     alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + timeInterval * 1000, pendingIntent);
                 }
 
-                Toast.makeText(context, "Mocking location service running.", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, context.getResources().getString(R.string.MainActivity_MockLocRunning), Toast.LENGTH_LONG).show();
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -163,11 +164,11 @@ public class MainActivity extends AppCompatActivity {
         editor.commit();
 
         alarmManager.cancel(pendingIntent);
-        Toast.makeText(context, "Mocking stopped", Toast.LENGTH_LONG).show();
+        Toast.makeText(context, context.getResources().getString(R.string.MainActivity_MockStopped), Toast.LENGTH_LONG).show();
     }
 
     static void changeButtonToApply() {
-        button0.setText("Apply");
+        button0.setText(context.getResources().getString(R.string.ActivityMain_Apply));
 
         button0.setOnClickListener(new View.OnClickListener() {
 
@@ -180,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     static void changeButtonToStop() {
-        button0.setText("Stop");
+        button0.setText(context.getResources().getString(R.string.ActivityMain_Stop));
 
         button0.setOnClickListener(new View.OnClickListener() {
 

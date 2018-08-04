@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:text="How to use it?"
+                android:text="@string/ActivityMore_HowToTittle"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:text="Long press where you want to be located and press Apply button. Accordingly to configuration below, the location will be mocked one or more times. To stop mocking the location, press the Stop button. To mock the location in your device, you must enable mock location in developers settings." />
+                android:text="@string/ActivityMore_HowToInstructions" />
 
             <TextView
                 android:id="@+id/textView6"
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:paddingTop="25dp"
-                android:text="How many times you want to mock the location? (0 = infinite)"
+                android:text="@string/ActivityMore_HowManyTimes"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
@@ -59,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:text="Time interval in seconds between every mock?"
+                android:text="@string/ActivityMore_TimeInterval"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
@@ -86,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:paddingTop="25dp"
-                android:text="Copyright 2018 Matías Castillo Felmer"
+                android:text="@string/ActivityMore_Copyright"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:autoLink="web"
-                android:text="Source code available in https://github.com/mcastillof/FakeTraveler"
+                android:text="@string/ActivityMore_SourceCode"
                 android:textColor="@android:color/black"
                 android:textColorLink="@color/colorPrimary"
                 android:textSize="14sp" />
@@ -107,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:autoLink="web"
-                android:text="Reports bugs to https://github.com/mcastillof/FakeTraveler/issues"
+                android:text="@string/ActivityMore_Bugs"
                 android:textColor="@android:color/black"
                 android:textColorLink="@color/colorPrimary"
                 android:textSize="14sp" />
@@ -124,8 +124,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:autoLink="web"
-                    android:textColorLink="@color/colorPrimary"
-                    android:text="@string/iconLauncherLicense" />
+                    android:text="@string/ActivityMore_IconLicense"
+                    android:textColorLink="@color/colorPrimary" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
