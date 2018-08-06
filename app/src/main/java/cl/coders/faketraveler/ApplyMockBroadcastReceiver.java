@@ -49,7 +49,7 @@ public class ApplyMockBroadcastReceiver extends BroadcastReceiver {
             mockGps.pushLocation(lat, lng);
         }
         catch (Exception e) {
-            Toast.makeText(context, "Mocked location not applied. You must enable mock location in developer settings. Service stopped.", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, context.getResources().getString(R.string.ApplyMockBroadRec_MockNotApplied), Toast.LENGTH_LONG).show();
             MainActivity.changeButtonToApply();
             return;
         }
@@ -78,7 +78,7 @@ public class ApplyMockBroadcastReceiver extends BroadcastReceiver {
             }
             catch(Exception e)
             {
-                Toast.makeText(context, "Fake Traveler was closed. Mock location stopped.", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, context.getResources().getString(R.string.ApplyMockBroadRec_Closed), Toast.LENGTH_LONG).show();
             }
 
         }

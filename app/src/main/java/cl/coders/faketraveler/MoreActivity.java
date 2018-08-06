@@ -20,15 +20,18 @@ public class MoreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_more);
         EditText editText2;
         EditText editText3;
-        TextView textView3 = findViewById(R.id.textView3);
-        textView3.setMovementMethod(LinkMovementMethod.getInstance());
+        TextView textView3;
+        Context context;
+        SharedPreferences sharedPref;
 
-        Context context = getApplicationContext();
-        SharedPreferences sharedPref = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
+        context = getApplicationContext();
+        sharedPref = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
+
+        textView3 = findViewById(R.id.textView3);
+        textView3.setMovementMethod(LinkMovementMethod.getInstance());
 
         editText2 = findViewById(R.id.editText2);
         editText3 = findViewById(R.id.editText3);
-
         editText2.setText(sharedPref.getString("howManyTimes", "1"));
         editText3.setText(sharedPref.getString("timeInterval", "10"));
 

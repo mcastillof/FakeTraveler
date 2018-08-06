@@ -1,0 +1,33 @@
+<resources>
+    <!--  Strings from activity_main.xml layout  -->
+    <!-- Latitude abbreviation  -->
+    <string name="ActivityMain_Lat">Lat</string>
+    <!-- Longitude abbreviation  -->
+    <string name="ActivityMain_Long">Long</string>
+    <string name="ActivityMain_Apply">Aplicar</string>
+    <!-- Apply button then becomes Stop button through java code-->
+    <string name="ActivityMain_Stop">Stop</string>
+
+    <!--  Strings from MainActivity.java  -->
+    <string name="MainActivity_NoLatLong">No hay valores para lat o long. Manten pulsado en el mapa donde quieres posicionarte.</string>
+    <string name="MainActivity_MockApplied">Posiciones ficticias aplicadas.</string>
+    <string name="MainActivity_MockNotApplied">"Posiciones ficticias no aplicadas. Debes activar la aplicacion de ubicación de prueba en las Opciones del programador"</string>
+    <string name="MainActivity_MockLocRunning">Servicio de posiciones ficticias corriendo.</string>
+    <string name="MainActivity_MockStopped">Falsificaciones detenidas</string>
+
+
+    <!--  Strings from activity_more.xml layout  -->
+    <string name="ActivityMore_HowToTittle">¿Cómo se usa?</string>
+    <string name="ActivityMore_HowManyTimes">¿Cuántas veces quieres falsificar la ubicación? (0 = infinito)</string>
+    <string name="ActivityMore_TimeInterval">¿Cuántos segundos entre cada falsificación?</string>
+    <string name="ActivityMore_Copyright">Todos los derechos reservados 2018 Matías Castillo Felmer y contribuidores</string>
+    <string name="ActivityMore_SourceCode">Código fuente disponible en https://github.com/mcastillof/FakeTraveler</string>
+    <string name="ActivityMore_Bugs">Reporte problemas en https://github.com/mcastillof/FakeTraveler/issues</string>
+    <string name="ActivityMore_IconLicense"><![CDATA[El icono de lanzador es una obra derivada de \"Location, map, navigation, pointer icon\" por First Styles, usado bajo la licencia CC 3.0 BY. El icono de lanzador fue creado usando Android Asset Studio, y está licenciado bajo CC 3.0 BY, por Matías Castillo Felmer.\nhttps://www.iconfinder.com/icons/2135924/location_map_navigation_pointer_icon\nhttps://jgilfelt.github.io/AndroidAssetStudio/icons-launcher.html]]></string>
+    <string name="ActivityMore_HowToInstructions">Mantenga pulsado en el mapa donde quiere la ubicación ficticia y luego presione el botón aplicar. La falsificación se aplicará una o más veces dependiendo de la configuración que sigue abajo. Mientras la falsificación esté operando, puedes cambiar de lugar tan solo manteniendo pulsado en el lugar que quieres estar. Presione el botón Detener para finalizar el engaño. Nota: debes activar Fake Traveler como aplicación de ubicación de prueba en Opciones del programador.</string>
+
+    <!--  Strings from ApplyMockBroadcastReceiver.java  -->
+    <string name="ApplyMockBroadRec_MockNotApplied">"Posición ficticia no aplicada. Debes activar Fake Traveler como aplicación de ubicación de prueba en las Opciones del prograrmador. Servicio detenido."</string>
+    <string name="ApplyMockBroadRec_Closed">Fake Traveler fue cerrado. Falsificaciones detenidas.</string>
+
+</resources>

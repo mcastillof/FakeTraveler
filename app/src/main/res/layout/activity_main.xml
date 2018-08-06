@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="10"
             android:ems="10"
-            android:hint="Lat"
+            android:hint="@string/ActivityMain_Lat"
             android:inputType="numberSigned|numberDecimal" />
 
         <EditText
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="10"
             android:ems="10"
-            android:hint="Lng"
+            android:hint="@string/ActivityMain_Long"
             android:inputType="numberSigned|numberDecimal" />
 
         <Button
@@ -40,14 +40,14 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0"
-            android:text="Apply" />
+            android:text="@string/ActivityMain_Apply" />
 
         <Button
             android:id="@+id/button1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="4"
-            android:text="..." />
+            android:text="@string/ActivityMain_..." />
 
     </LinearLayout>
 
