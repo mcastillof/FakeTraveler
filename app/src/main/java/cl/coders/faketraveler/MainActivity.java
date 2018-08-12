@@ -123,6 +123,11 @@ public class MainActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 if (!editTextLat.getText().toString().isEmpty() && !editTextLat.getText().toString().equals("-")) {
                     if (srcChange != CHANGE_FROM_MAP) {
+                        lat = Double.parseDouble((editTextLat.getText().toString()));
+
+                        if(lng == null)
+                            return;
+
                         setLatLng(editTextLat.getText().toString(), lng.toString(), CHANGE_FROM_EDITTEXT);
                     }
                 }
@@ -145,6 +150,11 @@ public class MainActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 if (!editTextLng.getText().toString().isEmpty() && !editTextLng.getText().toString().equals("-")) {
                     if (srcChange != CHANGE_FROM_MAP) {
+                        lng = Double.parseDouble((editTextLng.getText().toString()));
+
+                        if(lat == null)
+                            return;
+
                         setLatLng(lat.toString(), editTextLng.getText().toString(), CHANGE_FROM_EDITTEXT);
                     }
                 }
