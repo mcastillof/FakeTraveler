@@ -23,9 +23,14 @@ public class MockLocationProvider {
 
         LocationManager lm = (LocationManager) ctx.getSystemService(
                 Context.LOCATION_SERVICE);
-        lm.addTestProvider(providerName, false, false, false, false, false,
-                true, true, 0, 5);
-        lm.setTestProviderEnabled(providerName, true);
+        try
+        {
+            lm.addTestProvider(providerName, false, false, false, false, false,
+                    true, true, 0, 5);
+            lm.setTestProviderEnabled(providerName, true);
+        } catch(SecurityException e) {
+            throw new SecurityException("Not allowed to perform MOCK_LOCATION");
+        }
     }
 
     /**

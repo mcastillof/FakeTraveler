@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                     if (srcChange != CHANGE_FROM_MAP) {
                         lat = Double.parseDouble((editTextLat.getText().toString()));
 
-                        if(lng == null)
+                        if (lng == null)
                             return;
 
                         setLatLng(editTextLat.getText().toString(), lng.toString(), CHANGE_FROM_EDITTEXT);
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                     if (srcChange != CHANGE_FROM_MAP) {
                         lng = Double.parseDouble((editTextLng.getText().toString()));
 
-                        if(lat == null)
+                        if (lat == null)
                             return;
 
                         setLatLng(lat.toString(), editTextLng.getText().toString(), CHANGE_FROM_EDITTEXT);
@@ -238,8 +238,16 @@ public class MainActivity extends AppCompatActivity {
         editor.commit();
 
         changeButtonToStop();
-        mockNetwork = new MockLocationProvider(LocationManager.NETWORK_PROVIDER, context);
-        mockGps = new MockLocationProvider(LocationManager.GPS_PROVIDER, context);
+        
+        try {
+            mockNetwork = new MockLocationProvider(LocationManager.NETWORK_PROVIDER, context);
+            mockGps = new MockLocationProvider(LocationManager.GPS_PROVIDER, context);
+        } catch (SecurityException e) {
+            e.printStackTrace();
+            MainActivity.toast(context.getResources().getString(R.string.ApplyMockBroadRec_MockNotApplied));
+            stopMockingLocation();
+            return;
+        }
 
         exec(lat, lng);
 
@@ -253,6 +261,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Set a mocked location.
+     *
      * @param lat latitude
      * @param lng longitude
      */
@@ -272,6 +281,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Check if mocking location should be stopped
+     *
      * @return true if it has ended
      */
     static boolean hasEnded() {
@@ -286,6 +296,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Sets the next alarm accordingly to <seconds>
+     *
      * @param seconds number of seconds
      */
     static void setAlarm(int seconds) {
@@ -309,21 +320,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     *  Shows a toast
+     * Shows a toast
      */
     static void toast(String str) {
         Toast.makeText(context, str, Toast.LENGTH_LONG).show();
     }
 
     /**
-     *  Returns true editTextLat has no text
+     * Returns true editTextLat has no text
      */
     static boolean latIsEmpty() {
         return editTextLat.getText().toString().isEmpty();
     }
 
     /**
-     *  Returns true editTextLng has no text
+     * Returns true editTextLng has no text
      */
     static boolean lngIsEmpty() {
         return editTextLng.getText().toString().isEmpty();
@@ -342,8 +353,10 @@ public class MainActivity extends AppCompatActivity {
             toast(context.getResources().getString(R.string.MainActivity_MockStopped));
         }
 
-        mockNetwork.shutdown();
-        mockGps.shutdown();
+        if (mockNetwork != null)
+            mockNetwork.shutdown();
+        if (mockGps != null)
+            mockGps.shutdown();
     }
 
     /**
@@ -378,8 +391,9 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Sets latitude and longitude
-     * @param mLat latitude
-     * @param mLng longitude
+     *
+     * @param mLat      latitude
+     * @param mLng      longitude
      * @param srcChange CHANGE_FROM_EDITTEXT or CHANGE_FROM_MAP, indicates from where comes the change
      */
     static void setLatLng(String mLat, String mLng, SourceChange srcChange) {
@@ -393,7 +407,6 @@ public class MainActivity extends AppCompatActivity {
             editTextLat.setText(mLat);
             editTextLng.setText(mLng);
             MainActivity.srcChange = NONE;
-
         }
 
         editor.putString("lat", mLat);
@@ -403,6 +416,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * returns latitude
+     *
      * @return latitude
      */
     static String getLat() {
@@ -411,6 +425,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * returns latitude
+     *
      * @return latitude
      */
     static String getLng() {
