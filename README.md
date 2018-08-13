@@ -7,15 +7,16 @@ Sometimes you need to fake the location of your device (for privacy or to test a
 
 <a href="https://f-droid.org/app/cl.coders.faketraveler"><img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="100"></a>
 
+
 ## How does it work?
 
-Long press in the map where you want to be located or type the latitude and longitude, and tap the Apply button. Tapping the "..." button you will be shown two settings, to control set the mocked locations over a period of time. 
-
+Long press in the map where you want to be located or type the latitude and longitude, and tap the Apply button. Tapping the "..." button you will be shown two settings to mock the location over a period of time. 
 
 <div style="display:flex;">
 <img alt="App image" src="screenshots/Screenshot_Fake_Traveler_20180722-192131.png" width="30%">
 <img alt="App image" src="screenshots/Screenshot_Fake_Traveler_20180722-192305.png" width="30%">
 </div>
+
 
 ## Requirements?
 
