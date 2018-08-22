@@ -183,6 +183,22 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        toast(context.getResources().getString(R.string.ApplyMockBroadRec_Closed));
+        stopMockingLocation();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (isFinishing()) {
+            toast(context.getResources().getString(R.string.ApplyMockBroadRec_Closed));
+            stopMockingLocation();
+        }
+    }
+
     /**
      * Check and reinitialize shared preferences in case of problem.
      */
