@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name" translatable="false">Fake Traveler</string>
+
+    <!--  Strings from activity_main.xml layout  -->
+    <!-- Latitude abbreviation  -->
+    <string name="ActivityMain_Lat">Breitengrad</string>
+    <!-- Longitude abbreviation  -->
+    <string name="ActivityMain_Long">Längengrad</string>
+    <string name="ActivityMain_Apply">Anwenden</string>
+    <!-- Apply button then becomes Stop button through java code-->
+    <string name="ActivityMain_Stop">Stopp</string>
+    <string name="ActivityMain_..." translatable="false">...</string>
+
+    <!--  Strings from MainActivity.java  -->
+    <string name="MainActivity_NoLatLong">Kein Längen- und Breitengrad. Halten Sie den gewünschten Standort auf der Karte gedrückt.</string>
+    <string name="MainActivity_MockApplied">Simulierter Standort gesetzt.</string>
+    <string name="MainActivity_MockNotApplied">"Simulierter Standort kann nicht angewendet werden. Aktivieren Sie die Einstellung für simulierte Standorte in den Entwickleroptionen."</string>
+    <string name="MainActivity_MockLocRunning">Standort Simulation läuft.</string>
+    <string name="MainActivity_MockStopped">Standort Simulation beendet.</string>
+
+    <!--  Strings from activity_more.xml layout  -->
+    <string name="ActivityMore_HowToTittle">Bedienungsanleitung</string>
+    <string name="ActivityMore_HowManyTimes">Wie oft möchten Sie den Standort simulieren? (0 = unbegrenzt)</string>
+    <string name="ActivityMore_TimeInterval">Zeit zwischen jeder Simulation</string>
+    <string name="ActivityMore_Copyright">Copyright 2018 Matías Castillo Felmer and contributors</string>
+    <string name="ActivityMore_SourceCode">Quellcode verfügbar unter: https://github.com/mcastillof/FakeTraveler</string>
+    <string name="ActivityMore_Bugs">Bugs melden unter: https://github.com/mcastillof/FakeTraveler/issues</string>
+    <string name="ActivityMore_IconLicense"><![CDATA[The icon launcher is derivative of Location, map, navigation, pointer icon by First Styles, used under CC 3.0 BY. The icon Launcher was created using Android Asset Studio, and is licensed under CC 3.0 BY, by Matías Castillo Felmer.\nhttps://www.iconfinder.com/icons/2135924/location_map_navigation_pointer_icon\nhttps://jgilfelt.github.io/AndroidAssetStudio/icons-launcher.html]]></string>
+    <string name="ActivityMore_HowToInstructions">Wählen Sie den gewünschten Standort durch langes Gedrückt-Halten auf der Karte aus. Klicken Sie auf "Anwenden". Der Standort wird je nach Einstellung ein- oder mehrmals simuliert. Während die Simulation läuft, können Sie jederzeit einen neuen Standort auswählen. Um die Simulation anzuhalten drücken Sie "Stopp". Hinweis: Um diese App nutzen zu können, müssen Sie sie als Simulierte-Standort-App in den Entwickleroptionen aktivieren.</string>
+
+    <!--  Strings from ApplyMockBroadcastReceiver.java  -->
+    <string name="ApplyMockBroadRec_MockNotApplied">"Standort nicht simuliert. Sie müssen die Entwicklereinstellungen anpassen."</string>
+    <string name="ApplyMockBroadRec_Closed">Fake Traveler wurde geschlossen. Standort Simulation gestoppt.</string>
+
+</resources>
