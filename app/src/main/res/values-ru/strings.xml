@@ -1,0 +1,34 @@
+<resources>
+
+    <!--  Strings from activity_main.xml layout  -->
+    <!-- Latitude abbreviation  -->
+    <string name="ActivityMain_Lat">Широта</string>
+    <!-- Longitude abbreviation  -->
+    <string name="ActivityMain_Long">Долгота</string>
+    <string name="ActivityMain_Apply">Применить</string>
+    <!-- Apply button then becomes Stop button through java code-->
+    <string name="ActivityMain_Stop">Стоп</string>
+    <string name="ActivityMain_..." translatable="false">...</string>
+
+    <!--  Strings from MainActivity.java  -->
+    <string name="MainActivity_NoLatLong">Нет значения широты и долготы. Длительное нажатие на карте, где вы хотите быть расположены.</string>
+    <string name="MainActivity_MockApplied">Изменённое местоположение применено.</string>
+    <string name="MainActivity_MockNotApplied">«Изменённое местоположение не применяется. Вы должны включить изменение местоположения в настройках разработчика»</string>
+    <string name="MainActivity_MockLocRunning">Служба размещения местоположения работает.</string>
+    <string name="MainActivity_MockStopped">Изменение остановлено.</string>
+
+    <!--  Strings from activity_more.xml layout  -->
+    <string name="ActivityMore_HowToTittle">Как это использовать?</string>
+    <string name="ActivityMore_HowManyTimes">Сколько раз вы хотите изменять локацию? (0 = бесконечно)</string>
+    <string name="ActivityMore_TimeInterval">Сколько секунд между каждым изменением?</string>
+    <string name="ActivityMore_Copyright">Copyright 2018 Матиас Кастильо Фелмер и авторы</string>
+    <string name="ActivityMore_SourceCode">Исходный код доступен на https://github.com/mcastillof/FakeTraveler.</string>
+    <string name="ActivityMore_Bugs">Сообщить об ошибках на https://github.com/mcastillof/FakeTraveler/issues</string>
+    <string name="ActivityMore_IconLicense">Средство запуска значков является производным от местоположения, карты, навигации и значка указателя по первым стилям, используемым в CC 3.0 BY. Значок Launcher был создан с помощью Android Asset Studio и лицензирован в соответствии с CC 3.0 BY Матиасом Кастильо Фелмером. https://www.iconfinder.com/icons/2135924/location_map_navigation_pointer_icon https://jgilfelt.github.io/AndroidAssetStudio/icons-launcher.html</string>
+    <string name="ActivityMore_HowToInstructions">Длительное нажатие, где вы хотите быть на карте и нажмите кнопку Применить. Место будет проверено один или несколько раз в соответствии с приведенной ниже конфигурацией. Пока изменение работает, вы можете изменить местоположение, просто нажав и удерживая его там, где вы находитесь. Чтобы прекратить издеваться над местоположением, нажмите кнопку Стоп. Примечание: вы должны включить Fake Traveler в качестве приложения с фиктивным местоположением в опциях для разработчиков.</string>
+
+    <!--  Strings from ApplyMockBroadcastReceiver.java  -->
+    <string name="ApplyMockBroadRec_MockNotApplied">«Изменение локации не указано. Вы должны включить изменения расположения в настройках разработчика. Служба остановлена».</string>
+    <string name="ApplyMockBroadRec_Closed">Fake Traveler был закрыт. Изменение локации остановлено.</string>
+
+</resources>
