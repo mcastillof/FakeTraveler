@@ -30,12 +30,6 @@
             tools:targetApi="jelly_bean">
         </activity>
 
-
-        <service
-            android:name="cl.coders.faketraveler.ApplyMockBroadcastReceiver"
-            android:enabled="true"
-            android:exported="true" />
-
         <receiver android:name=".ApplyMockBroadcastReceiver"  android:exported="true">
         </receiver>
     </application>
