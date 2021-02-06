@@ -26,7 +26,7 @@ public class MockLocationProvider {
         try
         {
             lm.addTestProvider(providerName, false, false, false, false, false,
-                    true, true, 0, 5);
+                    true, true, 1, 2);
             lm.setTestProviderEnabled(providerName, true);
         } catch(SecurityException e) {
             throw new SecurityException("Not allowed to perform MOCK_LOCATION");
