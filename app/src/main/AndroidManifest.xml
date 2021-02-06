@@ -15,7 +15,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="AllowBackup">
         <activity android:name="cl.coders.faketraveler.MainActivity">
 
             <intent-filter>
@@ -25,7 +26,8 @@
             </intent-filter>
         </activity>
         <activity android:name="cl.coders.faketraveler.MoreActivity"
-            android:parentActivityName="cl.coders.faketraveler.MainActivity" >
+            android:parentActivityName="cl.coders.faketraveler.MainActivity"
+            tools:targetApi="jelly_bean">
         </activity>
 
         <receiver android:name=".ApplyMockBroadcastReceiver"  android:exported="true">

@@ -72,7 +72,7 @@
                 android:inputType="number"
                 android:text="10" />
 
-            <android.support.constraint.Guideline
+            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
