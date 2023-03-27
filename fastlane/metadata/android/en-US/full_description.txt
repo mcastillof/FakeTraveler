@@ -1,0 +1,3 @@
+Sometimes you need to fake the location of your device (for privacy or to test an app). <i>Fake Traveler</i> provides you a map to select the location where you want your phone to be. Long press in the map and tap Apply button. In "..." button there are two options to keep mocking the location over time. No root needed as it uses a developers option to mock the location in your device.
+
+<b>Requirements:</b> In order to work, you need to allow Fake Traveler to mock locations. You have to <a href="https://developer.android.com/studio/debug/dev-options?hl=en-419">enable Developer options</a> and select this app in <b>Settings/System/Developer options/Select mock location app</b> option.
