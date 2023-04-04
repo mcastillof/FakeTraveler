@@ -7,7 +7,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha384-VzLXTJGPSyTLX6d96AxgkKvE/LRb7ECGyTxuwtpjHnVWVZs2gp5RDjeM/tgBnVdM" crossorigin="anonymous">    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha384-RFZC58YeKApoNsIbBxf4z6JJXmh+geBSgkCQXFyh+4tiFSJmJBt+2FbjxW7Ar16M" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="leaflet.css">
+    <script src="leaflet.js"></script>
     <style>
 		html, body {
 			height: 100%;
@@ -39,11 +40,22 @@
         maxZoom: 19,
     }).addTo(map);
 
+    var icon = L.icon({
+        iconUrl: 'marker-icon-2x.png',
+        shadowUrl: 'marker-shadow.png',
+
+        iconSize:     [27, 44], // size of the icon
+        shadowSize:   [50, 64], // size of the shadow
+        iconAnchor:   [14, 48], // point of the icon which will correspond to marker's location
+        shadowAnchor: [17, 68 ],  // the same for the shadow
+        popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+    });
+
 
 	function onMapClick(e) {
 		if (typeof marker != 'undefined')
 		    map.removeLayer(marker);
-		marker = L.marker(e.latlng).addTo(map);
+		marker = L.marker(e.latlng, {icon: icon}).addTo(map);
         Android.setPosition(e.latlng.wrap().toString());
 	}
 
@@ -52,7 +64,7 @@
 		    map.removeLayer(marker);
 		zoom = map.getZoom();
 		map.setView(new L.LatLng(aLat, aLng), zoom);
-	    marker = L.marker([aLat, aLng]).addTo(map);
+	    marker = L.marker([aLat, aLng], {icon: icon}).addTo(map);
 	    alreadyRunning = true;
 	    //alert(alreadyRunning);
     }
@@ -65,7 +77,7 @@
     if (lat != 0 && lng != 0)
     {
         map.setView(new L.LatLng(lat, lng), 12);
-        marker = L.marker([lat, lng]).addTo(map);
+        marker = L.marker([lat, lng], {icon: icon}).addTo(map);
     }
 
 
