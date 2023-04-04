@@ -6,8 +6,8 @@ android {
         applicationId "cl.coders.faketraveler"
         minSdkVersion 16
         targetSdkVersion 31
-        versionCode 8
-        versionName "1.8"
+        versionCode 9
+        versionName "1.9.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
