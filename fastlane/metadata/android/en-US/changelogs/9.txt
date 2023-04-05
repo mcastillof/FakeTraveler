@@ -1,0 +1,5 @@
+* Blank map bug fixed. 
+* No more NonFreeNetwork AntiFeature:
+  - Tile server changed from Mapbox to OpenStreetMap
+  - Leaflet's .js and .css are now in the apk, so Unpkg.com not needed.
+* Danish translation added.
