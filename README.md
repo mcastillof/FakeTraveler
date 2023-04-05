@@ -25,6 +25,11 @@ In order to work, you need to allow Fake Traveler to mock locations. You have to
 <img alt="App image" src="screenshots/Screenshot_Settings_20180722-192328.png" width="30%">
 
 
+## Changelogs
+
+See fastlane/metadata/android/en-US/changelogs/
+
+
 ## License
 Copyright © 2018 Matías Castillo Felmer
 
