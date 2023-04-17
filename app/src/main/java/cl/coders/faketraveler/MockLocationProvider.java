@@ -21,14 +21,30 @@ public class MockLocationProvider {
         this.providerName = name;
         this.ctx = ctx;
 
-        LocationManager lm = (LocationManager) ctx.getSystemService(
-                Context.LOCATION_SERVICE);
-        try
-        {
-            lm.addTestProvider(providerName, false, false, false, false, false,
-                    true, true, 1, 2);
-            lm.setTestProviderEnabled(providerName, true);
-        } catch(SecurityException e) {
+        int powerUsage = 0;
+        int accuracy   = 5;
+
+        if (Build.VERSION.SDK_INT >= 30) {
+            powerUsage = 1;
+            accuracy   = 2;
+        }
+
+        LocationManager lm = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
+        startup(lm, powerUsage, accuracy, /* maxRetryCount= */ 3, /* currentRetryCount= */ 0);
+    }
+
+    private void startup(LocationManager lm, int powerUsage, int accuracy, int maxRetryCount, int currentRetryCount) {
+        if (currentRetryCount < maxRetryCount) {
+            try {
+                shutdown();
+                lm.addTestProvider(providerName, false, false, false, false, false, true, true, powerUsage, accuracy);
+                lm.setTestProviderEnabled(providerName, true);
+            }
+            catch(Exception e) {
+                startup(lm, powerUsage, accuracy, maxRetryCount, (currentRetryCount + 1));
+            }
+        }
+        else {
             throw new SecurityException("Not allowed to perform MOCK_LOCATION");
         }
     }
@@ -41,8 +57,7 @@ public class MockLocationProvider {
      * @return Void
      */
     public void pushLocation(double lat, double lon) {
-        LocationManager lm = (LocationManager) ctx.getSystemService(
-                Context.LOCATION_SERVICE);
+        LocationManager lm = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
 
         Location mockLocation = new Location(providerName);
         mockLocation.setLatitude(lat);
@@ -74,8 +89,10 @@ public class MockLocationProvider {
      * @return Void
      */
     public void shutdown() {
-        LocationManager lm = (LocationManager) ctx.getSystemService(
-                Context.LOCATION_SERVICE);
-        lm.removeTestProvider(providerName);
+        try {
+            LocationManager lm = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
+            lm.removeTestProvider(providerName);
+        }
+        catch(Exception e) {}
     }
 }

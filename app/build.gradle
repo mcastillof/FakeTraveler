@@ -6,9 +6,9 @@ android {
         applicationId "cl.coders.faketraveler"
         minSdkVersion 16
         targetSdkVersion 31
-        versionCode 9
-        versionName "1.9.1"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        versionCode 10
+        versionName "1.9.2-beta"
+        testInstrumetationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
