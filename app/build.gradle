@@ -1,11 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 31
     defaultConfig {
         applicationId "cl.coders.faketraveler"
         minSdkVersion 16
-        targetSdkVersion 31
+        targetSdkVersion 33
         versionCode 10
         versionName "1.9.2-beta"
     }
