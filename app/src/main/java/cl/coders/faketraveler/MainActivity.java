@@ -327,8 +327,8 @@ public class MainActivity extends AppCompatActivity {
                 alarmManager.setExact(AlarmManager.RTC, System.currentTimeMillis() + timeInterval * 1000L, pendingIntent);
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SecurityException e) {
+            Log.e(MainActivity.class.toString(), e.toString());
         }
     }
 
