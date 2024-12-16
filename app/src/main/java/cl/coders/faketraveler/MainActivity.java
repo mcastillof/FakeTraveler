@@ -25,6 +25,8 @@ import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_EDITT
 import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_MAP;
 import static cl.coders.faketraveler.MainActivity.SourceChange.NONE;
 
+import java.util.Locale;
+
 
 public class MainActivity extends AppCompatActivity {
 
