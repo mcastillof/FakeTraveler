@@ -306,7 +306,8 @@ public class MainActivity extends AppCompatActivity {
      */
     static void setAlarm(int seconds) {
         serviceIntent = new Intent(context, ApplyMockBroadcastReceiver.class);
-        pendingIntent = PendingIntent.getBroadcast(context, SCHEDULE_REQUEST_CODE, serviceIntent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        pendingIntent = PendingIntent.getBroadcast(context, SCHEDULE_REQUEST_CODE, serviceIntent,
+                PendingIntent.FLAG_IMMUTABLE);  // creating with same request code will get rid of previous
 
         try {
             if (Build.VERSION.SDK_INT >= 19) {
