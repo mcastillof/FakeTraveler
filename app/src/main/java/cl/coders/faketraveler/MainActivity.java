@@ -238,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
 
         toast(context.getResources().getString(R.string.MainActivity_MockApplied));
 
-        endTime = System.currentTimeMillis() + (howManyTimes - 1) * timeInterval * 1000;
+        endTime = System.currentTimeMillis() + (howManyTimes - 1L) * timeInterval * 1000L;
         editor.putLong("endTime", endTime);
         editor.commit();
 
