@@ -65,7 +65,6 @@ public class MockLocationProvider {
         mockLocation.setAltitude(3F);
         mockLocation.setTime(System.currentTimeMillis());
         mockLocation.setElapsedRealtimeNanos(SystemClock.elapsedRealtimeNanos());
-        //mockLocation.setAccuracy(16F);
         mockLocation.setSpeed(0.01F);
         mockLocation.setBearing(1F);
         mockLocation.setAccuracy(3F);
@@ -77,9 +76,6 @@ public class MockLocationProvider {
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             mockLocation.setSpeedAccuracyMetersPerSecond(0.01F);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            mockLocation.setElapsedRealtimeNanos(SystemClock.elapsedRealtimeNanos());
         }
         lm.setTestProviderLocation(providerName, mockLocation);
     }

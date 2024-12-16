@@ -288,7 +288,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             toast(context.getResources().getString(R.string.MainActivity_MockNotApplied));
             changeButtonToApply();
-            return;
             Log.e(MainActivity.class.toString(), e.toString());
         }
     }
