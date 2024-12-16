@@ -24,6 +24,7 @@ import android.widget.Toast;
 import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_EDITTEXT;
 import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_MAP;
 import static cl.coders.faketraveler.MainActivity.SourceChange.NONE;
+import androidx.core.os.ConfigurationCompat;
 
 import java.util.Locale;
 
