@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 
 public class ApplyMockBroadcastReceiver extends BroadcastReceiver {
@@ -40,7 +41,7 @@ public class ApplyMockBroadcastReceiver extends BroadcastReceiver {
             }
         } catch (Exception e)
         {
-            e.printStackTrace();
+            Log.e(ApplyMockBroadcastReceiver.class.toString(), e.toString());
         }
     }
 }
