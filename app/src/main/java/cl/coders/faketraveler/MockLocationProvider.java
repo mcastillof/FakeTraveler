@@ -7,8 +7,8 @@ import android.os.Build;
 import android.os.SystemClock;
 
 public class MockLocationProvider {
-    String providerName;
-    Context ctx;
+    final String providerName;
+    final Context ctx;
 
     /**
      * Class constructor
