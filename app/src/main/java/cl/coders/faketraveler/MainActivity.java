@@ -13,6 +13,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
             PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
             currentVersion = pInfo.versionCode;
         } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+            Log.e(MainActivity.class.toString(), e.toString());
         }
 
         checkSharedPrefs();
@@ -117,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 editTextLng.setText(String.format(locale, "%f", lng));
             }
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+            Log.e(MainActivity.class.toString(), e.toString());
         }
 
         editTextLat.addTextChangedListener(new TextWatcher() {
@@ -221,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
             editor.putString("timeInterval", "10");
             editor.putLong("endTime", 0);
             editor.commit();
-            e.printStackTrace();
+            Log.e(MainActivity.class.toString(), e.toString());
         }
 
     }
@@ -250,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
             mockNetwork = new MockLocationProvider(LocationManager.NETWORK_PROVIDER, context);
             mockGps = new MockLocationProvider(LocationManager.GPS_PROVIDER, context);
         } catch (SecurityException e) {
-            e.printStackTrace();
+            Log.e(MainActivity.class.toString(), e.toString());
             MainActivity.toast(context.getResources().getString(R.string.ApplyMockBroadRec_MockNotApplied));
             stopMockingLocation();
             return;
@@ -281,8 +282,8 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             toast(context.getResources().getString(R.string.MainActivity_MockNotApplied));
             changeButtonToApply();
-            e.printStackTrace();
             return;
+            Log.e(MainActivity.class.toString(), e.toString());
         }
     }
 
