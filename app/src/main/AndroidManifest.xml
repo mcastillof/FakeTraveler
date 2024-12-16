@@ -33,8 +33,9 @@
             tools:targetApi="jelly_bean">
         </activity>
 
-        <receiver android:name=".ApplyMockBroadcastReceiver"  android:exported="true">
-        </receiver>
+        <receiver
+            android:name=".ApplyMockBroadcastReceiver"
+            android:exported="false" />
     </application>
 
 </manifest>
