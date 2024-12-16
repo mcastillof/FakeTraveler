@@ -1,5 +1,9 @@
 package cl.coders.faketraveler;
 
+import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_EDITTEXT;
+import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_MAP;
+import static cl.coders.faketraveler.MainActivity.SourceChange.NONE;
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -10,20 +14,16 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_EDITTEXT;
-import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_MAP;
-import static cl.coders.faketraveler.MainActivity.SourceChange.NONE;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.os.ConfigurationCompat;
 
 import com.google.android.material.button.MaterialButton;
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     static final String sharedPrefKey = "cl.coders.mockposition.sharedpreferences";
     static final int KEEP_GOING = 0;
-    static private int SCHEDULE_REQUEST_CODE = 1;
+    final static private int SCHEDULE_REQUEST_CODE = 1;
     public static Intent serviceIntent;
     public static PendingIntent pendingIntent;
     public static AlarmManager alarmManager;

@@ -39,8 +39,7 @@ public class ApplyMockBroadcastReceiver extends BroadcastReceiver {
             } else {
                 MainActivity.stopMockingLocation();
             }
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.e(ApplyMockBroadcastReceiver.class.toString(), e.toString());
         }
     }
