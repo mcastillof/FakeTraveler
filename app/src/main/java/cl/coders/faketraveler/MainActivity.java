@@ -99,7 +99,11 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
-            currentVersion = pInfo.versionCode;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                currentVersion = (int) (pInfo.getLongVersionCode() >> 32);
+            } else {
+                currentVersion = pInfo.versionCode;
+            }
         } catch (PackageManager.NameNotFoundException e) {
             Log.e(MainActivity.class.toString(), e.toString());
         }
