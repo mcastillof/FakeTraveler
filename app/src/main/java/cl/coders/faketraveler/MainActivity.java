@@ -26,6 +26,8 @@ import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_MAP;
 import static cl.coders.faketraveler.MainActivity.SourceChange.NONE;
 import androidx.core.os.ConfigurationCompat;
 
+import com.google.android.material.button.MaterialButton;
+
 import java.util.Locale;
 
 
@@ -37,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
     public static Intent serviceIntent;
     public static PendingIntent pendingIntent;
     public static AlarmManager alarmManager;
-    static Button button0;
-    static Button button1;
+    static MaterialButton button0;
+    static MaterialButton button1;
     static WebView webView;
     static EditText editTextLat;
     static EditText editTextLng;
@@ -74,8 +76,8 @@ public class MainActivity extends AppCompatActivity {
         sharedPref = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
         editor = sharedPref.edit();
 
-        button0 = (Button) findViewById(R.id.button0);
-        button1 = (Button) findViewById(R.id.button1);
+        button0 = findViewById(R.id.button0);
+        button1 = findViewById(R.id.button1);
         editTextLat = findViewById(R.id.editText0);
         editTextLng = findViewById(R.id.editText1);
 
