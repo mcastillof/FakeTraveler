@@ -111,8 +111,11 @@ public class MainActivity extends AppCompatActivity {
         try {
             lat = Double.parseDouble(sharedPref.getString("lat", ""));
             lng = Double.parseDouble(sharedPref.getString("lng", ""));
-            editTextLat.setText(lat.toString());
-            editTextLng.setText(lng.toString());
+            Locale locale = ConfigurationCompat.getLocales(getResources().getConfiguration()).get(0);
+            if (locale != null) {
+                editTextLat.setText(String.format(locale, "%f", lat));
+                editTextLng.setText(String.format(locale, "%f", lng));
+            }
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
@@ -237,8 +240,7 @@ public class MainActivity extends AppCompatActivity {
         lng = Double.parseDouble(editTextLng.getText().toString());
 
         toast(context.getResources().getString(R.string.MainActivity_MockApplied));
-
-        endTime = System.currentTimeMillis() + (howManyTimes - 1) * timeInterval * 1000;
+        endTime = System.currentTimeMillis() + (howManyTimes - 1L) * timeInterval * 1000L;
         editor.putLong("endTime", endTime);
         editor.commit();
 
@@ -309,14 +311,10 @@ public class MainActivity extends AppCompatActivity {
         pendingIntent = PendingIntent.getBroadcast(context, SCHEDULE_REQUEST_CODE, serviceIntent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         try {
-            if (Build.VERSION.SDK_INT >= 19) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC, System.currentTimeMillis() + seconds * 1000, pendingIntent);
-                } else {
-                    alarmManager.setExact(AlarmManager.RTC, System.currentTimeMillis() + timeInterval * 1000, pendingIntent);
-                }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC, System.currentTimeMillis() + seconds * 1000L, pendingIntent);
             } else {
-                alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + timeInterval * 1000, pendingIntent);
+                alarmManager.setExact(AlarmManager.RTC, System.currentTimeMillis() + timeInterval * 1000L, pendingIntent);
             }
 
         } catch (Exception e) {
