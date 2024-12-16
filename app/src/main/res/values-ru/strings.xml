@@ -21,7 +21,7 @@
     <string name="ActivityMore_HowToTittle">Как это использовать?</string>
     <string name="ActivityMore_HowManyTimes">Сколько раз вы хотите изменять локацию? (0 = бесконечно)</string>
     <string name="ActivityMore_TimeInterval">Сколько секунд между каждым изменением?</string>
-    <string name="ActivityMore_Copyright">Copyright 2018 Матиас Кастильо Фелмер и авторы</string>
+    <string name="ActivityMore_Copyright">Copyright 2018\-2024 Матиас Кастильо Фелмер и авторы</string>
     <string name="ActivityMore_SourceCode">Исходный код доступен на https://github.com/mcastillof/FakeTraveler.</string>
     <string name="ActivityMore_Bugs">Сообщить об ошибках на https://github.com/mcastillof/FakeTraveler/issues</string>
     <string name="ActivityMore_IconLicense">Средство запуска значков является производным от местоположения, карты, навигации и значка указателя по первым стилям, используемым в CC 3.0 BY. Значок Launcher был создан с помощью Android Asset Studio и лицензирован в соответствии с CC 3.0 BY Матиасом Кастильо Фелмером. https://www.iconfinder.com/icons/2135924/location_map_navigation_pointer_icon https://jgilfelt.github.io/AndroidAssetStudio/icons-launcher.html</string>

@@ -22,7 +22,7 @@
     <string name="ActivityMore_HowToTittle">How to use it?</string>
     <string name="ActivityMore_HowManyTimes">How many times you want to mock the location? (0 = infinite)</string>
     <string name="ActivityMore_TimeInterval">How many seconds between every mock?</string>
-    <string name="ActivityMore_Copyright">Copyright 2018 Matías Castillo Felmer and contributors</string>
+    <string name="ActivityMore_Copyright">Copyright 2018\-2024 Matías Castillo Felmer and contributors</string>
     <string name="ActivityMore_SourceCode">Source code available in https://github.com/mcastillof/FakeTraveler</string>
     <string name="ActivityMore_Bugs">Report bugs to https://github.com/mcastillof/FakeTraveler/issues</string>
     <string name="ActivityMore_IconLicense"><![CDATA[The icon launcher is derivative of Location, map, navigation, pointer icon by First Styles, used under CC 3.0 BY. The icon Launcher was created using Android Asset Studio, and is licensed under CC 3.0 BY, by Matías Castillo Felmer.\nhttps://www.iconfinder.com/icons/2135924/location_map_navigation_pointer_icon\nhttps://jgilfelt.github.io/AndroidAssetStudio/icons-launcher.html]]></string>

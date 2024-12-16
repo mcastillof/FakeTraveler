@@ -22,7 +22,7 @@
     <string name="ActivityMore_HowToTittle">Hvordan bruger man det?</string>
     <string name="ActivityMore_HowManyTimes">Hvor mange gange vil du imitere placeringen? (0 = uendelig)</string>
     <string name="ActivityMore_TimeInterval">Hvor mange sekunder mellem hver imitering?</string>
-    <string name="ActivityMore_Copyright">Copyright 2018 Matías Castillo Felmer og bidragsydere</string>
+    <string name="ActivityMore_Copyright">Copyright 2018\-2024 Matías Castillo Felmer og bidragsydere</string>
     <string name="ActivityMore_SourceCode">Source koden er tilgængelig på https://github.com/mcastillof/FakeTraveler</string>
     <string name="ActivityMore_Bugs">Rapportér bugs på https://github.com/mcastillof/FakeTraveler/issues</string>
     <string name="ActivityMore_IconLicense"><![CDATA[Ikon launcheren er derivat af placering, kort, navigation, pointerikon af First Styles, brugt under CC 3.0 BY. Ikon launcheren blev lavet ved at bruge Android Asset Studio, og er licenseret under CC 3.0 BY, af Matías Castillo Felmer.\nhttps://www.iconfinder.com/icons/2135924/location_map_navigation_pointer_icon\nhttps://jgilfelt.github.io/AndroidAssetStudio/icons-launcher.html]]></string>

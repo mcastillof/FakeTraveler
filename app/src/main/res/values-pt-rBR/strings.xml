@@ -20,7 +20,7 @@
     <string name="ActivityMore_HowToTittle">Como usar?</string>
     <string name="ActivityMore_HowManyTimes">Quantas vezes deseja mudar sua localização? (0 = infinito)</string>
     <string name="ActivityMore_TimeInterval">Quantos segundos entre cada mudança?</string>
-    <string name="ActivityMore_Copyright">Todos os direitos reservados 2018 Matías Castillo Felmer e contribuidores</string>
+    <string name="ActivityMore_Copyright">Todos os direitos reservados 2018\-2024 Matías Castillo Felmer e contribuidores</string>
     <string name="ActivityMore_SourceCode">Código fonte disponível em https://github.com/mcastillof/FakeTraveler</string>
     <string name="ActivityMore_Bugs">Notifique problemas em https://github.com/mcastillof/FakeTraveler/issues</string>
     <string name="ActivityMore_IconLicense"><![CDATA[O ícone do inicializador é uma obra derivada de \"Location, map, navigation, pointer icon\" por First Styles, usado bajo la licencia CC 3.0 BY. O ícone do inicializador foi criado usando Android Asset Studio, e está licenciado em CC 3.0 BY, por Matías Castillo Felmer.\nhttps://www.iconfinder.com/icons/2135924/location_map_navigation_pointer_icon\nhttps://jgilfelt.github.io/AndroidAssetStudio/icons-launcher.html]]></string>
