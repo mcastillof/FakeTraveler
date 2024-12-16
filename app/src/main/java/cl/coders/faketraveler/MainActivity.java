@@ -81,19 +81,11 @@ public class MainActivity extends AppCompatActivity {
         editTextLat = findViewById(R.id.editText0);
         editTextLng = findViewById(R.id.editText1);
 
-        button0.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                applyLocation();
-            }
-        });
+        button0.setOnClickListener(arg0 -> applyLocation());
 
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                Intent myIntent = new Intent(getBaseContext(), MoreActivity.class);
-                startActivity(myIntent);
-            }
+        button1.setOnClickListener(arg0 -> {
+            Intent myIntent = new Intent(getBaseContext(), MoreActivity.class);
+            startActivity(myIntent);
         });
 
         webView.getSettings().setJavaScriptEnabled(true);
@@ -303,11 +295,7 @@ public class MainActivity extends AppCompatActivity {
     static boolean hasEnded() {
         if (howManyTimes == KEEP_GOING) {
             return false;
-        } else if (System.currentTimeMillis() > endTime) {
-            return true;
-        } else {
-            return false;
-        }
+        } else return System.currentTimeMillis() > endTime;
     }
 
     /**
@@ -377,14 +365,7 @@ public class MainActivity extends AppCompatActivity {
      */
     static void changeButtonToApply() {
         button0.setText(context.getResources().getString(R.string.ActivityMain_Apply));
-        button0.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                applyLocation();
-            }
-
-        });
+        button0.setOnClickListener(arg0 -> applyLocation());
     }
 
     /**
@@ -392,14 +373,7 @@ public class MainActivity extends AppCompatActivity {
      */
     static void changeButtonToStop() {
         button0.setText(context.getResources().getString(R.string.ActivityMain_Stop));
-        button0.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                stopMockingLocation();
-            }
-
-        });
+        button0.setOnClickListener(arg0 -> stopMockingLocation());
     }
 
     /**
