@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             endTime = 0;
             editor.putLong("endTime", 0);
-            editor.commit();
+            editor.apply();
         }
 
     }
@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (version != currentVersion) {
             editor.putInt("version", currentVersion);
-            editor.commit();
+            editor.apply();
         }
 
         try {
@@ -222,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
             editor.putString("howManyTimes", "1");
             editor.putString("timeInterval", "10");
             editor.putLong("endTime", 0);
-            editor.commit();
+            editor.apply();
             Log.e(MainActivity.class.toString(), e.toString());
         }
 
@@ -245,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
 
         endTime = System.currentTimeMillis() + (howManyTimes - 1L) * timeInterval * 1000L;
         editor.putLong("endTime", endTime);
-        editor.commit();
+        editor.apply();
 
         changeButtonToStop();
 
@@ -357,7 +357,7 @@ public class MainActivity extends AppCompatActivity {
     protected static void stopMockingLocation() {
         changeButtonToApply();
         editor.putLong("endTime", System.currentTimeMillis() - 1);
-        editor.commit();
+        editor.apply();
 
         if (pendingIntent != null) {
             alarmManager.cancel(pendingIntent);
@@ -422,7 +422,7 @@ public class MainActivity extends AppCompatActivity {
 
         editor.putString("lat", mLat);
         editor.putString("lng", mLng);
-        editor.commit();
+        editor.apply();
     }
 
     /**

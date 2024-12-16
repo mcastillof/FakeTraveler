@@ -51,7 +51,7 @@ public class MoreActivity extends AppCompatActivity {
                     MainActivity.howManyTimes = Integer.parseInt(editText2.getText().toString());
                 }
 
-                editor.commit();
+                editor.apply();
             }
 
             @Override
@@ -83,7 +83,7 @@ public class MoreActivity extends AppCompatActivity {
                     MainActivity.timeInterval = Integer.parseInt(editText3.getText().toString());
                 }
 
-                editor.commit();
+                editor.apply();
             }
 
             @Override
