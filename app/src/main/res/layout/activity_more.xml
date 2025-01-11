@@ -87,8 +87,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="number"
-                    android:text="0" />
+                    android:text="0"
+                    android:inputType="numberSigned"/>
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline"
@@ -103,8 +103,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="number"
-                    android:text="0" />
+                    android:text="0"
+                    android:inputType="numberSigned"/>
             </LinearLayout>
 
             <androidx.constraintlayout.widget.Guideline

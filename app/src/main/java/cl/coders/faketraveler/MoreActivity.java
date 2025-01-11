@@ -6,10 +6,14 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.os.ConfigurationCompat;
+
+import java.util.Locale;
 
 public class MoreActivity extends AppCompatActivity {
 
@@ -87,6 +91,8 @@ public class MoreActivity extends AppCompatActivity {
             }
 
         });
+
+
 
         textView3 = findViewById(R.id.textView3);
         textView3.setMovementMethod(LinkMovementMethod.getInstance());

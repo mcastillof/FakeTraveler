@@ -47,6 +47,11 @@ public class MainActivity extends AppCompatActivity {
     static SharedPreferences.Editor editor;
     static Double lat;
     static Double lng;
+
+    static Double simLat = 0.0;
+    static Double simLon = 0.0;
+    static Boolean simInit = false;
+
     static int timeInterval;
     static int howManyTimes;
     static long endTime;
@@ -289,6 +294,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Set a mocked location based on simulation
+     * Simulation starts after first position is set.
+     * Map becomes updated during simulation
+     * text box only after simulation is stopped
+     */
+    static void simu_exec() {
+        if(!simInit){ // first call in simulation - take current position
+            simLat = lat + Double.parseDouble(sharedPref.getString("DMockLat", "0")) / 1000000;
+            simLon = lng + Double.parseDouble(sharedPref.getString("DMockLon", "0")) / 1000000;
+            simInit = true;
+        }else{
+            simLat = simLat + Double.parseDouble(sharedPref.getString("DMockLat", "0")) / 1000000;
+            simLon = simLon + Double.parseDouble(sharedPref.getString("DMockLon", "0")) / 1000000;
+        }
+
+        try {
+            //MockLocationProvider mockNetwork = new MockLocationProvider(LocationManager.NETWORK_PROVIDER, context);
+            mockNetwork.pushLocation(simLat, simLon);
+            //MockLocationProvider mockGps = new MockLocationProvider(LocationManager.GPS_PROVIDER, context);
+            mockGps.pushLocation(simLat, simLon);
+
+            //move map but not edit text
+            webView.loadUrl("javascript:setOnMap(" + simLat + "," + simLon + ");");
+        } catch (Exception e) {
+            toast(context.getResources().getString(R.string.MainActivity_MockNotApplied));
+            changeButtonToApply();
+            Log.e(MainActivity.class.toString(), e.toString());
+        }
+    }
+
+
+
+    /**
      * Check if mocking location should be stopped
      *
      * @return true if it has ended
@@ -359,6 +397,14 @@ public class MainActivity extends AppCompatActivity {
             mockNetwork.shutdown();
         if (mockGps != null)
             mockGps.shutdown();
+
+        if(simInit){
+            simInit = false;
+            // simulation moves map but does not update the text box
+            // set text box to map position
+            setLatLng(simLat.toString(), simLon.toString(), CHANGE_FROM_MAP);
+        }
+
     }
 
     /**
