@@ -202,6 +202,8 @@ public class MainActivity extends AppCompatActivity {
         String lng = sharedPref.getString("lng", "N/A");
         String howManyTimes = sharedPref.getString("howManyTimes", "N/A");
         String timeInterval = sharedPref.getString("timeInterval", "N/A");
+        String dMockLon = sharedPref.getString("DMockLon", "0");
+        String dMockLat = sharedPref.getString("DMockLat", "0");
         Long endTime = sharedPref.getLong("endTime", 0);
 
         if (version != currentVersion) {
@@ -214,6 +216,8 @@ public class MainActivity extends AppCompatActivity {
             Double.parseDouble(lng);
             Double.parseDouble(howManyTimes);
             Double.parseDouble(timeInterval);
+            Double.parseDouble(dMockLon);
+            Double.parseDouble(dMockLat);
         } catch (NumberFormatException e) {
             editor.clear();
             editor.putString("lat", lat);
@@ -221,6 +225,8 @@ public class MainActivity extends AppCompatActivity {
             editor.putInt("version", currentVersion);
             editor.putString("howManyTimes", "1");
             editor.putString("timeInterval", "10");
+            editor.putString("DMockLon", "0");
+            editor.putString("DMockLat", "0");
             editor.putLong("endTime", 0);
             editor.apply();
             Log.e(MainActivity.class.toString(), e.toString());
