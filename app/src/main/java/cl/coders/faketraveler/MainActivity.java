@@ -354,7 +354,7 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC, System.currentTimeMillis() + seconds * 1000L, pendingIntent);
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + seconds * 1000L, pendingIntent);
             } else {
                 alarmManager.setExact(AlarmManager.RTC, System.currentTimeMillis() + timeInterval * 1000L, pendingIntent);
             }
