@@ -23,9 +23,70 @@ public class MoreActivity extends AppCompatActivity {
         TextView textView3;
         Context context;
         SharedPreferences sharedPref;
-
         context = getApplicationContext();
         sharedPref = context.getSharedPreferences(MainActivity.sharedPrefKey, Context.MODE_PRIVATE);
+
+        EditText et_DMockLat;
+        et_DMockLat  = findViewById(R.id.et_DMockLat);
+        et_DMockLat.setText(sharedPref.getString("DMockLat", "0"));
+        et_DMockLat.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                EditText et_DMockLat = findViewById(R.id.et_DMockLat);
+                Context context = getApplicationContext();
+                SharedPreferences sharedPref = context.getSharedPreferences(MainActivity.sharedPrefKey, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+
+                if (et_DMockLat.getText().toString().isEmpty()) {
+                    editor.putString("DMockLat", "0");
+                } else {
+                    editor.putString("DMockLat", et_DMockLat.getText().toString());
+                }
+
+                editor.apply();
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+            }
+        });
+
+        EditText  et_DMockLon;
+        et_DMockLon  = findViewById(R.id.et_DMockLon);
+        et_DMockLon.setText(sharedPref.getString("DMockLon", "0"));
+        et_DMockLon.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                EditText et_DMockLon = findViewById(R.id.et_DMockLon);
+                Context context = getApplicationContext();
+                SharedPreferences sharedPref = context.getSharedPreferences(MainActivity.sharedPrefKey, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+
+                if (et_DMockLon.getText().toString().isEmpty()) {
+                    editor.putString("DMockLon", "0");
+                } else {
+                    editor.putString("DMockLon", et_DMockLon.getText().toString());
+                }
+                editor.apply();
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+            }
+
+        });
 
         textView3 = findViewById(R.id.textView3);
         textView3.setMovementMethod(LinkMovementMethod.getInstance());

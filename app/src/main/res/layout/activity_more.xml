@@ -70,6 +70,43 @@
                 android:inputType="number"
                 android:text="10" />
 
+            <TextView
+                android:id="@+id/et_DMockLatLon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mock delta Latitude / Longitude (1 / 1 000 000 °)" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/et_DMockLat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:text="0" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/et_DMockLon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:text="0" />
+            </LinearLayout>
+
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline2"
                 android:layout_width="match_parent"
