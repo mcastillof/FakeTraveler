@@ -34,9 +34,6 @@
             android:name="cl.coders.faketraveler.MoreActivity"
             android:parentActivityName="cl.coders.faketraveler.MainActivity" />
 
-        <receiver
-            android:name=".ApplyMockBroadcastReceiver"
-            android:exported="false" />
     </application>
 
 </manifest>

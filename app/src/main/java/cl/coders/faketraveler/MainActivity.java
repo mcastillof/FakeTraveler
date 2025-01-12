@@ -4,8 +4,6 @@ import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_EDITT
 import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_MAP;
 import static cl.coders.faketraveler.MainActivity.SourceChange.NONE;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,10 +12,10 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.EditText;
@@ -35,12 +33,12 @@ public class MainActivity extends AppCompatActivity {
 
     static final String sharedPrefKey = "cl.coders.mockposition.sharedpreferences";
     static final int KEEP_GOING = 0;
-    final static private int SCHEDULE_REQUEST_CODE = 1;
-    public static Intent serviceIntent;
-    public static PendingIntent pendingIntent;
-    public static AlarmManager alarmManager;
-    static MaterialButton button0;
-    static MaterialButton button1;
+
+    public static Handler sim_handler = new Handler();
+    public static Runnable sim_runnable;
+
+    static MaterialButton button_applyStop;
+    static MaterialButton button_settings;
     static WebView webView;
     static EditText editTextLat;
     static EditText editTextLng;
@@ -77,18 +75,17 @@ public class MainActivity extends AppCompatActivity {
         context = getApplicationContext();
         webView = findViewById(R.id.webView0);
         webAppInterface = new WebAppInterface(this, this);
-        alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
         sharedPref = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
         editor = sharedPref.edit();
 
-        button0 = findViewById(R.id.button0);
-        button1 = findViewById(R.id.button1);
-        editTextLat = findViewById(R.id.editText0);
-        editTextLng = findViewById(R.id.editText1);
+        button_applyStop = findViewById(R.id.button_applyStop);
+        button_settings = findViewById(R.id.button_settings);
+        editTextLat = findViewById(R.id.editTextLat);
+        editTextLng = findViewById(R.id.editTextLng);
 
-        button0.setOnClickListener(arg0 -> applyLocation());
+        button_applyStop.setOnClickListener(arg0 -> applyLocation());
 
-        button1.setOnClickListener(arg0 -> {
+        button_settings.setOnClickListener(arg0 -> {
             Intent myIntent = new Intent(getBaseContext(), MoreActivity.class);
             startActivity(myIntent);
         });
@@ -181,7 +178,9 @@ public class MainActivity extends AppCompatActivity {
 
         endTime = sharedPref.getLong("endTime", 0);
 
-        if (pendingIntent != null && endTime > System.currentTimeMillis()) {
+
+        //2do check running on start?
+        if ( endTime > System.currentTimeMillis()) {
             changeButtonToStop();
         } else {
             endTime = 0;
@@ -194,7 +193,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        toast(context.getResources().getString(R.string.ApplyMockBroadRec_Closed));
         stopMockingLocation();
     }
 
@@ -264,7 +262,6 @@ public class MainActivity extends AppCompatActivity {
             mockGps = new MockLocationProvider(LocationManager.GPS_PROVIDER, context);
         } catch (SecurityException e) {
             Log.e(MainActivity.class.toString(), e.toString());
-            MainActivity.toast(context.getResources().getString(R.string.ApplyMockBroadRec_MockNotApplied));
             stopMockingLocation();
             return;
         }
@@ -348,27 +345,43 @@ public class MainActivity extends AppCompatActivity {
      * @param seconds number of seconds
      */
     static void setAlarm(int seconds) {
-        serviceIntent = new Intent(context, ApplyMockBroadcastReceiver.class);
-        pendingIntent = PendingIntent.getBroadcast(context, SCHEDULE_REQUEST_CODE, serviceIntent,
-                PendingIntent.FLAG_IMMUTABLE);  // creating with same request code will get rid of previous
-
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + seconds * 1000L, pendingIntent);
-            } else {
-                alarmManager.setExact(AlarmManager.RTC, System.currentTimeMillis() + timeInterval * 1000L, pendingIntent);
-            }
+            setSimTimer(seconds*1000L);
 
         } catch (SecurityException e) {
             Log.e(MainActivity.class.toString(), e.toString());
         }
     }
 
+    protected static void setSimTimer(long ms_delay) {
+        sim_handler.postDelayed(sim_runnable = new Runnable() {
+            public void run() {
+                try {
+                    simu_exec();
+
+                    if (!hasEnded()) {
+                        sim_handler.postDelayed(sim_runnable, ms_delay); // next timer
+                    } else {
+                        stopMockingLocation();
+                    }
+                } catch (Exception e) {
+                    Log.e(MainActivity.class.toString(), e.toString());
+                }
+            }
+        }, ms_delay);
+    }
+
+    protected static void stopSimTimer() {
+        sim_handler.removeCallbacks(sim_runnable); //stop handler - remove callback
+        toast(context.getResources().getString(R.string.MainActivity_MockStopped));
+    }
+
+
     /**
      * Shows a toast
      */
     static void toast(String str) {
-        Toast.makeText(context, str, Toast.LENGTH_LONG).show();
+        Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -393,10 +406,6 @@ public class MainActivity extends AppCompatActivity {
         editor.putLong("endTime", System.currentTimeMillis() - 1);
         editor.apply();
 
-        if (pendingIntent != null) {
-            alarmManager.cancel(pendingIntent);
-            toast(context.getResources().getString(R.string.MainActivity_MockStopped));
-        }
 
         if (mockNetwork != null)
             mockNetwork.shutdown();
@@ -409,23 +418,23 @@ public class MainActivity extends AppCompatActivity {
             // set text box to map position
             setLatLng(simLat.toString(), simLon.toString(), CHANGE_FROM_MAP);
         }
-
+        stopSimTimer();
     }
 
     /**
      * Changes the button to Apply, and its behavior.
      */
     static void changeButtonToApply() {
-        button0.setText(context.getResources().getString(R.string.ActivityMain_Apply));
-        button0.setOnClickListener(arg0 -> applyLocation());
+        button_applyStop.setText(context.getResources().getString(R.string.ActivityMain_Apply));
+        button_applyStop.setOnClickListener(arg0 -> applyLocation());
     }
 
     /**
      * Changes the button to Stop, and its behavior.
      */
     static void changeButtonToStop() {
-        button0.setText(context.getResources().getString(R.string.ActivityMain_Stop));
-        button0.setOnClickListener(arg0 -> stopMockingLocation());
+        button_applyStop.setText(context.getResources().getString(R.string.ActivityMain_Stop));
+        button_applyStop.setOnClickListener(arg0 -> stopMockingLocation());
     }
 
     /**
