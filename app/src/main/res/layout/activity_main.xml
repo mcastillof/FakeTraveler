@@ -19,7 +19,7 @@
         android:padding="14dp">
 
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/editText0"
+            android:id="@+id/editTextLat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="10"
@@ -30,7 +30,7 @@
             android:layout_width="10dp"
             android:layout_height="wrap_content" />
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/editText1"
+            android:id="@+id/editTextLng"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="10"
@@ -41,7 +41,7 @@
             android:layout_width="10dp"
             android:layout_height="wrap_content" />
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button0"
+            android:id="@+id/button_applyStop"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0"
@@ -50,7 +50,7 @@
             android:layout_width="10dp"
             android:layout_height="wrap_content" />
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button1"
+            android:id="@+id/button_settings"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0"
