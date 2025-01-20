@@ -17,14 +17,12 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.os.ConfigurationCompat;
 
 import com.google.android.material.button.MaterialButton;
 
@@ -111,13 +109,10 @@ public class MainActivity extends AppCompatActivity {
         timeInterval = Integer.parseInt(sharedPref.getString("timeInterval", "10"));
 
         try {
-            lat = Double.parseDouble(sharedPref.getString("lat", ""));
-            lng = Double.parseDouble(sharedPref.getString("lng", ""));
-            Locale locale = ConfigurationCompat.getLocales(getResources().getConfiguration()).get(0);
-            if (locale != null) {
-                editTextLat.setText(String.format(locale, "%f", lat));
-                editTextLng.setText(String.format(locale, "%f", lng));
-            }
+            setLatLng(sharedPref.getString("lat", ""), sharedPref.getString("lng", ""),
+                    CHANGE_FROM_EDITTEXT);
+            editTextLat.setText(String.format(Locale.ROOT, "%f", lat));
+            editTextLng.setText(String.format(Locale.ROOT, "%f", lng));
         } catch (NumberFormatException e) {
             Log.e(MainActivity.class.toString(), e.toString());
         }
