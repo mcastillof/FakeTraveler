@@ -14,14 +14,23 @@
 		html, body {
 			height: 100%;
 			margin: 0;
+            display: flex;
+            flex-direction: column;
 		}
+		#search {
+            padding: 10px; /* Add some padding around the input */
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+        #address_input {
+            font-size: 16pt;
+            width: 100%;
+            box-sizing: border-box;
+        }
 		#map {
-			width: 600px;
-			height: 400px;
+            flex-grow: 1;
+            width: 100%;
 		}
 	</style>
-
-    <style>body { padding: 0; margin: 0; } #map { height: 100%; width: 100vw; }</style>
 </head>
 <body>
 
@@ -56,7 +65,7 @@
 
 
 	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         minZoom: 1,
         maxZoom: 19,
     }).addTo(map);
