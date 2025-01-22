@@ -14,19 +14,43 @@
 		html, body {
 			height: 100%;
 			margin: 0;
+            display: flex;
+            flex-direction: column;
 		}
+		#search {
+            padding: 10px; /* Add some padding around the input */
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+        #address_input {
+            font-size: 16pt;
+            width: 100%;
+            box-sizing: border-box;
+        }
 		#map {
-			width: 600px;
-			height: 400px;
+            flex-grow: 1;
+            width: 100%;
 		}
+        :root {
+            --dark-mode-filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+        }
+        @media (prefers-color-scheme: dark) {
+            .map-tiles,
+            .leaflet-layer,
+            .leaflet-control-zoom-in,
+            .leaflet-control-zoom-out {
+                filter:var(--dark-mode-filter, none);
+            }
+            #search,
+            .leaflet-container {
+                background: #000
+            }
+        }
 	</style>
-
-    <style>body { padding: 0; margin: 0; } #map { height: 100%; width: 100vw; }</style>
 </head>
 <body>
 
 <div id="search">
-    <input type="text" id="address_input" name="address_input" placeholder="Search an address: Street, City" style="font-size:16pt;width:80%;">
+    <input type="text" id="address_input" name="address_input" placeholder="Search an address: Street, City" style="font-size:16pt;width:100%;">
 </div>
 
 <div id='map'></div>
@@ -56,7 +80,8 @@
 
 
 	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        className: 'map-tiles',
         minZoom: 1,
         maxZoom: 19,
     }).addTo(map);
