@@ -11,11 +11,11 @@ import android.util.Log;
 
 public class ApplyMockBroadcastReceiver extends BroadcastReceiver {
 
-    Intent serviceIntent;
-    PendingIntent pendingIntent;
-    AlarmManager alarmManager;
-    SharedPreferences sharedPref;
-    SharedPreferences.Editor editor;
+    final Intent serviceIntent;
+    final PendingIntent pendingIntent;
+    final AlarmManager alarmManager;
+    final SharedPreferences sharedPref;
+    final SharedPreferences.Editor editor;
 
     public ApplyMockBroadcastReceiver() {
         alarmManager = MainActivity.alarmManager;
@@ -39,8 +39,7 @@ public class ApplyMockBroadcastReceiver extends BroadcastReceiver {
             } else {
                 MainActivity.stopMockingLocation();
             }
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.e(ApplyMockBroadcastReceiver.class.toString(), e.toString());
         }
     }

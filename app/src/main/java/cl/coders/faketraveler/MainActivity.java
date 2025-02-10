@@ -1,5 +1,9 @@
 package cl.coders.faketraveler;
 
+import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_EDITTEXT;
+import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_MAP;
+import static cl.coders.faketraveler.MainActivity.SourceChange.NONE;
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -10,32 +14,31 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_EDITTEXT;
-import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_MAP;
-import static cl.coders.faketraveler.MainActivity.SourceChange.NONE;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.button.MaterialButton;
+
+import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
 
     static final String sharedPrefKey = "cl.coders.mockposition.sharedpreferences";
     static final int KEEP_GOING = 0;
-    static private int SCHEDULE_REQUEST_CODE = 1;
+    final static private int SCHEDULE_REQUEST_CODE = 1;
     public static Intent serviceIntent;
     public static PendingIntent pendingIntent;
     public static AlarmManager alarmManager;
-    static Button button0;
-    static Button button1;
+    static MaterialButton button0;
+    static MaterialButton button1;
     static WebView webView;
     static EditText editTextLat;
     static EditText editTextLng;
@@ -71,24 +74,16 @@ public class MainActivity extends AppCompatActivity {
         sharedPref = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
         editor = sharedPref.edit();
 
-        button0 = (Button) findViewById(R.id.button0);
-        button1 = (Button) findViewById(R.id.button1);
+        button0 = findViewById(R.id.button0);
+        button1 = findViewById(R.id.button1);
         editTextLat = findViewById(R.id.editText0);
         editTextLng = findViewById(R.id.editText1);
 
-        button0.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                applyLocation();
-            }
-        });
+        button0.setOnClickListener(arg0 -> applyLocation());
 
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                Intent myIntent = new Intent(getBaseContext(), MoreActivity.class);
-                startActivity(myIntent);
-            }
+        button1.setOnClickListener(arg0 -> {
+            Intent myIntent = new Intent(getBaseContext(), MoreActivity.class);
+            startActivity(myIntent);
         });
 
         webView.getSettings().setJavaScriptEnabled(true);
@@ -114,10 +109,10 @@ public class MainActivity extends AppCompatActivity {
         timeInterval = Integer.parseInt(sharedPref.getString("timeInterval", "10"));
 
         try {
-            lat = Double.parseDouble(sharedPref.getString("lat", ""));
-            lng = Double.parseDouble(sharedPref.getString("lng", ""));
-            editTextLat.setText(lat.toString());
-            editTextLng.setText(lng.toString());
+            setLatLng(sharedPref.getString("lat", ""), sharedPref.getString("lng", ""),
+                    CHANGE_FROM_EDITTEXT);
+            editTextLat.setText(String.format(Locale.ROOT, "%f", lat));
+            editTextLng.setText(String.format(Locale.ROOT, "%f", lng));
         } catch (NumberFormatException e) {
             Log.e(MainActivity.class.toString(), e.toString());
         }
@@ -242,7 +237,6 @@ public class MainActivity extends AppCompatActivity {
         lng = Double.parseDouble(editTextLng.getText().toString());
 
         toast(context.getResources().getString(R.string.MainActivity_MockApplied));
-
         endTime = System.currentTimeMillis() + (howManyTimes - 1L) * timeInterval * 1000L;
         editor.putLong("endTime", endTime);
         editor.apply();
@@ -285,7 +279,6 @@ public class MainActivity extends AppCompatActivity {
             toast(context.getResources().getString(R.string.MainActivity_MockNotApplied));
             changeButtonToApply();
             Log.e(MainActivity.class.toString(), e.toString());
-            return;
         }
     }
 
@@ -297,11 +290,7 @@ public class MainActivity extends AppCompatActivity {
     static boolean hasEnded() {
         if (howManyTimes == KEEP_GOING) {
             return false;
-        } else if (System.currentTimeMillis() > endTime) {
-            return true;
-        } else {
-            return false;
-        }
+        } else return System.currentTimeMillis() > endTime;
     }
 
     /**
@@ -315,14 +304,10 @@ public class MainActivity extends AppCompatActivity {
                 PendingIntent.FLAG_IMMUTABLE);  // creating with same request code will get rid of previous
 
         try {
-            if (Build.VERSION.SDK_INT >= 19) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC, System.currentTimeMillis() + seconds * 1000L, pendingIntent);
-                } else {
-                    alarmManager.setExact(AlarmManager.RTC, System.currentTimeMillis() + timeInterval * 1000L, pendingIntent);
-                }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC, System.currentTimeMillis() + seconds * 1000L, pendingIntent);
             } else {
-                alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + timeInterval * 1000L, pendingIntent);
+                alarmManager.setExact(AlarmManager.RTC, System.currentTimeMillis() + timeInterval * 1000L, pendingIntent);
             }
 
         } catch (SecurityException e) {
@@ -375,14 +360,7 @@ public class MainActivity extends AppCompatActivity {
      */
     static void changeButtonToApply() {
         button0.setText(context.getResources().getString(R.string.ActivityMain_Apply));
-        button0.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                applyLocation();
-            }
-
-        });
+        button0.setOnClickListener(arg0 -> applyLocation());
     }
 
     /**
@@ -390,14 +368,7 @@ public class MainActivity extends AppCompatActivity {
      */
     static void changeButtonToStop() {
         button0.setText(context.getResources().getString(R.string.ActivityMain_Stop));
-        button0.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                stopMockingLocation();
-            }
-
-        });
+        button0.setOnClickListener(arg0 -> stopMockingLocation());
     }
 
     /**

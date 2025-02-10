@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
-    <LinearLayout
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:layout_width="0px"
-        android:layout_height="0px"/>
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="0px"
+        android:layout_height="0px"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="14dp">
 
-        <EditText
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/editText0"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,8 +26,10 @@
             android:ems="10"
             android:hint="@string/ActivityMain_Lat"
             android:inputType="numberSigned|numberDecimal" />
-
-        <EditText
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="wrap_content" />
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/editText1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,26 +37,31 @@
             android:ems="10"
             android:hint="@string/ActivityMain_Long"
             android:inputType="numberSigned|numberDecimal" />
-
-        <Button
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="wrap_content" />
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/button0"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0"
             android:text="@string/ActivityMain_Apply" />
-
-        <Button
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="wrap_content" />
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/button1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="4"
-            android:text="@string/ActivityMain_..." />
+            android:layout_weight="0"
+            android:text="&#9881;"
+            android:textSize="18sp"/>
 
-    </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <WebView
         android:id="@+id/webView0"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="2" />
-</LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -7,8 +7,8 @@ import android.os.Build;
 import android.os.SystemClock;
 
 public class MockLocationProvider {
-    String providerName;
-    Context ctx;
+    final String providerName;
+    final Context ctx;
 
     /**
      * Class constructor
@@ -22,11 +22,11 @@ public class MockLocationProvider {
         this.ctx = ctx;
 
         int powerUsage = 0;
-        int accuracy   = 5;
+        int accuracy = 5;
 
         if (Build.VERSION.SDK_INT >= 30) {
             powerUsage = 1;
-            accuracy   = 2;
+            accuracy = 2;
         }
 
         LocationManager lm = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
@@ -39,12 +39,10 @@ public class MockLocationProvider {
                 shutdown();
                 lm.addTestProvider(providerName, false, false, false, false, false, true, true, powerUsage, accuracy);
                 lm.setTestProviderEnabled(providerName, true);
-            }
-            catch(Exception e) {
+            } catch (Exception e) {
                 startup(lm, powerUsage, accuracy, maxRetryCount, (currentRetryCount + 1));
             }
-        }
-        else {
+        } else {
             throw new SecurityException("Not allowed to perform MOCK_LOCATION");
         }
     }
@@ -64,7 +62,7 @@ public class MockLocationProvider {
         mockLocation.setLongitude(lon);
         mockLocation.setAltitude(3F);
         mockLocation.setTime(System.currentTimeMillis());
-        //mockLocation.setAccuracy(16F);
+        mockLocation.setElapsedRealtimeNanos(SystemClock.elapsedRealtimeNanos());
         mockLocation.setSpeed(0.01F);
         mockLocation.setBearing(1F);
         mockLocation.setAccuracy(3F);
@@ -76,9 +74,6 @@ public class MockLocationProvider {
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             mockLocation.setSpeedAccuracyMetersPerSecond(0.01F);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            mockLocation.setElapsedRealtimeNanos(SystemClock.elapsedRealtimeNanos());
         }
         lm.setTestProviderLocation(providerName, mockLocation);
     }
@@ -92,7 +87,7 @@ public class MockLocationProvider {
         try {
             LocationManager lm = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
             lm.removeTestProvider(providerName);
+        } catch (Exception e) {
         }
-        catch(Exception e) {}
     }
 }

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="14dp"
     android:orientation="vertical">
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:layout_width="0px"
@@ -14,38 +15,36 @@
         android:layout_height="match_parent"
         android:layout_weight="0">
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:text="@string/ActivityMore_HowToTittle"
-                android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textView5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:text="@string/ActivityMore_HowToInstructions" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textView6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:paddingTop="25dp"
                 android:text="@string/ActivityMore_HowManyTimes"
-                android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
-            <EditText
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/editText2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -54,16 +53,15 @@
                 android:inputType="number"
                 android:text="1" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:text="@string/ActivityMore_TimeInterval"
-                android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
-            <EditText
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/editText3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -80,56 +78,51 @@
                 android:orientation="vertical"
                 android:visibility="visible" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:paddingTop="25dp"
                 android:text="@string/ActivityMore_Copyright"
-                android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textView7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:autoLink="web"
                 android:text="@string/ActivityMore_SourceCode"
-                android:textColor="@android:color/black"
                 android:textColorLink="@color/colorPrimary"
                 android:textSize="14sp" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textView8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:autoLink="web"
                 android:text="@string/ActivityMore_Bugs"
-                android:textColor="@android:color/black"
-                android:textColorLink="@color/colorPrimary"
                 android:textSize="14sp" />
 
-            <LinearLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/textView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:autoLink="web"
-                    android:text="@string/ActivityMore_IconLicense"
-                    android:textColorLink="@color/colorPrimary" />
-            </LinearLayout>
-        </LinearLayout>
+                    android:text="@string/ActivityMore_IconLicense" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </ScrollView>
 
 
 
-</LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

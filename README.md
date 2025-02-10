@@ -10,13 +10,19 @@ Sometimes you need to fake the location of your device (for privacy or to test a
 
 ## How does it work?
 
-Long press in the map where you want to be located or type the latitude and longitude, and tap the Apply button. Tapping the "..." button you will be shown two settings to mock the location over a period of time. 
+Long press in the map where you want to be located or type the latitude and longitude, and tap the Apply button. Tapping the gear (⚙) button (formerly the "..." button) will show two settings to mock the location over a period of time. 
 
 <div style="display:flex;">
 <img alt="App image" src="screenshots/Screenshot_Fake_Traveler_20180722-192131.png" width="30%">
 <img alt="App image" src="screenshots/Screenshot_Fake_Traveler_20180722-192305.png" width="30%">
 </div>
 
+### Notes
+
+If your reported location appears to bounce from one location to another or is otherwise unstable, you
+may want to go to system **Settings**, and in **Location services**, disable **Wi-Fi scanning** and
+**Bluetooth scanning** as these alternate location providers may compete with the GPS location data
+you are mocking.
 
 ## Requirements?
 
