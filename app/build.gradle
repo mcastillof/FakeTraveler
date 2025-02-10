@@ -11,7 +11,7 @@ android {
         compileSdk 33
         targetSdk 33
         versionCode 10
-        versionName "1.9.2-beta"
+        versionName "1.9.2"
     }
     buildTypes {
         release {

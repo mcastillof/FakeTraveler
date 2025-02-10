@@ -1,4 +1,3 @@
-
-
-* Android 13 Bug Fix: Crash at start: inmutable flag added.
+* Android 13 Bug Fix: Crash at start: immutable flag added.
 * Added warren-bank bug fix for Pixel and bleeding-edge AOSP devices.
+* Fix overall most pressing issues
