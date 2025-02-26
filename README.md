@@ -13,8 +13,8 @@ Sometimes you need to fake the location of your device (for privacy or to test a
 Long press in the map where you want to be located or type the latitude and longitude, and tap the Apply button. Tapping the gear (⚙) button (formerly the "..." button) will show two settings to mock the location over a period of time. 
 
 <div style="display:flex;">
-<img alt="App image" src="screenshots/Screenshot_Fake_Traveler_20180722-192131.png" width="30%">
-<img alt="App image" src="screenshots/Screenshot_Fake_Traveler_20180722-192305.png" width="30%">
+<img alt="App image" src="screenshots/map.png" width="30%">
+<img alt="App image" src="screenshots/settings.png" width="30%">
 </div>
 
 ### Notes
@@ -28,7 +28,8 @@ you are mocking.
 
 In order to work, you need to allow Fake Traveler to mock locations. You have to [enable Developer options](https://developer.android.com/studio/debug/dev-options?hl=en-419) and select this app in "Settings/System/Developer options/Select mock location app" option.
 
-<img alt="App image" src="screenshots/Screenshot_Settings_20180722-192328.png" width="30%">
+<img alt="App image" src="screenshots/mock_location_1.png" width="30%">
+<img alt="App image" src="screenshots/mock_location_2.png" width="30%">
 
 
 ## Changelogs
