@@ -9,7 +9,6 @@
     <string name="ActivityMain_Apply">Anwenden</string>
     <!-- Apply button then becomes Stop button through java code-->
     <string name="ActivityMain_Stop">Stopp</string>
-    <string name="ActivityMain_..." translatable="false">...</string>
 
     <!--  Strings from MainActivity.java  -->
     <string name="MainActivity_NoLatLong">Kein Längen- und Breitengrad. Halten Sie den gewünschten Standort auf der Karte gedrückt.</string>

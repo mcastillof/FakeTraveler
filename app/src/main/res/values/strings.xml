@@ -9,7 +9,6 @@
     <string name="ActivityMain_Apply">Apply</string>
     <!-- Apply button then becomes Stop button through java code-->
     <string name="ActivityMain_Stop">Stop</string>
-    <string name="ActivityMain_..." translatable="false">...</string>
 
     <!--  Strings from MainActivity.java  -->
     <string name="MainActivity_NoLatLong">No lat or lng value. Long press in the map where you want to be located</string>

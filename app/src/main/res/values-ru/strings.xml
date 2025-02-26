@@ -8,7 +8,6 @@
     <string name="ActivityMain_Apply">Применить</string>
     <!-- Apply button then becomes Stop button through java code-->
     <string name="ActivityMain_Stop">Стоп</string>
-    <string name="ActivityMain_..." translatable="false">...</string>
 
     <!--  Strings from MainActivity.java  -->
     <string name="MainActivity_NoLatLong">Нет значения широты и долготы. Длительное нажатие на карте, где вы хотите быть расположены.</string>
