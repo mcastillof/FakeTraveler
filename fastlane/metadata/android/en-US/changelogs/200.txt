@@ -1,0 +1,3 @@
+* Update to Material layout and new standards
+* Updated/modernised app icon
+* Completely revamped most of the codebase
