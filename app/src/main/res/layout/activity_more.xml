@@ -45,7 +45,7 @@
                 android:textSize="18sp" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/editText2"
+                android:id="@+id/et_MockCount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -62,7 +62,7 @@
                 android:textSize="18sp" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/editText3"
+                android:id="@+id/et_MockFrequency"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -70,13 +70,15 @@
                 android:inputType="number"
                 android:text="10" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/et_DMockLatLon"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/ActivityMore_DMockLatLon" />
+                android:layout_weight="0"
+                android:text="@string/ActivityMore_DMockLatLon"
+                android:textSize="18sp" />
 
-            <LinearLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
@@ -105,7 +107,7 @@
                     android:ems="10"
                     android:text="0"
                     android:inputType="numberSigned"/>
-            </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline2"
@@ -131,7 +133,6 @@
                 android:layout_weight="0"
                 android:autoLink="web"
                 android:text="@string/ActivityMore_SourceCode"
-                android:textColorLink="@color/colorPrimary"
                 android:textSize="14sp" />
 
             <androidx.appcompat.widget.AppCompatTextView

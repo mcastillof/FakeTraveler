@@ -25,7 +25,7 @@
     <string name="ActivityMore_Bugs">Notifique problemas em https://github.com/mcastillof/FakeTraveler/issues</string>
     <string name="ActivityMore_IconLicense"><![CDATA[O ícone do inicializador é uma obra derivada de \"Location, map, navigation, pointer icon\" por First Styles, usado bajo la licencia CC 3.0 BY. O ícone do inicializador foi criado usando Android Asset Studio, e está licenciado em CC 3.0 BY, por Matías Castillo Felmer.\nhttps://www.iconfinder.com/icons/2135924/location_map_navigation_pointer_icon\nhttps://jgilfelt.github.io/AndroidAssetStudio/icons-launcher.html]]></string>
     <string name="ActivityMore_HowToInstructions">Pressione no mapa o local onde deseja a configuração fictícia e então aperte o botão aplicar. A configuração se aplicará uma ou mais vezes e dependerá das configurações abaixo. Enquanto a aplicação estiver ativa, poderá mudar de lugar ao apertar no local desejado no mapa. Presione o botão parar para finalizar e mudança. Nota: Sempre ativar o Fake Traveler como aplicação para app de local fictício nas configurações do sistema, modo programador.</string>
-    <string name="ActivityMore_DMockLatLon">Mock delta Latitude / Longitude (1 / 1 000 000 °)</string>
+    <string name="ActivityMore_DMockLatLon">Mock movement? (1 / 1 000 000°, 0 = no)</string>
 
 
 </resources>

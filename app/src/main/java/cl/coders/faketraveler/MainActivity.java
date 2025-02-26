@@ -4,6 +4,7 @@ import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_EDITT
 import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_MAP;
 import static cl.coders.faketraveler.MainActivity.SourceChange.NONE;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,7 +13,6 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -26,65 +26,62 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.Locale;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    static final String sharedPrefKey = "cl.coders.mockposition.sharedpreferences";
-    static final int KEEP_GOING = 0;
+    public static final String sharedPrefKey = "cl.coders.mockposition.sharedpreferences";
 
-    public static Handler sim_handler = new Handler();
-    public static Runnable sim_runnable;
+    private final ScheduledExecutorService simHandler = Executors.newScheduledThreadPool(1);
+    private ScheduledFuture<?> scheduledSim;
 
-    static MaterialButton button_applyStop;
-    static MaterialButton button_settings;
-    static WebView webView;
-    static EditText editTextLat;
-    static EditText editTextLng;
-    static Context context;
-    static SharedPreferences sharedPref;
-    static SharedPreferences.Editor editor;
-    static Double lat;
-    static Double lng;
+    private MaterialButton buttonApplyStop;
+    private WebView webView;
+    private EditText editTextLat;
+    private EditText editTextLng;
+    private Context context;
+    private SharedPreferences sharedPref;
+    private SharedPreferences.Editor editor;
+    private Double lat;
+    private Double lng;
 
-    static Double simLat = 0.0;
-    static Double simLon = 0.0;
-    static Boolean simInit = false;
+    private double simLat = 0.0;
+    private double simLon = 0.0;
+    private boolean simInit = false;
 
-    static int timeInterval;
-    static int howManyTimes;
-    static long endTime;
-    static int currentVersion;
-    private static MockLocationProvider mockNetwork;
-    private static MockLocationProvider mockGps;
+    private static int timeInterval;
+    private static int mockCount;
+    private long endTime;
+    private int currentVersion;
+    private MockLocationProvider mockNetwork;
+    private MockLocationProvider mockGps;
 
-    WebAppInterface webAppInterface;
-
-    public enum SourceChange {
-        NONE, CHANGE_FROM_EDITTEXT, CHANGE_FROM_MAP
-    }
-
-    static SourceChange srcChange = NONE;
+    private SourceChange srcChange = NONE;
 
     @Override
+    @SuppressLint("SetJavaScriptEnabled") // XSS unlikely an issue here...
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         context = getApplicationContext();
         webView = findViewById(R.id.webView0);
-        webAppInterface = new WebAppInterface(this, this);
+        WebAppInterface webAppInterface = new WebAppInterface(this);
         sharedPref = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
         editor = sharedPref.edit();
 
-        button_applyStop = findViewById(R.id.button_applyStop);
-        button_settings = findViewById(R.id.button_settings);
+        buttonApplyStop = findViewById(R.id.button_applyStop);
+        MaterialButton buttonSettings = findViewById(R.id.button_settings);
         editTextLat = findViewById(R.id.editTextLat);
         editTextLng = findViewById(R.id.editTextLng);
 
-        button_applyStop.setOnClickListener(arg0 -> applyLocation());
+        buttonApplyStop.setOnClickListener(view -> applyLocation());
 
-        button_settings.setOnClickListener(arg0 -> {
+        buttonSettings.setOnClickListener(view -> {
             Intent myIntent = new Intent(getBaseContext(), MoreActivity.class);
             startActivity(myIntent);
         });
@@ -108,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
         checkSharedPrefs();
 
-        howManyTimes = Integer.parseInt(sharedPref.getString("howManyTimes", "1"));
+        mockCount = Integer.parseInt(sharedPref.getString("howManyTimes", "1"));
         timeInterval = Integer.parseInt(sharedPref.getString("timeInterval", "10"));
 
         try {
@@ -121,7 +118,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         editTextLat.addTextChangedListener(new TextWatcher() {
-
             @Override
             public void afterTextChanged(Editable s) {
                 if (!editTextLat.getText().toString().isEmpty() && !editTextLat.getText().toString().equals("-")) {
@@ -148,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         editTextLng.addTextChangedListener(new TextWatcher() {
-
             @Override
             public void afterTextChanged(Editable s) {
                 if (!editTextLng.getText().toString().isEmpty() && !editTextLng.getText().toString().equals("-")) {
@@ -176,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //2do check running on start?
-        if ( endTime > System.currentTimeMillis()) {
+        if (endTime > System.currentTimeMillis()) {
             changeButtonToStop();
         } else {
             endTime = 0;
@@ -195,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Check and reinitialize shared preferences in case of problem.
      */
-    static void checkSharedPrefs() {
+    void checkSharedPrefs() {
         int version = sharedPref.getInt("version", 0);
         String lat = sharedPref.getString("lat", "N/A");
         String lng = sharedPref.getString("lng", "N/A");
@@ -203,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
         String timeInterval = sharedPref.getString("timeInterval", "N/A");
         String dMockLon = sharedPref.getString("DMockLon", "0");
         String dMockLat = sharedPref.getString("DMockLat", "0");
-        Long endTime = sharedPref.getLong("endTime", 0);
+        sharedPref.getLong("endTime", 0);
 
         if (version != currentVersion) {
             editor.putInt("version", currentVersion);
@@ -230,14 +225,13 @@ public class MainActivity extends AppCompatActivity {
             editor.apply();
             Log.e(MainActivity.class.toString(), e.toString());
         }
-
     }
 
     /**
      * Apply a mocked location, and start an alarm to keep doing it if howManyTimes is > 1
      * This method is called when "Apply" button is pressed.
      */
-    protected static void applyLocation() {
+    protected void applyLocation() {
         if (latIsEmpty() || lngIsEmpty()) {
             toast(context.getResources().getString(R.string.MainActivity_NoLatLong));
             return;
@@ -247,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
         lng = Double.parseDouble(editTextLng.getText().toString());
 
         toast(context.getResources().getString(R.string.MainActivity_MockApplied));
-        endTime = System.currentTimeMillis() + (howManyTimes - 1L) * timeInterval * 1000L;
+        endTime = System.currentTimeMillis() + (mockCount - 1L) * timeInterval * 1000L;
         editor.putLong("endTime", endTime);
         editor.apply();
 
@@ -262,11 +256,11 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        exec(lat, lng);
+        setMockedLocation(lat, lng);
 
-        if (!hasEnded()) {
+        if (shouldStillRun()) {
             toast(context.getResources().getString(R.string.MainActivity_MockLocRunning));
-            setAlarm(timeInterval);
+            scheduleNext(timeInterval);
         } else {
             stopMockingLocation();
         }
@@ -278,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
      * @param lat latitude
      * @param lng longitude
      */
-    static void exec(double lat, double lng) {
+    void setMockedLocation(double lat, double lng) {
         try {
             //MockLocationProvider mockNetwork = new MockLocationProvider(LocationManager.NETWORK_PROVIDER, context);
             mockNetwork.pushLocation(lat, lng);
@@ -297,14 +291,14 @@ public class MainActivity extends AppCompatActivity {
      * Map becomes updated during simulation
      * text box only after simulation is stopped
      */
-    static void simu_exec() {
-        if(!simInit){ // first call in simulation - take current position
-            simLat = lat + Double.parseDouble(sharedPref.getString("DMockLat", "0")) / 1000000;
-            simLon = lng + Double.parseDouble(sharedPref.getString("DMockLon", "0")) / 1000000;
+    void simulate() {
+        if (!simInit) { // first call in simulation - take current position
+            simLat = lat;
+            simLon = lng;
             simInit = true;
-        }else{
-            simLat = simLat + Double.parseDouble(sharedPref.getString("DMockLat", "0")) / 1000000;
-            simLon = simLon + Double.parseDouble(sharedPref.getString("DMockLon", "0")) / 1000000;
+        } else {
+            simLat += Double.parseDouble(sharedPref.getString("DMockLat", "0")) / 1000000;
+            simLon += Double.parseDouble(sharedPref.getString("DMockLon", "0")) / 1000000;
         }
 
         try {
@@ -323,16 +317,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     /**
-     * Check if mocking location should be stopped
+     * Check if mocking location should still be running
      *
-     * @return true if it has ended
+     * @return true if it should still be running
      */
-    static boolean hasEnded() {
-        if (howManyTimes == KEEP_GOING) {
-            return false;
-        } else return System.currentTimeMillis() > endTime;
+    boolean shouldStillRun() {
+        return mockCount <= 0 || System.currentTimeMillis() <= endTime;
     }
 
     /**
@@ -340,35 +331,32 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param seconds number of seconds
      */
-    static void setAlarm(int seconds) {
+    void scheduleNext(int seconds) {
         try {
-            setSimTimer(seconds*1000L);
-
+            setSimTimer(seconds * 1000L);
         } catch (SecurityException e) {
             Log.e(MainActivity.class.toString(), e.toString());
         }
     }
 
-    protected static void setSimTimer(long ms_delay) {
-        sim_handler.postDelayed(sim_runnable = new Runnable() {
-            public void run() {
-                try {
-                    simu_exec();
+    protected void setSimTimer(long msDelay) {
+        scheduledSim = simHandler.scheduleWithFixedDelay(() -> {
+            try {
+                simulate();
 
-                    if (!hasEnded()) {
-                        sim_handler.postDelayed(sim_runnable, ms_delay); // next timer
-                    } else {
-                        stopMockingLocation();
-                    }
-                } catch (Exception e) {
-                    Log.e(MainActivity.class.toString(), e.toString());
+                if (!shouldStillRun()) {
+                    stopMockingLocation();
+                    scheduledSim.cancel(false);
                 }
+            } catch (Exception e) {
+                Log.e(MainActivity.class.toString(), e.toString());
             }
-        }, ms_delay);
+        }, 0, msDelay, TimeUnit.MILLISECONDS);
     }
 
-    protected static void stopSimTimer() {
-        sim_handler.removeCallbacks(sim_runnable); //stop handler - remove callback
+    protected void stopSimTimer() {
+        if (scheduledSim != null)
+            scheduledSim.cancel(false);
         toast(context.getResources().getString(R.string.MainActivity_MockStopped));
     }
 
@@ -376,28 +364,28 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Shows a toast
      */
-    static void toast(String str) {
+    void toast(String str) {
         Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
     }
 
     /**
      * Returns true editTextLat has no text
      */
-    static boolean latIsEmpty() {
-        return editTextLat.getText().toString().isEmpty();
+    boolean latIsEmpty() {
+        return editTextLat.getText().toString().isBlank();
     }
 
     /**
      * Returns true editTextLng has no text
      */
-    static boolean lngIsEmpty() {
-        return editTextLng.getText().toString().isEmpty();
+    boolean lngIsEmpty() {
+        return editTextLng.getText().toString().isBlank();
     }
 
     /**
      * Stops mocking the location.
      */
-    protected static void stopMockingLocation() {
+    protected void stopMockingLocation() {
         changeButtonToApply();
         editor.putLong("endTime", System.currentTimeMillis() - 1);
         editor.apply();
@@ -408,11 +396,11 @@ public class MainActivity extends AppCompatActivity {
         if (mockGps != null)
             mockGps.shutdown();
 
-        if(simInit){
+        if (simInit) {
             simInit = false;
             // simulation moves map but does not update the text box
             // set text box to map position
-            setLatLng(simLat.toString(), simLon.toString(), CHANGE_FROM_MAP);
+            setLatLng(simLat + "", simLon + "", CHANGE_FROM_MAP);
         }
         stopSimTimer();
     }
@@ -420,17 +408,17 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Changes the button to Apply, and its behavior.
      */
-    static void changeButtonToApply() {
-        button_applyStop.setText(context.getResources().getString(R.string.ActivityMain_Apply));
-        button_applyStop.setOnClickListener(arg0 -> applyLocation());
+    void changeButtonToApply() {
+        buttonApplyStop.setText(context.getResources().getString(R.string.ActivityMain_Apply));
+        buttonApplyStop.setOnClickListener(view -> applyLocation());
     }
 
     /**
      * Changes the button to Stop, and its behavior.
      */
-    static void changeButtonToStop() {
-        button_applyStop.setText(context.getResources().getString(R.string.ActivityMain_Stop));
-        button_applyStop.setOnClickListener(arg0 -> stopMockingLocation());
+    void changeButtonToStop() {
+        buttonApplyStop.setText(context.getResources().getString(R.string.ActivityMain_Stop));
+        buttonApplyStop.setOnClickListener(view -> stopMockingLocation());
     }
 
     /**
@@ -440,17 +428,17 @@ public class MainActivity extends AppCompatActivity {
      * @param mLng      longitude
      * @param srcChange CHANGE_FROM_EDITTEXT or CHANGE_FROM_MAP, indicates from where comes the change
      */
-    static void setLatLng(String mLat, String mLng, SourceChange srcChange) {
+    void setLatLng(String mLat, String mLng, SourceChange srcChange) {
         lat = Double.parseDouble(mLat);
         lng = Double.parseDouble(mLng);
 
         if (srcChange == CHANGE_FROM_EDITTEXT) {
             webView.loadUrl("javascript:setOnMap(" + lat + "," + lng + ");");
         } else if (srcChange == CHANGE_FROM_MAP) {
-            MainActivity.srcChange = CHANGE_FROM_MAP;
+            this.srcChange = CHANGE_FROM_MAP;
             editTextLat.setText(mLat);
             editTextLng.setText(mLng);
-            MainActivity.srcChange = NONE;
+            this.srcChange = NONE;
         }
 
         editor.putString("lat", mLat);
@@ -463,7 +451,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @return latitude
      */
-    static String getLat() {
+    String getLat() {
         return editTextLat.getText().toString();
     }
 
@@ -472,7 +460,20 @@ public class MainActivity extends AppCompatActivity {
      *
      * @return latitude
      */
-    static String getLng() {
+    String getLng() {
         return editTextLng.getText().toString();
     }
+
+    static void setTimeInterval(int timeInterval) {
+        MainActivity.timeInterval = timeInterval;
+    }
+
+    static void setMockCount(int mockCount) {
+        MainActivity.mockCount = mockCount;
+    }
+
+    public enum SourceChange {
+        NONE, CHANGE_FROM_EDITTEXT, CHANGE_FROM_MAP
+    }
+
 }

@@ -7,15 +7,17 @@ import android.os.Build;
 import android.os.SystemClock;
 
 public class MockLocationProvider {
-    final String providerName;
-    final Context ctx;
+
+    private static final int MAX_RETRY_COUNT = 3;
+
+    private final String providerName;
+    private final Context ctx;
 
     /**
      * Class constructor
      *
      * @param name provider
      * @param ctx  context
-     * @return Void
      */
     public MockLocationProvider(String name, Context ctx) {
         this.providerName = name;
@@ -24,23 +26,27 @@ public class MockLocationProvider {
         int powerUsage = 0;
         int accuracy = 5;
 
-        if (Build.VERSION.SDK_INT >= 30) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             powerUsage = 1;
             accuracy = 2;
         }
 
         LocationManager lm = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
-        startup(lm, powerUsage, accuracy, /* maxRetryCount= */ 3, /* currentRetryCount= */ 0);
+        startup(lm, powerUsage, accuracy);
     }
 
-    private void startup(LocationManager lm, int powerUsage, int accuracy, int maxRetryCount, int currentRetryCount) {
-        if (currentRetryCount < maxRetryCount) {
+    private void startup(LocationManager lm, int powerUsage, int accuracy) {
+        startup(lm, powerUsage, accuracy, 0);
+    }
+
+    private void startup(LocationManager lm, int powerUsage, int accuracy, int currentRetryCount) {
+        if (currentRetryCount < MAX_RETRY_COUNT) {
             try {
                 shutdown();
                 lm.addTestProvider(providerName, false, false, false, false, false, true, true, powerUsage, accuracy);
                 lm.setTestProviderEnabled(providerName, true);
             } catch (Exception e) {
-                startup(lm, powerUsage, accuracy, maxRetryCount, (currentRetryCount + 1));
+                startup(lm, powerUsage, accuracy, currentRetryCount + 1);
             }
         } else {
             throw new SecurityException("Not allowed to perform MOCK_LOCATION");
@@ -52,7 +58,6 @@ public class MockLocationProvider {
      *
      * @param lat latitude
      * @param lon longitude
-     * @return Void
      */
     public void pushLocation(double lat, double lon) {
         LocationManager lm = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
@@ -68,26 +73,22 @@ public class MockLocationProvider {
         mockLocation.setAccuracy(3F);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             mockLocation.setBearingAccuracyDegrees(0.1F);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             mockLocation.setVerticalAccuracyMeters(0.1F);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             mockLocation.setSpeedAccuracyMetersPerSecond(0.01F);
         }
+
         lm.setTestProviderLocation(providerName, mockLocation);
     }
 
     /**
-     * Removes the provider
-     *
-     * @return Void
+     * Removes the provider.
      */
     public void shutdown() {
         try {
             LocationManager lm = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
             lm.removeTestProvider(providerName);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
+
 }
