@@ -49,9 +49,11 @@
 </head>
 <body>
 
-<div id="search">
+<div id="search" style="display: flex">
     <input type="text" id="address_input" name="address_input"
-           placeholder="Search an address: Street, City" style="font-size:16pt;width:100%;">
+           placeholder="Search an address: Street, City"
+           style="font-size:16pt;flex-grow:1;margin-right:5px">
+    <button style="font-size:16pt;width:50px" onclick="searchForAddress()">🔍</button>
 </div>
 
 <div id='map'></div>
@@ -67,19 +69,10 @@
     var alreadyRunning = false;
 
     var searchInput = document.getElementById("address_input");
-        searchInput.addEventListener("keypress", async function(event) {
+        searchInput.addEventListener("keypress", function(event) {
           if (event.key === "Enter") {
             event.preventDefault();
-            var coords = await searchAddress(searchInput.value);
-            if (coords === undefined || coords.length < 2) return;
-            var lat = coords[0];
-            var lng = coords[1];
-
-            var mapEvent = {
-                latlng: L.latLng(lat, lng)
-            };
-            setOnMap(lat, lng);
-            onMapClick(mapEvent);     
+            searchForAddress();
           }
         });
 
@@ -102,6 +95,18 @@
         popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
     });
 
+    async function searchForAddress() {
+        var coords = await searchAddress(searchInput.value);
+        if (coords === undefined || coords.length < 2) return;
+        var lat = coords[0];
+        var lng = coords[1];
+
+        var mapEvent = {
+            latlng: L.latLng(lat, lng)
+        };
+        setOnMap(lat, lng);
+        onMapClick(mapEvent);
+    }
 
     function onMapClick(e) {
         if (typeof marker != 'undefined')
