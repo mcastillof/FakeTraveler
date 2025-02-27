@@ -33,4 +33,15 @@ public class WebAppInterface {
         });
     }
 
+    @JavascriptInterface
+    public void setZoom(final String str) {
+        mainActivity.runOnUiThread(() -> {
+            try {
+                mainActivity.setZoom(Double.parseDouble(str));
+            } catch (Throwable t) {
+                Log.e(WebAppInterface.class.toString(), t.toString());
+            }
+        });
+    }
+
 }

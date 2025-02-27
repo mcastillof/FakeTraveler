@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private int version;
     private double lat;
     private double lng;
+    private double zoom;
     private int mockCount;
     private int mockFrequency;
     private double dLat;
@@ -105,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
         setLatLng(lat, lng, LOAD);
 
-        webView.loadUrl("file:///android_asset/map.html?lat=" + lat + "&lng=" + lng);
+        webView.loadUrl("file:///android_asset/map.html?lat=" + lat + "&lng=" + lng + "&zoom=" + zoom);
 
         editTextLat.addTextChangedListener(new TextWatcher() {
             @Override
@@ -189,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
         version = sharedPref.getInt("version", 0);
         lat = getDouble(sharedPref, "lat", 12);
         lng = getDouble(sharedPref, "lng", 15);
+        zoom = getDouble(sharedPref, "zoom", 12);
         mockCount = sharedPref.getInt("mockCount", 0);
         mockFrequency = sharedPref.getInt("mockFrequency", 10);
         dLat = getDouble(sharedPref, "dLat", 0);
@@ -208,6 +210,7 @@ public class MainActivity extends AppCompatActivity {
         editor.putInt("version", version);
         putDouble(editor, "lat", lat);
         putDouble(editor, "lng", lng);
+        putDouble(editor, "zoom", zoom);
         editor.putInt("mockCount", mockCount);
         editor.putInt("mockFrequency", mockFrequency);
         putDouble(editor, "dLat", dLat);
@@ -390,6 +393,11 @@ public class MainActivity extends AppCompatActivity {
     void changeButtonToStop() {
         buttonApplyStop.setText(context.getResources().getString(R.string.ActivityMain_Stop));
         buttonApplyStop.setOnClickListener(view -> stopMockingLocation(true));
+    }
+
+    public void setZoom(double zoom) {
+        this.zoom = zoom;
+        saveSettings();
     }
 
     /**

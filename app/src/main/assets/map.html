@@ -111,6 +111,10 @@
         Android.setPosition(wrap);
     }
 
+    function onZoomEnd(e) {
+        Android.setZoom(map.getZoom());
+    }
+
     function setOnMap(aLat, aLng) {
         if (typeof marker != 'undefined')
             map.removeLayer(marker);
@@ -122,6 +126,7 @@
     }
 
     map.on('contextmenu', onMapClick);
+    map.on('zoomend', onZoomEnd);
 
     marker = L.marker([lat, lng], {icon: icon}).addTo(map);
 
