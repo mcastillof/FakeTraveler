@@ -4,20 +4,20 @@
 
     <title>Mock Position</title>
 
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="leaflet.css">
     <script src="leaflet.js"></script>
     <script src="search.js"></script>
     <style>
-		html, body {
-			height: 100%;
-			margin: 0;
+        html, body {
+            height: 100%;
+            margin: 0;
             display: flex;
             flex-direction: column;
-		}
-		#search {
+        }
+        #search {
             padding: 10px; /* Add some padding around the input */
             box-sizing: border-box; /* Include padding in element's total width and height */
         }
@@ -26,10 +26,10 @@
             width: 100%;
             box-sizing: border-box;
         }
-		#map {
+        #map {
             flex-grow: 1;
             width: 100%;
-		}
+        }
         :root {
             --dark-mode-filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
         }
@@ -45,18 +45,23 @@
                 background: #000
             }
         }
-	</style>
+    </style>
 </head>
 <body>
 
 <div id="search">
-    <input type="text" id="address_input" name="address_input" placeholder="Search an address: Street, City" style="font-size:16pt;width:100%;">
+    <input type="text" id="address_input" name="address_input"
+           placeholder="Search an address: Street, City" style="font-size:16pt;width:100%;">
 </div>
 
 <div id='map'></div>
 
 <script>
-	var map = L.map('map').setView([12, 15], 10);
+    const urlParams = new URLSearchParams(window.location.search);
+    const startLat = urlParams.get('lat');
+    const startLng = urlParams.get('lng');
+
+    var map = L.map('map').setView([startLat ?? 12, startLng ?? 15], 10);
     var popup = L.popup();
     var alreadyRunning = false;
 
@@ -77,7 +82,7 @@
         });
 
 
-	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         className: 'map-tiles',
         minZoom: 1,
@@ -96,22 +101,22 @@
     });
 
 
-	function onMapClick(e) {
-		if (typeof marker != 'undefined')
-		    map.removeLayer(marker);
-		marker = L.marker(e.latlng, {icon: icon}).addTo(map);
+    function onMapClick(e) {
+        if (typeof marker != 'undefined')
+            map.removeLayer(marker);
+        marker = L.marker(e.latlng, {icon: icon}).addTo(map);
         var wrap = e.latlng.wrap().toString();
         Android.setPosition(wrap);
-	}
+    }
 
     function setOnMap(aLat, aLng) {
         if (typeof marker != 'undefined')
-		    map.removeLayer(marker);
-		zoom = map.getZoom();
-		map.setView(new L.LatLng(aLat, aLng), zoom);
-	    marker = L.marker([aLat, aLng], {icon: icon}).addTo(map);
-	    alreadyRunning = true;
-	    //alert(alreadyRunning);
+            map.removeLayer(marker);
+        zoom = map.getZoom();
+        map.setView(new L.LatLng(aLat, aLng), zoom);
+        marker = L.marker([aLat, aLng], {icon: icon}).addTo(map);
+        alreadyRunning = true;
+        //alert(alreadyRunning);
     }
 
     map.on('contextmenu', onMapClick);

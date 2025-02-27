@@ -88,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
         webView.setWebChromeClient(new WebChromeClient());
         webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         webView.addJavascriptInterface(webAppInterface, "Android");
-        webView.loadUrl("file:///android_asset/map.html");
 
         try {
             PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -114,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
         } catch (NumberFormatException e) {
             Log.e(MainActivity.class.toString(), e.toString());
         }
+
+        webView.loadUrl("file:///android_asset/map.html?lat=" + lat + "&lng=" + lng);
 
         editTextLat.addTextChangedListener(new TextWatcher() {
             @Override
@@ -365,6 +366,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void setMapMarker(double lat, double lng) {
+        if (webView == null || webView.getUrl() == null) return;
         webView.loadUrl("javascript:setOnMap(" + lat + "," + lng + ");");
     }
 
