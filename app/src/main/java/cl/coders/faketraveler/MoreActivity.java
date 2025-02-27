@@ -31,7 +31,7 @@ public class MoreActivity extends AppCompatActivity {
         textView3.setMovementMethod(LinkMovementMethod.getInstance());
 
         EditText etDMockLat = findViewById(R.id.et_DMockLat);
-        etDMockLat.setText(String.format(Locale.ROOT, "%f", getDouble(sharedPref, "DMockLat", 0)));
+        etDMockLat.setText(String.format(Locale.ROOT, "%f", getDouble(sharedPref, "dLat", 0)));
         etDMockLat.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -40,10 +40,10 @@ public class MoreActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = sharedPref.edit();
 
                 if (etDMockLat.getText().toString().isBlank()) {
-                    putDouble(editor, "DMockLat", 0);
+                    putDouble(editor, "dLat", 0);
                 } else {
                     try {
-                        putDouble(editor, "DMockLat", Double.parseDouble(etDMockLat.getText().toString()));
+                        putDouble(editor, "dLat", Double.parseDouble(etDMockLat.getText().toString()));
                     } catch (Throwable t) {
                         Log.e(MoreActivity.class.toString(), t.toString());
                     }
@@ -64,7 +64,7 @@ public class MoreActivity extends AppCompatActivity {
         });
 
         EditText etDMockLon = findViewById(R.id.et_DMockLon);
-        etDMockLon.setText(String.format(Locale.ROOT, "%f", getDouble(sharedPref, "DMockLon", 0)));
+        etDMockLon.setText(String.format(Locale.ROOT, "%f", getDouble(sharedPref, "dLng", 0)));
         etDMockLon.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -73,10 +73,10 @@ public class MoreActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = sharedPref.edit();
 
                 if (etDMockLon.getText().toString().isBlank()) {
-                    putDouble(editor, "DMockLon", 0);
+                    putDouble(editor, "dLng", 0);
                 } else {
                     try {
-                        putDouble(editor, "DMockLon", Double.parseDouble(etDMockLon.getText().toString()));
+                        putDouble(editor, "dLng", Double.parseDouble(etDMockLon.getText().toString()));
                     } catch (Throwable t) {
                         Log.e(MoreActivity.class.toString(), t.toString());
                     }

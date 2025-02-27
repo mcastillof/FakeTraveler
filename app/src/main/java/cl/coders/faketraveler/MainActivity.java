@@ -171,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        context = getApplicationContext();
         loadSharedPrefs();
     }
 
@@ -192,8 +193,8 @@ public class MainActivity extends AppCompatActivity {
         lng = getDouble(sharedPref, "lng", 15);
         mockCount = sharedPref.getInt("mockCount", 0);
         mockFrequency = sharedPref.getInt("mockFrequency", 10);
-        dMockLon = getDouble(sharedPref, "DMockLon", 0);
-        dMockLat = getDouble(sharedPref, "DMockLat", 0);
+        dMockLon = getDouble(sharedPref, "dLng", 0);
+        dMockLat = getDouble(sharedPref, "dLat", 0);
         endTime = sharedPref.getLong("endTime", 0);
 
         if (version != currentVersion) {
