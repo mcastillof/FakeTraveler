@@ -47,10 +47,6 @@ public class MainActivity extends AppCompatActivity {
     private Double lat;
     private Double lng;
 
-    private double simLat = 0.0;
-    private double simLon = 0.0;
-    private boolean firstSim = true;
-
     private static int timeInterval;
     private static int mockCount;
     private long endTime;
@@ -236,6 +232,9 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        lat = Double.parseDouble(editTextLat.getText().toString());
+        lng = Double.parseDouble(editTextLng.getText().toString());
+
         try {
             mockNetwork = new MockLocationProvider(LocationManager.NETWORK_PROVIDER, context);
             mockGps = new MockLocationProvider(LocationManager.GPS_PROVIDER, context);
@@ -245,9 +244,6 @@ public class MainActivity extends AppCompatActivity {
             stopMockingLocation(false);
             return;
         }
-
-        lat = Double.parseDouble(editTextLat.getText().toString());
-        lng = Double.parseDouble(editTextLng.getText().toString());
 
         toast(context.getResources().getString(R.string.MainActivity_MockApplied));
         endTime = System.currentTimeMillis() + (mockCount - 1L) * timeInterval * 1000L;
@@ -274,24 +270,20 @@ public class MainActivity extends AppCompatActivity {
      */
     void simulate() {
         boolean movement = shouldSimulateMovement();
-        if (firstSim) { // first call in simulation - take current position
-            simLat = lat;
-            simLon = lng;
-            firstSim = false;
-        } else if (movement) {
-            simLat += Double.parseDouble(sharedPref.getString("DMockLat", "0")) / 1000000;
-            simLon += Double.parseDouble(sharedPref.getString("DMockLon", "0")) / 1000000;
+        if (movement) {
+            lat += Double.parseDouble(sharedPref.getString("DMockLat", "0")) / 1000000;
+            lng += Double.parseDouble(sharedPref.getString("DMockLon", "0")) / 1000000;
         }
 
         try {
             //MockLocationProvider mockNetwork = new MockLocationProvider(LocationManager.NETWORK_PROVIDER, context);
-            mockNetwork.pushLocation(simLat, simLon);
+            mockNetwork.pushLocation(lat, lng);
             //MockLocationProvider mockGps = new MockLocationProvider(LocationManager.GPS_PROVIDER, context);
-            mockGps.pushLocation(simLat, simLon);
+            mockGps.pushLocation(lat, lng);
 
             if (movement) {
                 //move map but do not edit text
-                setMapMarker(simLat, simLon);
+                setMapMarker(lat, lng);
             }
         } catch (Exception e) {
             toast(context.getResources().getString(R.string.MainActivity_MockNotApplied));
@@ -341,7 +333,8 @@ public class MainActivity extends AppCompatActivity {
         if (simRunnable == null) return;
         simHandler.removeCallbacks(simRunnable); //stop handler - remove callback
         simRunnable = null;
-        toast(context.getResources().getString(R.string.MainActivity_MockStopped));
+        if (showToast)
+            toast(context.getResources().getString(R.string.MainActivity_MockStopped));
     }
 
     /**
@@ -383,12 +376,9 @@ public class MainActivity extends AppCompatActivity {
         if (mockGps != null)
             mockGps.shutdown();
 
-        if (!firstSim)
-            firstSim = true;
-
         // simulation moves map but does not update the text box
         // set text box to map position
-        setLatLng(simLat + "", simLon + "", CHANGE_FROM_MAP);
+        setLatLng(lat + "", lng + "", CHANGE_FROM_MAP);
 
         stopSimTimer(showToast);
     }
