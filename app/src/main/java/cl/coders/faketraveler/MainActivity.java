@@ -32,12 +32,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String sharedPrefKey = "cl.coders.faketraveler.sharedprefs";
+    public static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat(
+            "0.######", DecimalFormatSymbols.getInstance(Locale.ROOT));
 
     private final Handler simHandler = new Handler(Looper.getMainLooper());
     private Runnable simRunnable;
@@ -420,8 +424,8 @@ public class MainActivity extends AppCompatActivity {
         }
         if (srcChange == CHANGE_FROM_MAP || srcChange == LOAD) {
             this.srcChange = CHANGE_FROM_MAP;
-            editTextLat.setText(String.format(Locale.ROOT, "%f", lat));
-            editTextLng.setText(String.format(Locale.ROOT, "%f", lng));
+            editTextLat.setText(DECIMAL_FORMAT.format(lat));
+            editTextLng.setText(DECIMAL_FORMAT.format(lng));
             this.srcChange = NONE;
         }
 

@@ -1,5 +1,6 @@
 package cl.coders.faketraveler;
 
+import static cl.coders.faketraveler.MainActivity.DECIMAL_FORMAT;
 import static cl.coders.faketraveler.MainActivity.sharedPrefKey;
 import static cl.coders.faketraveler.SharedPrefsUtil.getDouble;
 import static cl.coders.faketraveler.SharedPrefsUtil.putDouble;
@@ -31,7 +32,7 @@ public class MoreActivity extends AppCompatActivity {
         textView3.setMovementMethod(LinkMovementMethod.getInstance());
 
         EditText etDMockLat = findViewById(R.id.et_DMockLat);
-        etDMockLat.setText(String.format(Locale.ROOT, "%f", getDouble(sharedPref, "dLat", 0)));
+        etDMockLat.setText(DECIMAL_FORMAT.format(getDouble(sharedPref, "dLat", 0)));
         etDMockLat.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -64,7 +65,7 @@ public class MoreActivity extends AppCompatActivity {
         });
 
         EditText etDMockLon = findViewById(R.id.et_DMockLon);
-        etDMockLon.setText(String.format(Locale.ROOT, "%f", getDouble(sharedPref, "dLng", 0)));
+        etDMockLon.setText(DECIMAL_FORMAT.format(getDouble(sharedPref, "dLng", 0)));
         etDMockLon.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
