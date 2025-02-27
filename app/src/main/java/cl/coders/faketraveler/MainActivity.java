@@ -11,6 +11,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
@@ -53,14 +54,13 @@ public class MainActivity extends AppCompatActivity {
     private SourceChange srcChange = NONE;
 
     // Config
-    private SharedPreferences sharedPref;
-    private SharedPreferences.Editor editor;
+    private int version;
     private double lat;
     private double lng;
     private int mockCount;
     private int mockFrequency;
-    private double dMockLon;
-    private double dMockLat;
+    private double dLat;
+    private double dLng;
     private long endTime;
 
     @Override
@@ -162,8 +162,7 @@ public class MainActivity extends AppCompatActivity {
             changeButtonToStop();
         } else {
             endTime = 0;
-            editor.putLong("endTime", 0);
-            editor.apply();
+            saveSettings();
         }
 
     }
@@ -185,22 +184,37 @@ public class MainActivity extends AppCompatActivity {
      * Check and (re-)initialize shared preferences.
      */
     private void loadSharedPrefs() {
-        sharedPref = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
-        editor = sharedPref.edit();
+        SharedPreferences sharedPref = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
 
-        int version = sharedPref.getInt("version", 0);
+        version = sharedPref.getInt("version", 0);
         lat = getDouble(sharedPref, "lat", 12);
         lng = getDouble(sharedPref, "lng", 15);
         mockCount = sharedPref.getInt("mockCount", 0);
         mockFrequency = sharedPref.getInt("mockFrequency", 10);
-        dMockLon = getDouble(sharedPref, "dLng", 0);
-        dMockLat = getDouble(sharedPref, "dLat", 0);
+        dLat = getDouble(sharedPref, "dLat", 0);
+        dLng = getDouble(sharedPref, "dLng", 0);
         endTime = sharedPref.getLong("endTime", 0);
 
         if (version != currentVersion) {
-            editor.putInt("version", currentVersion);
-            editor.apply();
+            version = currentVersion;
+            // Do config migrations here
+            saveSettings();
         }
+    }
+
+    private void saveSettings() {
+        Editor editor = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE).edit();
+
+        editor.putInt("version", version);
+        putDouble(editor, "lat", lat);
+        putDouble(editor, "lng", lng);
+        editor.putInt("mockCount", mockCount);
+        editor.putInt("mockFrequency", mockFrequency);
+        putDouble(editor, "dLat", dLat);
+        putDouble(editor, "dLng", dLng);
+        editor.putLong("endTime", endTime);
+
+        editor.apply();
     }
 
     /**
@@ -228,8 +242,7 @@ public class MainActivity extends AppCompatActivity {
 
         toast(context.getResources().getString(R.string.MainActivity_MockApplied));
         endTime = System.currentTimeMillis() + (mockCount - 1L) * mockFrequency * 1000L;
-        editor.putLong("endTime", endTime);
-        editor.apply();
+        saveSettings();
 
         changeButtonToStop();
 
@@ -250,20 +263,19 @@ public class MainActivity extends AppCompatActivity {
      * text box only after simulation is stopped
      */
     void simulate() {
-        boolean movement = shouldSimulateMovement();
-        if (movement) {
-            lat += dMockLat / 1000000;
-            lng += dMockLon / 1000000;
+        boolean shouldMove = dLat != 0 || dLng != 0;
+
+        if (shouldMove) {
+            lat += dLat / 1000000;
+            lng += dLng / 1000000;
         }
 
         try {
-            //MockLocationProvider mockNetwork = new MockLocationProvider(LocationManager.NETWORK_PROVIDER, context);
             mockNetwork.pushLocation(lat, lng);
-            //MockLocationProvider mockGps = new MockLocationProvider(LocationManager.GPS_PROVIDER, context);
             mockGps.pushLocation(lat, lng);
 
-            if (movement) {
-                //move map but do not edit text
+            if (shouldMove) {
+                // during simulation, only move map but do not edit text
                 setMapMarker(lat, lng);
             }
         } catch (Exception e) {
@@ -349,8 +361,8 @@ public class MainActivity extends AppCompatActivity {
      */
     protected void stopMockingLocation(boolean showToast) {
         changeButtonToApply();
-        editor.putLong("endTime", System.currentTimeMillis() - 1);
-        editor.apply();
+        endTime = System.currentTimeMillis() - 1;
+        saveSettings();
 
         if (mockNetwork != null)
             mockNetwork.shutdown();
@@ -401,9 +413,7 @@ public class MainActivity extends AppCompatActivity {
             this.srcChange = NONE;
         }
 
-        putDouble(editor, "lat", lat);
-        putDouble(editor, "lng", lng);
-        editor.apply();
+        saveSettings();
     }
 
     /**
@@ -422,10 +432,6 @@ public class MainActivity extends AppCompatActivity {
      */
     double getLng() {
         return lng;
-    }
-
-    private boolean shouldSimulateMovement() {
-        return dMockLat != 0 || dMockLon != 0;
     }
 
     public enum SourceChange {
