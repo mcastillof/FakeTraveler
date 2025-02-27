@@ -41,8 +41,6 @@ body:
       label: Logcat
       description: If the app crashes, a logcat of the error could be very helpful
       placeholder: Copy paste from the log/console
-    validations:
-      required: true
   - type: textarea
     attributes:
       label: Additional context
