@@ -45,7 +45,7 @@ public class MockLocationProvider {
                 shutdown();
                 lm.addTestProvider(providerName, false, false, false, false, false, true, true, powerUsage, accuracy);
                 lm.setTestProviderEnabled(providerName, true);
-            } catch (Exception e) {
+            } catch (Throwable ignored) {
                 startup(lm, powerUsage, accuracy, currentRetryCount + 1);
             }
         } else {
@@ -87,7 +87,7 @@ public class MockLocationProvider {
         try {
             LocationManager lm = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
             lm.removeTestProvider(providerName);
-        } catch (Exception ignored) {
+        } catch (Throwable ignored) {
         }
     }
 

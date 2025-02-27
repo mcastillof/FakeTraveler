@@ -13,7 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 currentVersion = pInfo.versionCode;
             }
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch (NameNotFoundException e) {
             Log.e(MainActivity.class.toString(), "Could not read version info!", e);
         }
 
@@ -274,8 +274,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         try {
-            mockNetwork.pushLocation(lat, lng);
-            mockGps.pushLocation(lat, lng);
+            if (mockNetwork != null)
+                mockNetwork.pushLocation(lat, lng);
+            if (mockGps != null)
+                mockGps.pushLocation(lat, lng);
 
             if (shouldMove) {
                 // during simulation, only move map but do not edit text
