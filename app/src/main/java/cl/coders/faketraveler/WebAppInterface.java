@@ -33,24 +33,4 @@ public class WebAppInterface {
         });
     }
 
-    /**
-     * Get last latitude. This method is called by javascript at page load.
-     *
-     * @return The last latitude or 15 if it haven't been set.
-     */
-    @JavascriptInterface
-    public double getLat() {
-        return mainActivity.getLat();
-    }
-
-    /**
-     * Get last longitude. This method is called by javascript at page load.
-     *
-     * @return The last longitude or 12 if it haven't been set.
-     */
-    @JavascriptInterface
-    public double getLng() {
-        return mainActivity.getLng();
-    }
-
 }

@@ -403,10 +403,10 @@ public class MainActivity extends AppCompatActivity {
         lat = mLat;
         lng = mLng;
 
-        if (srcChange == LOAD || srcChange == CHANGE_FROM_EDITTEXT) {
+        if (srcChange == CHANGE_FROM_EDITTEXT || srcChange == LOAD) {
             setMapMarker(lat, lng);
         }
-        if (srcChange == LOAD || srcChange == CHANGE_FROM_MAP) {
+        if (srcChange == CHANGE_FROM_MAP || srcChange == LOAD) {
             this.srcChange = CHANGE_FROM_MAP;
             editTextLat.setText(String.format(Locale.ROOT, "%f", lat));
             editTextLng.setText(String.format(Locale.ROOT, "%f", lng));
@@ -414,24 +414,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         saveSettings();
-    }
-
-    /**
-     * returns latitude
-     *
-     * @return latitude
-     */
-    double getLat() {
-        return lat;
-    }
-
-    /**
-     * returns latitude
-     *
-     * @return latitude
-     */
-    double getLng() {
-        return lng;
     }
 
     public enum SourceChange {
