@@ -1,15 +1,22 @@
 package cl.coders.faketraveler;
 
+import static cl.coders.faketraveler.MainActivity.sharedPrefKey;
+import static cl.coders.faketraveler.SharedPrefsUtil.getDouble;
+import static cl.coders.faketraveler.SharedPrefsUtil.putDouble;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Locale;
 
 public class MoreActivity extends AppCompatActivity {
 
@@ -18,24 +25,28 @@ public class MoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_more);
         Context context = getApplicationContext();
-        SharedPreferences sharedPref = context.getSharedPreferences(MainActivity.sharedPrefKey, Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
 
         TextView textView3 = findViewById(R.id.textView3);
         textView3.setMovementMethod(LinkMovementMethod.getInstance());
 
         EditText etDMockLat = findViewById(R.id.et_DMockLat);
-        etDMockLat.setText(sharedPref.getString("DMockLat", "0"));
+        etDMockLat.setText(String.format(Locale.ROOT, "%f", getDouble(sharedPref, "DMockLat", 0)));
         etDMockLat.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
                 Context context = getApplicationContext();
-                SharedPreferences sharedPref = context.getSharedPreferences(MainActivity.sharedPrefKey, Context.MODE_PRIVATE);
+                SharedPreferences sharedPref = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
 
                 if (etDMockLat.getText().toString().isBlank()) {
-                    editor.putString("DMockLat", "0");
+                    putDouble(editor, "DMockLat", 0);
                 } else {
-                    editor.putString("DMockLat", etDMockLat.getText().toString());
+                    try {
+                        putDouble(editor, "DMockLat", Double.parseDouble(etDMockLat.getText().toString()));
+                    } catch (Throwable t) {
+                        Log.e(MoreActivity.class.toString(), t.toString());
+                    }
                 }
 
                 editor.apply();
@@ -53,19 +64,24 @@ public class MoreActivity extends AppCompatActivity {
         });
 
         EditText etDMockLon = findViewById(R.id.et_DMockLon);
-        etDMockLon.setText(sharedPref.getString("DMockLon", "0"));
+        etDMockLon.setText(String.format(Locale.ROOT, "%f", getDouble(sharedPref, "DMockLon", 0)));
         etDMockLon.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
                 Context context = getApplicationContext();
-                SharedPreferences sharedPref = context.getSharedPreferences(MainActivity.sharedPrefKey, Context.MODE_PRIVATE);
+                SharedPreferences sharedPref = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
 
                 if (etDMockLon.getText().toString().isBlank()) {
-                    editor.putString("DMockLon", "0");
+                    putDouble(editor, "DMockLon", 0);
                 } else {
-                    editor.putString("DMockLon", etDMockLon.getText().toString());
+                    try {
+                        putDouble(editor, "DMockLon", Double.parseDouble(etDMockLon.getText().toString()));
+                    } catch (Throwable t) {
+                        Log.e(MoreActivity.class.toString(), t.toString());
+                    }
                 }
+
                 editor.apply();
             }
 
@@ -81,20 +97,22 @@ public class MoreActivity extends AppCompatActivity {
         });
 
         EditText etMockCount = findViewById(R.id.et_MockCount);
-        etMockCount.setText(sharedPref.getString("howManyTimes", "1"));
+        etMockCount.setText(String.format(Locale.ROOT, "%d", sharedPref.getInt("mockCount", 0)));
         etMockCount.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
                 Context context = getApplicationContext();
-                SharedPreferences sharedPref = context.getSharedPreferences(MainActivity.sharedPrefKey, Context.MODE_PRIVATE);
+                SharedPreferences sharedPref = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
 
                 if (etMockCount.getText().toString().isBlank()) {
-                    editor.putString("howManyTimes", "1");
-                    MainActivity.setMockCount(1);
+                    editor.putInt("mockCount", 0);
                 } else {
-                    editor.putString("howManyTimes", etMockCount.getText().toString());
-                    MainActivity.setMockCount(Integer.parseInt(etMockCount.getText().toString()));
+                    try {
+                        editor.putInt("mockCount", Integer.parseInt(etMockCount.getText().toString()));
+                    } catch (Throwable t) {
+                        Log.e(MoreActivity.class.toString(), t.toString());
+                    }
                 }
 
                 editor.apply();
@@ -112,20 +130,22 @@ public class MoreActivity extends AppCompatActivity {
         });
 
         EditText etMockFrequency = findViewById(R.id.et_MockFrequency);
-        etMockFrequency.setText(sharedPref.getString("timeInterval", "10"));
+        etMockFrequency.setText(String.format(Locale.ROOT, "%d", sharedPref.getInt("mockFrequency", 10)));
         etMockFrequency.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
                 Context context = getApplicationContext();
-                SharedPreferences sharedPref = context.getSharedPreferences(MainActivity.sharedPrefKey, Context.MODE_PRIVATE);
+                SharedPreferences sharedPref = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
 
                 if (etMockFrequency.getText().toString().isBlank()) {
-                    editor.putString("timeInterval", "10");
-                    MainActivity.setTimeInterval(10);
+                    editor.putInt("mockFrequency", 10);
                 } else {
-                    editor.putString("timeInterval", etMockFrequency.getText().toString());
-                    MainActivity.setTimeInterval(Integer.parseInt(etMockFrequency.getText().toString()));
+                    try {
+                        editor.putInt("mockFrequency", Integer.parseInt(etMockFrequency.getText().toString()));
+                    } catch (Throwable t) {
+                        Log.e(MoreActivity.class.toString(), t.toString());
+                    }
                 }
 
                 editor.apply();

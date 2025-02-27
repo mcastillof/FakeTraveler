@@ -2,7 +2,10 @@ package cl.coders.faketraveler;
 
 import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_EDITTEXT;
 import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_MAP;
+import static cl.coders.faketraveler.MainActivity.SourceChange.LOAD;
 import static cl.coders.faketraveler.MainActivity.SourceChange.NONE;
+import static cl.coders.faketraveler.SharedPrefsUtil.getDouble;
+import static cl.coders.faketraveler.SharedPrefsUtil.putDouble;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -32,7 +35,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String sharedPrefKey = "cl.coders.mockposition.sharedpreferences";
+    public static final String sharedPrefKey = "cl.coders.faketraveler.sharedprefs";
 
     private final Handler simHandler = new Handler(Looper.getMainLooper());
     private Runnable simRunnable;
@@ -42,19 +45,23 @@ public class MainActivity extends AppCompatActivity {
     private EditText editTextLat;
     private EditText editTextLng;
     private Context context;
-    private SharedPreferences sharedPref;
-    private SharedPreferences.Editor editor;
-    private Double lat;
-    private Double lng;
-
-    private static int timeInterval;
-    private static int mockCount;
-    private long endTime;
     private int currentVersion;
+
     private MockLocationProvider mockNetwork;
     private MockLocationProvider mockGps;
 
     private SourceChange srcChange = NONE;
+
+    // Config
+    private SharedPreferences sharedPref;
+    private SharedPreferences.Editor editor;
+    private double lat;
+    private double lng;
+    private int mockCount;
+    private int mockFrequency;
+    private double dMockLon;
+    private double dMockLat;
+    private long endTime;
 
     @Override
     @SuppressLint("SetJavaScriptEnabled") // XSS unlikely an issue here...
@@ -65,8 +72,6 @@ public class MainActivity extends AppCompatActivity {
         context = getApplicationContext();
         webView = findViewById(R.id.webView0);
         WebAppInterface webAppInterface = new WebAppInterface(this);
-        sharedPref = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
-        editor = sharedPref.edit();
 
         buttonApplyStop = findViewById(R.id.button_applyStop);
         MaterialButton buttonSettings = findViewById(R.id.button_settings);
@@ -96,19 +101,9 @@ public class MainActivity extends AppCompatActivity {
             Log.e(MainActivity.class.toString(), e.toString());
         }
 
-        checkSharedPrefs();
+        loadSharedPrefs();
 
-        mockCount = Integer.parseInt(sharedPref.getString("howManyTimes", "1"));
-        timeInterval = Integer.parseInt(sharedPref.getString("timeInterval", "10"));
-
-        try {
-            setLatLng(sharedPref.getString("lat", ""), sharedPref.getString("lng", ""),
-                    CHANGE_FROM_EDITTEXT);
-            editTextLat.setText(String.format(Locale.ROOT, "%f", lat));
-            editTextLng.setText(String.format(Locale.ROOT, "%f", lng));
-        } catch (NumberFormatException e) {
-            Log.e(MainActivity.class.toString(), e.toString());
-        }
+        setLatLng(lat, lng, LOAD);
 
         webView.loadUrl("file:///android_asset/map.html?lat=" + lat + "&lng=" + lng);
 
@@ -117,12 +112,12 @@ public class MainActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 if (!editTextLat.getText().toString().isEmpty() && !editTextLat.getText().toString().equals("-")) {
                     if (srcChange != CHANGE_FROM_MAP) {
-                        lat = Double.parseDouble((editTextLat.getText().toString()));
-
-                        if (lng == null)
-                            return;
-
-                        setLatLng(editTextLat.getText().toString(), lng.toString(), CHANGE_FROM_EDITTEXT);
+                        try {
+                            lat = Double.parseDouble(editTextLat.getText().toString());
+                            setLatLng(lat, lng, CHANGE_FROM_EDITTEXT);
+                        } catch (Throwable t) {
+                            Log.e(MainActivity.class.toString(), t.toString());
+                        }
                     }
                 }
             }
@@ -143,12 +138,12 @@ public class MainActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 if (!editTextLng.getText().toString().isEmpty() && !editTextLng.getText().toString().equals("-")) {
                     if (srcChange != CHANGE_FROM_MAP) {
-                        lng = Double.parseDouble((editTextLng.getText().toString()));
-
-                        if (lat == null)
-                            return;
-
-                        setLatLng(lat.toString(), editTextLng.getText().toString(), CHANGE_FROM_EDITTEXT);
+                        try {
+                            lng = Double.parseDouble(editTextLng.getText().toString());
+                            setLatLng(lat, lng, CHANGE_FROM_EDITTEXT);
+                        } catch (Throwable t) {
+                            Log.e(MainActivity.class.toString(), t.toString());
+                        }
                     }
                 }
             }
@@ -162,9 +157,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        endTime = sharedPref.getLong("endTime", 0);
-
-
         //2do check running on start?
         if (endTime > System.currentTimeMillis()) {
             changeButtonToStop();
@@ -177,53 +169,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        loadSharedPrefs();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         stopMockingLocation(true);
     }
 
     /**
-     * Check and reinitialize shared preferences in case of problem.
+     * Check and (re-)initialize shared preferences.
      */
-    void checkSharedPrefs() {
+    private void loadSharedPrefs() {
+        sharedPref = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
+
         int version = sharedPref.getInt("version", 0);
-        String lat = sharedPref.getString("lat", "N/A");
-        String lng = sharedPref.getString("lng", "N/A");
-        String howManyTimes = sharedPref.getString("howManyTimes", "N/A");
-        String timeInterval = sharedPref.getString("timeInterval", "N/A");
-        String dMockLon = sharedPref.getString("DMockLon", "0");
-        String dMockLat = sharedPref.getString("DMockLat", "0");
-        sharedPref.getLong("endTime", 0);
+        lat = getDouble(sharedPref, "lat", 12);
+        lng = getDouble(sharedPref, "lng", 15);
+        mockCount = sharedPref.getInt("mockCount", 0);
+        mockFrequency = sharedPref.getInt("mockFrequency", 10);
+        dMockLon = getDouble(sharedPref, "DMockLon", 0);
+        dMockLat = getDouble(sharedPref, "DMockLat", 0);
+        endTime = sharedPref.getLong("endTime", 0);
 
         if (version != currentVersion) {
             editor.putInt("version", currentVersion);
             editor.apply();
         }
-
-        try {
-            Double.parseDouble(lat);
-            Double.parseDouble(lng);
-            Double.parseDouble(howManyTimes);
-            Double.parseDouble(timeInterval);
-            Double.parseDouble(dMockLon);
-            Double.parseDouble(dMockLat);
-        } catch (NumberFormatException e) {
-            editor.clear();
-            editor.putString("lat", lat);
-            editor.putString("lng", lng);
-            editor.putInt("version", currentVersion);
-            editor.putString("howManyTimes", "1");
-            editor.putString("timeInterval", "10");
-            editor.putString("DMockLon", "0");
-            editor.putString("DMockLat", "0");
-            editor.putLong("endTime", 0);
-            editor.apply();
-            Log.e(MainActivity.class.toString(), e.toString());
-        }
     }
 
     /**
-     * Apply a mocked location, and start an alarm to keep doing it if howManyTimes is > 1
+     * Apply a mocked location, and start an alarm to keep doing it if mockCount is > 1
      * This method is called when "Apply" button is pressed.
      */
     protected void applyLocation() {
@@ -246,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         toast(context.getResources().getString(R.string.MainActivity_MockApplied));
-        endTime = System.currentTimeMillis() + (mockCount - 1L) * timeInterval * 1000L;
+        endTime = System.currentTimeMillis() + (mockCount - 1L) * mockFrequency * 1000L;
         editor.putLong("endTime", endTime);
         editor.apply();
 
@@ -256,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (shouldStillRun()) {
             toast(context.getResources().getString(R.string.MainActivity_MockLocRunning));
-            scheduleNext(timeInterval);
+            scheduleNext(mockFrequency);
         } else {
             stopMockingLocation(true);
         }
@@ -271,8 +251,8 @@ public class MainActivity extends AppCompatActivity {
     void simulate() {
         boolean movement = shouldSimulateMovement();
         if (movement) {
-            lat += Double.parseDouble(sharedPref.getString("DMockLat", "0")) / 1000000;
-            lng += Double.parseDouble(sharedPref.getString("DMockLon", "0")) / 1000000;
+            lat += dMockLat / 1000000;
+            lng += dMockLon / 1000000;
         }
 
         try {
@@ -378,7 +358,7 @@ public class MainActivity extends AppCompatActivity {
 
         // simulation moves map but does not update the text box
         // set text box to map position
-        setLatLng(lat + "", lng + "", CHANGE_FROM_MAP);
+        setLatLng(lat, lng, CHANGE_FROM_MAP);
 
         stopSimTimer(showToast);
     }
@@ -406,21 +386,22 @@ public class MainActivity extends AppCompatActivity {
      * @param mLng      longitude
      * @param srcChange CHANGE_FROM_EDITTEXT or CHANGE_FROM_MAP, indicates from where comes the change
      */
-    void setLatLng(String mLat, String mLng, SourceChange srcChange) {
-        lat = Double.parseDouble(mLat);
-        lng = Double.parseDouble(mLng);
+    void setLatLng(double mLat, double mLng, SourceChange srcChange) {
+        lat = mLat;
+        lng = mLng;
 
-        if (srcChange == CHANGE_FROM_EDITTEXT) {
+        if (srcChange == LOAD || srcChange == CHANGE_FROM_EDITTEXT) {
             setMapMarker(lat, lng);
-        } else if (srcChange == CHANGE_FROM_MAP) {
+        }
+        if (srcChange == LOAD || srcChange == CHANGE_FROM_MAP) {
             this.srcChange = CHANGE_FROM_MAP;
-            editTextLat.setText(mLat);
-            editTextLng.setText(mLng);
+            editTextLat.setText(String.format(Locale.ROOT, "%f", lat));
+            editTextLng.setText(String.format(Locale.ROOT, "%f", lng));
             this.srcChange = NONE;
         }
 
-        editor.putString("lat", mLat);
-        editor.putString("lng", mLng);
+        putDouble(editor, "lat", lat);
+        putDouble(editor, "lng", lng);
         editor.apply();
     }
 
@@ -429,8 +410,8 @@ public class MainActivity extends AppCompatActivity {
      *
      * @return latitude
      */
-    String getLat() {
-        return editTextLat.getText().toString();
+    double getLat() {
+        return lat;
     }
 
     /**
@@ -438,26 +419,16 @@ public class MainActivity extends AppCompatActivity {
      *
      * @return latitude
      */
-    String getLng() {
-        return editTextLng.getText().toString();
+    double getLng() {
+        return lng;
     }
 
     private boolean shouldSimulateMovement() {
-        double dMockLat = Double.parseDouble(sharedPref.getString("DMockLat", "0"));
-        double dMockLon = Double.parseDouble(sharedPref.getString("DMockLon", "0"));
         return dMockLat != 0 || dMockLon != 0;
     }
 
-    static void setTimeInterval(int timeInterval) {
-        MainActivity.timeInterval = timeInterval;
-    }
-
-    static void setMockCount(int mockCount) {
-        MainActivity.mockCount = mockCount;
-    }
-
     public enum SourceChange {
-        NONE, CHANGE_FROM_EDITTEXT, CHANGE_FROM_MAP
+        NONE, LOAD, CHANGE_FROM_EDITTEXT, CHANGE_FROM_MAP
     }
 
 }

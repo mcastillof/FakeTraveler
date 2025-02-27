@@ -2,6 +2,7 @@ package cl.coders.faketraveler;
 
 import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_MAP;
 
+import android.util.Log;
 import android.webkit.JavascriptInterface;
 
 
@@ -24,30 +25,32 @@ public class WebAppInterface {
             String lat = str.substring(str.indexOf('(') + 1, str.indexOf(','));
             String lng = str.substring(str.indexOf(',') + 2, str.indexOf(')'));
 
-            mainActivity.setLatLng(lat, lng, CHANGE_FROM_MAP);
+            try {
+                mainActivity.setLatLng(Double.parseDouble(lat), Double.parseDouble(lng), CHANGE_FROM_MAP);
+            } catch (Throwable t) {
+                Log.e(WebAppInterface.class.toString(), t.toString());
+            }
         });
     }
 
     /**
      * Get last latitude. This method is called by javascript at page load.
      *
-     * @return The last latitude or 0 if it haven't been set.
+     * @return The last latitude or 15 if it haven't been set.
      */
     @JavascriptInterface
     public double getLat() {
-        String lat = mainActivity.getLat();
-        return lat.isBlank() ? 0 : Double.parseDouble(lat);
+        return mainActivity.getLat();
     }
 
     /**
      * Get last longitude. This method is called by javascript at page load.
      *
-     * @return The last longitude or 0 if it haven't been set.
+     * @return The last longitude or 12 if it haven't been set.
      */
     @JavascriptInterface
     public double getLng() {
-        String lng = mainActivity.getLng();
-        return lng.isBlank() ? 0 : Double.parseDouble(lng);
+        return mainActivity.getLng();
     }
 
 }
