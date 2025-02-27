@@ -117,8 +117,8 @@ public class MoreActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 Context context = getApplicationContext();
-                SharedPreferences mSharedPref = context.getSharedPreferences(MainActivity.sharedPrefKey, Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = mSharedPref.edit();
+                SharedPreferences sharedPref = context.getSharedPreferences(MainActivity.sharedPrefKey, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
 
                 if (etMockFrequency.getText().toString().isBlank()) {
                     editor.putString("timeInterval", "10");
