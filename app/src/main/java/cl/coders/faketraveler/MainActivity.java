@@ -5,6 +5,7 @@ import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_MAP;
 import static cl.coders.faketraveler.MainActivity.SourceChange.LOAD;
 import static cl.coders.faketraveler.MainActivity.SourceChange.NONE;
 import static cl.coders.faketraveler.SharedPrefsUtil.getDouble;
+import static cl.coders.faketraveler.SharedPrefsUtil.migrateOldPreferences;
 import static cl.coders.faketraveler.SharedPrefsUtil.putDouble;
 
 import android.annotation.SuppressLint;
@@ -185,6 +186,8 @@ public class MainActivity extends AppCompatActivity {
      * Check and (re-)initialize shared preferences.
      */
     private void loadSharedPrefs() {
+        migrateOldPreferences(context);
+
         SharedPreferences sharedPref = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
 
         version = sharedPref.getInt("version", 0);
@@ -199,7 +202,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (version != currentVersion) {
             version = currentVersion;
-            // Do config migrations here
             saveSettings();
         }
     }
