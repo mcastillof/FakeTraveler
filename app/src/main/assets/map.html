@@ -124,11 +124,8 @@
     lat = Android.getLat();
     lng = Android.getLng();
 
-    if (lat != 0 && lng != 0)
-    {
-        map.setView(new L.LatLng(lat, lng), 12);
-        marker = L.marker([lat, lng], {icon: icon}).addTo(map);
-    }
+    map.setView(new L.LatLng(lat, lng), 12);
+    marker = L.marker([lat, lng], {icon: icon}).addTo(map);
 
 </script>
 </body>
