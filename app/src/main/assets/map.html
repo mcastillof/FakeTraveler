@@ -71,6 +71,7 @@
           if (event.key === "Enter") {
             event.preventDefault();
             var coords = await searchAddress(searchInput.value);
+            if (coords === undefined || coords.length < 2) return;
             var lat = coords[0];
             var lng = coords[1];
 
