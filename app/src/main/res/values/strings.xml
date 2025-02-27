@@ -11,11 +11,11 @@
     <string name="ActivityMain_Stop">Stop</string>
 
     <!--  Strings from MainActivity.java  -->
-    <string name="MainActivity_NoLatLong">No lat or lng value. Long press in the map where you want to be located</string>
+    <string name="MainActivity_NoLatLong">No latitude/longitude values. Long press in the map where you want to be located.</string>
     <string name="MainActivity_MockApplied">Mocked location applied.</string>
     <string name="MainActivity_MockNotApplied">"Mocked location not applied. You must enable mock location in developer settings"</string>
     <string name="MainActivity_MockLocRunning">Mocking location service running.</string>
-    <string name="MainActivity_MockStopped">Mocking stopped</string>
+    <string name="MainActivity_MockStopped">Mocking stopped.</string>
 
     <!--  Strings from activity_more.xml layout  -->
     <string name="ActivityMore_HowToTittle">How to use it?</string>
