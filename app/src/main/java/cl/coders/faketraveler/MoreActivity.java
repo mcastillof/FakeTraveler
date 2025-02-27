@@ -45,7 +45,7 @@ public class MoreActivity extends AppCompatActivity {
                     try {
                         putDouble(editor, "dLat", Double.parseDouble(etDMockLat.getText().toString()));
                     } catch (Throwable t) {
-                        Log.e(MoreActivity.class.toString(), t.toString());
+                        Log.e(MoreActivity.class.toString(), "Could not parse dLat!", t);
                     }
                 }
 
@@ -78,7 +78,7 @@ public class MoreActivity extends AppCompatActivity {
                     try {
                         putDouble(editor, "dLng", Double.parseDouble(etDMockLon.getText().toString()));
                     } catch (Throwable t) {
-                        Log.e(MoreActivity.class.toString(), t.toString());
+                        Log.e(MoreActivity.class.toString(), "Could not parse dLng!", t);
                     }
                 }
 
@@ -111,7 +111,7 @@ public class MoreActivity extends AppCompatActivity {
                     try {
                         editor.putInt("mockCount", Integer.parseInt(etMockCount.getText().toString()));
                     } catch (Throwable t) {
-                        Log.e(MoreActivity.class.toString(), t.toString());
+                        Log.e(MoreActivity.class.toString(), "Could not parse mockCount!", t);
                     }
                 }
 
@@ -144,7 +144,7 @@ public class MoreActivity extends AppCompatActivity {
                     try {
                         editor.putInt("mockFrequency", Integer.parseInt(etMockFrequency.getText().toString()));
                     } catch (Throwable t) {
-                        Log.e(MoreActivity.class.toString(), t.toString());
+                        Log.e(MoreActivity.class.toString(), "Could not parse mockFrequency!", t);
                     }
                 }
 

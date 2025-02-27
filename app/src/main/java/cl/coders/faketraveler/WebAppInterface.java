@@ -28,7 +28,7 @@ public class WebAppInterface {
             try {
                 mainActivity.setLatLng(Double.parseDouble(lat), Double.parseDouble(lng), CHANGE_FROM_MAP);
             } catch (Throwable t) {
-                Log.e(WebAppInterface.class.toString(), t.toString());
+                Log.e(WebAppInterface.class.toString(), "Could not set new position from map!", t);
             }
         });
     }
@@ -39,7 +39,7 @@ public class WebAppInterface {
             try {
                 mainActivity.setZoom(Double.parseDouble(str));
             } catch (Throwable t) {
-                Log.e(WebAppInterface.class.toString(), t.toString());
+                Log.e(WebAppInterface.class.toString(), "Could not save zoom!", t);
             }
         });
     }

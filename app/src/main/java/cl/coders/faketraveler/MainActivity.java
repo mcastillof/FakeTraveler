@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                 currentVersion = pInfo.versionCode;
             }
         } catch (PackageManager.NameNotFoundException e) {
-            Log.e(MainActivity.class.toString(), e.toString());
+            Log.e(MainActivity.class.toString(), "Could not read version info!", e);
         }
 
         loadSharedPrefs();
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                             lat = Double.parseDouble(editTextLat.getText().toString());
                             setLatLng(lat, lng, CHANGE_FROM_EDITTEXT);
                         } catch (Throwable t) {
-                            Log.e(MainActivity.class.toString(), t.toString());
+                            Log.e(MainActivity.class.toString(), "Could not read latitude!", t);
                         }
                     }
                 }
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
                             lng = Double.parseDouble(editTextLng.getText().toString());
                             setLatLng(lat, lng, CHANGE_FROM_EDITTEXT);
                         } catch (Throwable t) {
-                            Log.e(MainActivity.class.toString(), t.toString());
+                            Log.e(MainActivity.class.toString(), "Could not read longitude!", t);
                         }
                     }
                 }
@@ -237,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
             mockNetwork = new MockLocationProvider(LocationManager.NETWORK_PROVIDER, context);
             mockGps = new MockLocationProvider(LocationManager.GPS_PROVIDER, context);
         } catch (SecurityException e) {
-            Log.e(MainActivity.class.toString(), e.toString());
+            Log.e(MainActivity.class.toString(), "Could not construct mock location providers!", e);
             toast(context.getResources().getString(R.string.MainActivity_MockNotApplied));
             stopMockingLocation(false);
             return;
@@ -281,10 +281,10 @@ public class MainActivity extends AppCompatActivity {
                 // during simulation, only move map but do not edit text
                 setMapMarker(lat, lng);
             }
-        } catch (Exception e) {
+        } catch (Throwable t) {
+            Log.e(MainActivity.class.toString(), "Could not update location!", t);
             toast(context.getResources().getString(R.string.MainActivity_MockNotApplied));
             changeButtonToApply();
-            Log.e(MainActivity.class.toString(), e.toString());
         }
     }
 
@@ -306,7 +306,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             setSimTimer(seconds * 1000L);
         } catch (SecurityException e) {
-            Log.e(MainActivity.class.toString(), e.toString());
+            Log.e(MainActivity.class.toString(), "Could not schedule next simulation!", e);
         }
     }
 
@@ -319,8 +319,8 @@ public class MainActivity extends AppCompatActivity {
                     simHandler.postDelayed(simRunnable, msDelay);
                 else
                     stopMockingLocation(true);
-            } catch (Exception e) {
-                Log.e(MainActivity.class.toString(), e.toString());
+            } catch (Throwable t) {
+                Log.e(MainActivity.class.toString(), "Could not mock location!", t);
             }
         }, msDelay);
     }
