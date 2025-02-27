@@ -13,6 +13,8 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -26,18 +28,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.Locale;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String sharedPrefKey = "cl.coders.mockposition.sharedpreferences";
 
-    private final ScheduledExecutorService simHandler = Executors.newScheduledThreadPool(1);
-    private ScheduledFuture<?> scheduledSim;
+    private final Handler simHandler = new Handler(Looper.getMainLooper());
+    private Runnable simRunnable;
 
     private MaterialButton buttonApplyStop;
     private WebView webView;
@@ -184,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        stopMockingLocation();
+        stopMockingLocation(true);
     }
 
     /**
@@ -237,6 +235,16 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        try {
+            mockNetwork = new MockLocationProvider(LocationManager.NETWORK_PROVIDER, context);
+            mockGps = new MockLocationProvider(LocationManager.GPS_PROVIDER, context);
+        } catch (SecurityException e) {
+            Log.e(MainActivity.class.toString(), e.toString());
+            toast(context.getResources().getString(R.string.MainActivity_MockNotApplied));
+            stopMockingLocation(false);
+            return;
+        }
+
         lat = Double.parseDouble(editTextLat.getText().toString());
         lng = Double.parseDouble(editTextLng.getText().toString());
 
@@ -247,41 +255,13 @@ public class MainActivity extends AppCompatActivity {
 
         changeButtonToStop();
 
-        try {
-            mockNetwork = new MockLocationProvider(LocationManager.NETWORK_PROVIDER, context);
-            mockGps = new MockLocationProvider(LocationManager.GPS_PROVIDER, context);
-        } catch (SecurityException e) {
-            Log.e(MainActivity.class.toString(), e.toString());
-            stopMockingLocation();
-            return;
-        }
-
-        setMockedLocation(lat, lng);
+        simulate();
 
         if (shouldStillRun()) {
             toast(context.getResources().getString(R.string.MainActivity_MockLocRunning));
             scheduleNext(timeInterval);
         } else {
-            stopMockingLocation();
-        }
-    }
-
-    /**
-     * Set a mocked location.
-     *
-     * @param lat latitude
-     * @param lng longitude
-     */
-    void setMockedLocation(double lat, double lng) {
-        try {
-            //MockLocationProvider mockNetwork = new MockLocationProvider(LocationManager.NETWORK_PROVIDER, context);
-            mockNetwork.pushLocation(lat, lng);
-            //MockLocationProvider mockGps = new MockLocationProvider(LocationManager.GPS_PROVIDER, context);
-            mockGps.pushLocation(lat, lng);
-        } catch (Exception e) {
-            toast(context.getResources().getString(R.string.MainActivity_MockNotApplied));
-            changeButtonToApply();
-            Log.e(MainActivity.class.toString(), e.toString());
+            stopMockingLocation(true);
         }
     }
 
@@ -292,11 +272,12 @@ public class MainActivity extends AppCompatActivity {
      * text box only after simulation is stopped
      */
     void simulate() {
+        boolean movement = shouldSimulateMovement();
         if (firstSim) { // first call in simulation - take current position
             simLat = lat;
             simLon = lng;
             firstSim = false;
-        } else {
+        } else if (movement) {
             simLat += Double.parseDouble(sharedPref.getString("DMockLat", "0")) / 1000000;
             simLon += Double.parseDouble(sharedPref.getString("DMockLon", "0")) / 1000000;
         }
@@ -307,15 +288,16 @@ public class MainActivity extends AppCompatActivity {
             //MockLocationProvider mockGps = new MockLocationProvider(LocationManager.GPS_PROVIDER, context);
             mockGps.pushLocation(simLat, simLon);
 
-            //move map but do not edit text
-            setMapMarker(simLat, simLon);
+            if (movement) {
+                //move map but do not edit text
+                setMapMarker(simLat, simLon);
+            }
         } catch (Exception e) {
             toast(context.getResources().getString(R.string.MainActivity_MockNotApplied));
             changeButtonToApply();
             Log.e(MainActivity.class.toString(), e.toString());
         }
     }
-
 
     /**
      * Check if mocking location should still be running
@@ -340,23 +322,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void setSimTimer(long msDelay) {
-        scheduledSim = simHandler.scheduleWithFixedDelay(() -> {
+        simHandler.postDelayed(simRunnable = () -> {
             try {
                 simulate();
 
-                if (!shouldStillRun()) {
-                    stopMockingLocation();
-                    scheduledSim.cancel(false);
-                }
+                if (shouldStillRun())
+                    simHandler.postDelayed(simRunnable, msDelay);
+                else
+                    stopMockingLocation(true);
             } catch (Exception e) {
                 Log.e(MainActivity.class.toString(), e.toString());
             }
-        }, 0, msDelay, TimeUnit.MILLISECONDS);
+        }, msDelay);
     }
 
-    protected void stopSimTimer() {
-        if (scheduledSim != null)
-            scheduledSim.cancel(false);
+    protected void stopSimTimer(boolean showToast) {
+        if (simRunnable == null) return;
+        simHandler.removeCallbacks(simRunnable); //stop handler - remove callback
         toast(context.getResources().getString(R.string.MainActivity_MockStopped));
     }
 
@@ -388,7 +370,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Stops mocking the location.
      */
-    protected void stopMockingLocation() {
+    protected void stopMockingLocation(boolean showToast) {
         changeButtonToApply();
         editor.putLong("endTime", System.currentTimeMillis() - 1);
         editor.apply();
@@ -405,7 +387,7 @@ public class MainActivity extends AppCompatActivity {
         // set text box to map position
         setLatLng(simLat + "", simLon + "", CHANGE_FROM_MAP);
 
-        stopSimTimer();
+        stopSimTimer(showToast);
     }
 
     /**
@@ -421,7 +403,7 @@ public class MainActivity extends AppCompatActivity {
      */
     void changeButtonToStop() {
         buttonApplyStop.setText(context.getResources().getString(R.string.ActivityMain_Stop));
-        buttonApplyStop.setOnClickListener(view -> stopMockingLocation());
+        buttonApplyStop.setOnClickListener(view -> stopMockingLocation(true));
     }
 
     /**
@@ -465,6 +447,12 @@ public class MainActivity extends AppCompatActivity {
      */
     String getLng() {
         return editTextLng.getText().toString();
+    }
+
+    private boolean shouldSimulateMovement() {
+        double dMockLat = Double.parseDouble(sharedPref.getString("DMockLat", "0"));
+        double dMockLon = Double.parseDouble(sharedPref.getString("DMockLon", "0"));
+        return dMockLat != 0 || dMockLon != 0;
     }
 
     static void setTimeInterval(int timeInterval) {
