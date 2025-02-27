@@ -339,6 +339,7 @@ public class MainActivity extends AppCompatActivity {
     protected void stopSimTimer(boolean showToast) {
         if (simRunnable == null) return;
         simHandler.removeCallbacks(simRunnable); //stop handler - remove callback
+        simRunnable = null;
         toast(context.getResources().getString(R.string.MainActivity_MockStopped));
     }
 
