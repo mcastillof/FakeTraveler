@@ -89,8 +89,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:text="0"
-                    android:inputType="numberSigned"/>
+                    android:inputType="numberSigned|numberDecimal"
+                    android:text="0" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline"
@@ -105,8 +105,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:text="0"
-                    android:inputType="numberSigned"/>
+                    android:inputType="numberSigned|numberDecimal"
+                    android:text="0" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.constraintlayout.widget.Guideline
