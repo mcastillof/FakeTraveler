@@ -12,7 +12,7 @@
     <!--  Strings from MainActivity.java  -->
     <string name="MainActivity_NoLatLong">Нет значения широты и долготы. Длительное нажатие на карте, где вы хотите быть расположены.</string>
     <string name="MainActivity_MockApplied">Изменённое местоположение применено.</string>
-    <string name="MainActivity_MockNotApplied">«Изменённое местоположение не применяется. Вы должны включить изменение местоположения в настройках разработчика»</string>
+    <string name="MainActivity_MockNotApplied">Изменённое местоположение не применяется. Вы должны включить изменение местоположения в настройках разработчика!</string>
     <string name="MainActivity_MockLocRunning">Служба размещения местоположения работает.</string>
     <string name="MainActivity_MockStopped">Изменение остановлено.</string>
 

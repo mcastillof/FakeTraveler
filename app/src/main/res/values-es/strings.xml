@@ -11,9 +11,9 @@
     <!--  Strings from MainActivity.java  -->
     <string name="MainActivity_NoLatLong">No hay valores para lat o long. Manten pulsado en el mapa donde quieres posicionarte.</string>
     <string name="MainActivity_MockApplied">Posiciones ficticias aplicadas.</string>
-    <string name="MainActivity_MockNotApplied">"Posiciones ficticias no aplicadas. Debes activar la aplicacion de ubicación de prueba en las Opciones del programador"</string>
+    <string name="MainActivity_MockNotApplied">Posiciones ficticias no aplicadas. Debes activar la aplicacion de ubicación de prueba en las Opciones del programador!</string>
     <string name="MainActivity_MockLocRunning">Servicio de posiciones ficticias corriendo.</string>
-    <string name="MainActivity_MockStopped">Falsificaciones detenidas</string>
+    <string name="MainActivity_MockStopped">Falsificaciones detenidas.</string>
 
     <!--  Strings from activity_more.xml layout  -->
     <string name="ActivityMore_HowToTittle">¿Cómo se usa?</string>

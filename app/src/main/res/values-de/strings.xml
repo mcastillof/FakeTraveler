@@ -13,7 +13,7 @@
     <!--  Strings from MainActivity.java  -->
     <string name="MainActivity_NoLatLong">Kein Längen- und Breitengrad. Halten Sie den gewünschten Standort auf der Karte gedrückt.</string>
     <string name="MainActivity_MockApplied">Simulierter Standort gesetzt.</string>
-    <string name="MainActivity_MockNotApplied">"Simulierter Standort kann nicht angewendet werden. Aktivieren Sie die Einstellung für simulierte Standorte in den Entwickleroptionen."</string>
+    <string name="MainActivity_MockNotApplied">Simulierter Standort kann nicht angewendet werden. Aktivieren Sie die Einstellung für simulierte Standorte in den Entwickleroptionen!</string>
     <string name="MainActivity_MockLocRunning">Standort Simulation läuft.</string>
     <string name="MainActivity_MockStopped">Standort Simulation beendet.</string>
 

@@ -11,9 +11,9 @@
     <!--  Strings from MainActivity.java  -->
     <string name="MainActivity_NoLatLong">Não existem valores para lat or long. Mantenha pressionado no mapa onde deseja se pocisionar.</string>
     <string name="MainActivity_MockApplied">Posições fictícias aplicadas.</string>
-    <string name="MainActivity_MockNotApplied">"Posições fictícias não aplicadas. Ativar suporte para app de local fictício nas configurações do sistema, modo programador"</string>
+    <string name="MainActivity_MockNotApplied">Posições fictícias não aplicadas. Ativar suporte para app de local fictício nas configurações do sistema, modo programador!</string>
     <string name="MainActivity_MockLocRunning">Serviço de posiciones fictícias rodando.</string>
-    <string name="MainActivity_MockStopped">Mudanças desativadas</string>
+    <string name="MainActivity_MockStopped">Mudanças desativadas.</string>
 
 
     <!--  Strings from activity_more.xml layout  -->
