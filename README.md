@@ -14,6 +14,7 @@ Long press in the map where you want to be located or type the latitude and long
 
 <div style="display:flex;">
 <img alt="Main screen of the app" src="screenshots/map.png" width="30%">
+<img alt="Main screen of the app in dark mode" src="screenshots/dark_mode.png" width="30%">
 <img alt="Settings section of the app" src="screenshots/settings.png" width="30%">
 </div>
 
