@@ -54,5 +54,5 @@ Copyright © 2018 Matías Castillo Felmer
 > 
 > You should have received a copy of the GNU General Public License
 > along with this program.  If not, see <https://www.gnu.org/licenses/>.
-    
-The icon launcher is derivative of ["Location, map, navigation, pointer icon"](https://www.iconfinder.com/icons/2135924/location_map_navigation_pointer_icon) by First Styles, used under CC 3.0 BY. The icon Launcher was created using [Android Asset Studio](https://jgilfelt.github.io/AndroidAssetStudio/icons-launcher.html), and is licensed under CC 3.0 BY, by Matías Castillo Felmer. 
+
+The launcher icon was created by @ArtistDev44 (see #77) - thank you very much for your work!
