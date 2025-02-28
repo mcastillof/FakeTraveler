@@ -10,10 +10,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,9 +25,6 @@ public class MoreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_more);
         Context context = getApplicationContext();
         SharedPreferences sharedPref = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
-
-        TextView textView3 = findViewById(R.id.textView3);
-        textView3.setMovementMethod(LinkMovementMethod.getInstance());
 
         EditText etDMockLat = findViewById(R.id.et_DMockLat);
         etDMockLat.setText(DECIMAL_FORMAT.format(getDouble(sharedPref, "dLat", 0)));
