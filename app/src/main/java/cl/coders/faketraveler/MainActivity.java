@@ -255,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
 
         changeButtonToStop();
 
-        simulate();
+        simulate(false);
 
         if (shouldStillRun()) {
             toast(context.getResources().getString(R.string.MainActivity_MockLocRunning));
@@ -271,9 +271,7 @@ public class MainActivity extends AppCompatActivity {
      * Map becomes updated during simulation
      * text box only after simulation is stopped
      */
-    void simulate() {
-        boolean shouldMove = dLat != 0 || dLng != 0;
-
+    void simulate(boolean shouldMove) {
         if (shouldMove) {
             lat += dLat / 1000000;
             lng += dLng / 1000000;
@@ -321,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
     protected void setSimTimer(long msDelay) {
         simHandler.postDelayed(simRunnable = () -> {
             try {
-                simulate();
+                simulate(dLat != 0 || dLng != 0);
 
                 if (shouldStillRun())
                     simHandler.postDelayed(simRunnable, msDelay);
