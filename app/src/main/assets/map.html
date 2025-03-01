@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" href="leaflet.css">
     <script src="leaflet.js"></script>
+    <script src="leaflet-providers.js"></script>
     <script src="search.js"></script>
     <style>
         html, body {
@@ -63,6 +64,7 @@
     var lat = urlParams.get('lat') ?? 12;
     var lng = urlParams.get('lng') ?? 15;
     var zoom = urlParams.get('zoom') ?? 12;
+    var provider = urlParams.get('provider') ?? 'OpenStreetMap';
 
     var map = L.map('map').setView([lat, lng], zoom);
     var popup = L.popup();
@@ -76,12 +78,8 @@
           }
         });
 
-
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    L.tileLayer.provider(provider, {
         className: 'map-tiles',
-        minZoom: 1,
-        maxZoom: 19,
     }).addTo(map);
 
     var icon = L.icon({

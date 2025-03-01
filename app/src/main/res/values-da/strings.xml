@@ -27,6 +27,9 @@
     <string name="ActivityMore_IconLicense">The launcher icon was created by @ArtistDev44 - thank you very much for your work!</string>
     <string name="ActivityMore_HowToInstructions">Anvend et langt tryk, der hvor du vil placeres på kortet og tryk på Anvend-knappen. Placeringen vil blive imiteret én eller flere gange ifølge konfigurationen nedenfor. Imens imiteringen kører, kan du ændre placering med et langt tryk, der hvor du vil være. For at stoppe med at imitere placeringen, tryk på Stop-knappen. Note: Du skal aktivére Fake Traveler som imiteret lokationsapp i udvikler indstillingerne.</string>
     <string name="ActivityMore_DMockLatLon">Imiterer bevægelse? (1 / 1 000 000°, 0 = nej)</string>
+    <string name="ActivityMore_MapProvider">Map Provider (e.g., \'OpenStreetMap\')</string>
+    <string name="ActivityMore_MapProviderInfo">Requires restart - a list of possible values can be found here: https://leaflet-extras.github.io/leaflet-providers/preview/</string>
+    <string name="ActivityMore_LeafletLicense"><![CDATA[Both <a href="https://github.com/Leaflet/Leaflet/blob/main/LICENSE">Leaflet</a> and <a href="https://github.com/leaflet-extras/leaflet-providers/blob/master/license.md">Leaflet-providers</a> are licensed under the BSD 2-Clause License.]]></string>
 
 
 </resources>

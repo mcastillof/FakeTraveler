@@ -16,6 +16,7 @@ import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     private double dLat;
     private double dLng;
     private long endTime;
+    private String mapProvider;
 
     @Override
     @SuppressLint("SetJavaScriptEnabled") // XSS unlikely an issue here...
@@ -111,7 +113,12 @@ public class MainActivity extends AppCompatActivity {
 
         setLatLng(lat, lng, LOAD);
 
-        webView.loadUrl("file:///android_asset/map.html?lat=" + lat + "&lng=" + lng + "&zoom=" + zoom);
+        webView.loadUrl(Uri.parse("file:///android_asset/map.html").buildUpon()
+                .appendQueryParameter("lat", "" + lat)
+                .appendQueryParameter("lng", "" + lng)
+                .appendQueryParameter("zoom", "" + zoom)
+                .appendQueryParameter("provider", mapProvider)
+                .build().toString());
 
         editTextLat.addTextChangedListener(new TextWatcher() {
             @Override
@@ -203,6 +210,8 @@ public class MainActivity extends AppCompatActivity {
         dLat = getDouble(sharedPref, "dLat", 0);
         dLng = getDouble(sharedPref, "dLng", 0);
         endTime = sharedPref.getLong("endTime", 0);
+        mapProvider = sharedPref.getString("mapProvider",
+                MapProviderUtil.getDefaultMapProvider(Locale.getDefault()));
 
         if (version != currentVersion) {
             version = currentVersion;
@@ -222,6 +231,7 @@ public class MainActivity extends AppCompatActivity {
         putDouble(editor, "dLat", dLat);
         putDouble(editor, "dLng", dLng);
         editor.putLong("endTime", endTime);
+        editor.putString("mapProvider", mapProvider);
 
         editor.apply();
     }

@@ -26,6 +26,9 @@
     <string name="ActivityMore_IconLicense">The launcher icon was created by @ArtistDev44 - thank you very much for your work!</string>
     <string name="ActivityMore_HowToInstructions">Pressione no mapa o local onde deseja a configuração fictícia e então aperte o botão aplicar. A configuração se aplicará uma ou mais vezes e dependerá das configurações abaixo. Enquanto a aplicação estiver ativa, poderá mudar de lugar ao apertar no local desejado no mapa. Presione o botão parar para finalizar e mudança. Nota: Sempre ativar o Fake Traveler como aplicação para app de local fictício nas configurações do sistema, modo programador.</string>
     <string name="ActivityMore_DMockLatLon">Mock movement? (1 / 1 000 000°, 0 = no)</string>
+    <string name="ActivityMore_MapProvider">Map Provider (e.g., \'OpenStreetMap\')</string>
+    <string name="ActivityMore_MapProviderInfo">Requires restart - a list of possible values can be found here: https://leaflet-extras.github.io/leaflet-providers/preview/</string>
+    <string name="ActivityMore_LeafletLicense"><![CDATA[Both <a href="https://github.com/Leaflet/Leaflet/blob/main/LICENSE">Leaflet</a> and <a href="https://github.com/leaflet-extras/leaflet-providers/blob/master/license.md">Leaflet-providers</a> are licensed under the BSD 2-Clause License.]]></string>
 
 
 </resources>

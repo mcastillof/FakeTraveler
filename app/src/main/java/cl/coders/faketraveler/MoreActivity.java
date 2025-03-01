@@ -7,11 +7,15 @@ import static cl.coders.faketraveler.SharedPrefsUtil.putDouble;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,6 +29,15 @@ public class MoreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_more);
         Context context = getApplicationContext();
         SharedPreferences sharedPref = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
+
+        TextView tvLeafletLicense = findViewById(R.id.tv_LeafletLicense);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            tvLeafletLicense.setText(Html.fromHtml(getString(R.string.ActivityMore_LeafletLicense),
+                    Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            tvLeafletLicense.setText(Html.fromHtml(getString(R.string.ActivityMore_LeafletLicense)));
+        }
+        tvLeafletLicense.setMovementMethod(LinkMovementMethod.getInstance());
 
         EditText etDMockLat = findViewById(R.id.et_DMockLat);
         etDMockLat.setText(DECIMAL_FORMAT.format(getDouble(sharedPref, "dLat", 0)));
@@ -142,6 +155,35 @@ public class MoreActivity extends AppCompatActivity {
                     } catch (Throwable t) {
                         Log.e(MoreActivity.class.toString(), "Could not parse mockFrequency!", t);
                     }
+                }
+
+                editor.apply();
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
+        EditText etMapProvider = findViewById(R.id.et_MapProvider);
+        etMapProvider.setText(sharedPref.getString("mapProvider",
+                MapProviderUtil.getDefaultMapProvider(Locale.getDefault())));
+        etMapProvider.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                Context context = getApplicationContext();
+                SharedPreferences sharedPref = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+
+                if (etMapProvider.getText().toString().isBlank()) {
+                    editor.putString("mapProvider", MapProviderUtil.getDefaultMapProvider(Locale.getDefault()));
+                } else {
+                    editor.putString("mapProvider", etMapProvider.getText().toString());
                 }
 
                 editor.apply();

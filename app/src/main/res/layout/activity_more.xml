@@ -110,6 +110,31 @@
                     android:text="0" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_MapProvider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="@string/ActivityMore_MapProvider"
+                android:textSize="18sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:autoLink="web"
+                android:text="@string/ActivityMore_MapProviderInfo" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/et_MapProvider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:ems="10"
+                android:inputType="text"
+                android:text="OpenStreetMap" />
+
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline2"
                 android:layout_width="match_parent"
@@ -145,20 +170,21 @@
                 android:text="@string/ActivityMore_Bugs"
                 android:textSize="14sp" />
 
-            <androidx.appcompat.widget.LinearLayoutCompat
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textView3"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="horizontal">
+                android:autoLink="web"
+                android:text="@string/ActivityMore_IconLicense" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:autoLink="web"
-                    android:text="@string/ActivityMore_IconLicense" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_LeafletLicense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/ActivityMore_LeafletLicense" />
+
         </androidx.appcompat.widget.LinearLayoutCompat>
     </ScrollView>
 
