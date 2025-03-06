@@ -1,0 +1,2 @@
+* Rand-zu-Rand-Layout temporär deaktiviert (behebt das Android 15 und 16 Layout)
+* Erlaube die Einstellung verschiedener Kartenanbieter (mit Hilfe von leaflet-providers)
