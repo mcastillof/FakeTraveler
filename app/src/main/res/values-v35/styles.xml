@@ -3,5 +3,6 @@
 
     <style name="AppTheme" parent="Theme.Material3.DayNight">
         <item name="android:windowDrawsSystemBarBackgrounds">false</item>
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
     </style>
 </resources>
