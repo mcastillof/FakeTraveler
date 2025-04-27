@@ -5,10 +5,12 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.SystemClock;
+import android.util.Log;
 
 public class MockLocationProvider {
 
     private static final int MAX_RETRY_COUNT = 3;
+    private static final String TAG = MockLocationProvider.class.getSimpleName();
 
     private final String providerName;
     private final Context ctx;
@@ -45,7 +47,8 @@ public class MockLocationProvider {
                 shutdown();
                 lm.addTestProvider(providerName, false, false, false, false, false, true, true, powerUsage, accuracy);
                 lm.setTestProviderEnabled(providerName, true);
-            } catch (Throwable ignored) {
+            } catch (Throwable throwable) {
+                Log.e(TAG, "startup: ",throwable );
                 startup(lm, powerUsage, accuracy, currentRetryCount + 1);
             }
         } else {
@@ -76,7 +79,7 @@ public class MockLocationProvider {
             mockLocation.setVerticalAccuracyMeters(0.1F);
             mockLocation.setSpeedAccuracyMetersPerSecond(0.01F);
         }
-
+        Log.d("TAG", "pushLocation: " + lat + " ," + lon);
         lm.setTestProviderLocation(providerName, mockLocation);
     }
 

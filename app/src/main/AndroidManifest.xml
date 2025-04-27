@@ -32,6 +32,10 @@
             android:name="cl.coders.faketraveler.MoreActivity"
             android:parentActivityName="cl.coders.faketraveler.MainActivity" />
 
+        <service
+            android:name=".MockedLocationService"
+            android:enabled="true" />
+
     </application>
 
 </manifest>
