@@ -1,12 +1,12 @@
-package cl.coders.faketraveler;
+package cl.coders.faketraveler.presentation;
 
-import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_EDITTEXT;
-import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_MAP;
-import static cl.coders.faketraveler.MainActivity.SourceChange.LOAD;
-import static cl.coders.faketraveler.MainActivity.SourceChange.NONE;
-import static cl.coders.faketraveler.SharedPrefsUtil.getDouble;
-import static cl.coders.faketraveler.SharedPrefsUtil.migrateOldPreferences;
-import static cl.coders.faketraveler.SharedPrefsUtil.putDouble;
+import static cl.coders.faketraveler.presentation.MainActivity.SourceChange.CHANGE_FROM_EDITTEXT;
+import static cl.coders.faketraveler.presentation.MainActivity.SourceChange.CHANGE_FROM_MAP;
+import static cl.coders.faketraveler.presentation.MainActivity.SourceChange.LOAD;
+import static cl.coders.faketraveler.presentation.MainActivity.SourceChange.NONE;
+import static cl.coders.faketraveler.data.SharedPrefsUtil.getDouble;
+import static cl.coders.faketraveler.data.SharedPrefsUtil.migrateOldPreferences;
+import static cl.coders.faketraveler.data.SharedPrefsUtil.putDouble;
 
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
@@ -38,6 +38,10 @@ import com.google.android.material.button.MaterialButton;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
+
+import cl.coders.faketraveler.data.service.MockedLocationService;
+import cl.coders.faketraveler.domain.MockedState;
+import cl.coders.faketraveler.R;
 
 
 public class MainActivity extends AppCompatActivity implements ServiceConnection {
@@ -218,7 +222,6 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 
     private void saveSettings() {
         Editor editor = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE).edit();
-
         editor.putInt("version", version);
         putDouble(editor, "lat", lat);
         putDouble(editor, "lng", lng);
@@ -318,7 +321,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
      * @param mLng      longitude
      * @param srcChange CHANGE_FROM_EDITTEXT or CHANGE_FROM_MAP, indicates from where comes the change
      */
-    void setLatLng(double mLat, double mLng, SourceChange srcChange) {
+    public void setLatLng(double mLat, double mLng, SourceChange srcChange) {
         lat = mLat;
         lng = mLng;
 

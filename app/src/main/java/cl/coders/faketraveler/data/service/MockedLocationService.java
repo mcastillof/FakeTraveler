@@ -1,4 +1,4 @@
-package cl.coders.faketraveler;
+package cl.coders.faketraveler.data.service;
 
 import android.app.Service;
 import android.content.Intent;
@@ -14,6 +14,9 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import cl.coders.faketraveler.data.MockLocationProvider;
+import cl.coders.faketraveler.domain.MockedState;
 
 public class MockedLocationService extends Service {
 

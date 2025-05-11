@@ -1,6 +1,6 @@
-package cl.coders.faketraveler;
+package cl.coders.faketraveler.data;
 
-import static cl.coders.faketraveler.MainActivity.sharedPrefKey;
+import static cl.coders.faketraveler.presentation.MainActivity.sharedPrefKey;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -24,7 +24,7 @@ public final class SharedPrefsUtil {
         return Double.longBitsToDouble(prefs.getLong(key, Double.doubleToLongBits(defaultValue)));
     }
 
-    static void migrateOldPreferences(Context context) {
+    public static void migrateOldPreferences(Context context) {
         SharedPreferences oldPrefs = context.getSharedPreferences("cl.coders.mockposition.sharedpreferences", Context.MODE_PRIVATE);
         if (!oldPrefs.contains("version")) return; // Either non-existent or already migrated
 

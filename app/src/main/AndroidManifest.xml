@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="cl.coders.faketraveler.MainActivity"
+            android:name="cl.coders.faketraveler.presentation.MainActivity"
             android:exported="true"
             android:launchMode="singleTask">
 
@@ -29,11 +29,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="cl.coders.faketraveler.MoreActivity"
-            android:parentActivityName="cl.coders.faketraveler.MainActivity" />
+            android:name="cl.coders.faketraveler.presentation.MoreActivity"
+            android:parentActivityName="cl.coders.faketraveler.presentation.MainActivity" />
 
         <service
-            android:name=".MockedLocationService"
+            android:name=".data.service.MockedLocationService"
             android:enabled="true" />
 
     </application>

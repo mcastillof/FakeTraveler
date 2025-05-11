@@ -1,12 +1,13 @@
-package cl.coders.faketraveler;
+package cl.coders.faketraveler.presentation;
 
-import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_MAP;
+import static cl.coders.faketraveler.presentation.MainActivity.SourceChange.CHANGE_FROM_MAP;
 
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 
 
 public class WebAppInterface {
+    private final static String TAG = WebAppInterface.class.getName();
 
     private final MainActivity mainActivity;
 
@@ -28,7 +29,7 @@ public class WebAppInterface {
             try {
                 mainActivity.setLatLng(Double.parseDouble(lat), Double.parseDouble(lng), CHANGE_FROM_MAP);
             } catch (Throwable t) {
-                Log.e(WebAppInterface.class.toString(), "Could not set new position from map!", t);
+                Log.e(TAG, "Could not set new position from map!", t);
             }
         });
     }
@@ -39,7 +40,7 @@ public class WebAppInterface {
             try {
                 mainActivity.setZoom(Double.parseDouble(str));
             } catch (Throwable t) {
-                Log.e(WebAppInterface.class.toString(), "Could not save zoom!", t);
+                Log.e(TAG, "Could not save zoom!", t);
             }
         });
     }

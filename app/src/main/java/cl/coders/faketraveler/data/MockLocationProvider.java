@@ -1,4 +1,4 @@
-package cl.coders.faketraveler;
+package cl.coders.faketraveler.data;
 
 import android.content.Context;
 import android.location.Location;

@@ -1,9 +1,9 @@
-package cl.coders.faketraveler;
+package cl.coders.faketraveler.presentation;
 
-import static cl.coders.faketraveler.MainActivity.DECIMAL_FORMAT;
-import static cl.coders.faketraveler.MainActivity.sharedPrefKey;
-import static cl.coders.faketraveler.SharedPrefsUtil.getDouble;
-import static cl.coders.faketraveler.SharedPrefsUtil.putDouble;
+import static cl.coders.faketraveler.presentation.MainActivity.DECIMAL_FORMAT;
+import static cl.coders.faketraveler.presentation.MainActivity.sharedPrefKey;
+import static cl.coders.faketraveler.data.SharedPrefsUtil.getDouble;
+import static cl.coders.faketraveler.data.SharedPrefsUtil.putDouble;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -20,6 +20,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Locale;
+
+import cl.coders.faketraveler.R;
 
 public class MoreActivity extends AppCompatActivity {
 

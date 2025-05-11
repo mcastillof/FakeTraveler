@@ -1,4 +1,4 @@
-package cl.coders.faketraveler;
+package cl.coders.faketraveler.presentation;
 
 import java.util.Locale;
 
