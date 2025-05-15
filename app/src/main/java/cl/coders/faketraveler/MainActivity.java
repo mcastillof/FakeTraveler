@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 
     private SourceChange srcChange = NONE;
 
+    private MockedLocationService.MockedBinder binder = null;
+
     // Config
     private int version;
     private double lat;
@@ -110,16 +112,13 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 
         setLatLng(lat, lng, LOAD);
 
-        webView.loadUrl(Uri
-                                .parse("file:///android_asset/map.html")
-                                .buildUpon()
-                                .appendQueryParameter("lat", "" + lat)
-                                .appendQueryParameter("lng",
-                                                      "" + lng)
-                                .appendQueryParameter("zoom", "" + zoom)
-                                .appendQueryParameter("provider", mapProvider)
-                                .build()
-                                .toString());
+        webView.loadUrl(Uri.parse("file:///android_asset/map.html").buildUpon()
+                .appendQueryParameter("lat", "" + lat)
+                .appendQueryParameter("lng", "" + lng)
+                .appendQueryParameter("zoom", "" + zoom)
+                .appendQueryParameter("provider", mapProvider)
+                .build()
+                .toString());
 
         editTextLat.addTextChangedListener(new TextWatcher() {
             @Override
@@ -246,12 +245,14 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         lat = Double.parseDouble(editTextLat.getText().toString());
         lng = Double.parseDouble(editTextLng.getText().toString());
 
+        if (binder != null)
+            binder.startMocked(lng, lat, dLng / 1000000, dLat / 1000000, mockFrequency * 1000L, mockCount);
+
         toast(context.getResources().getString(R.string.MainActivity_MockApplied));
         endTime = System.currentTimeMillis() + (mockCount - 1L) * mockFrequency * 1000L;
         saveSettings();
 
         changeButtonToStop();
-        binder.startMocked(lng, lat, dLng / 1000000, dLat / 1000000, mockFrequency * 1000L, mockCount);
     }
 
     /**
@@ -334,8 +335,6 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 
         saveSettings();
     }
-
-    private MockedLocationService.MockedBinder binder = null;
 
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {

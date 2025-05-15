@@ -9,8 +9,9 @@ import android.util.Log;
 
 public class MockLocationProvider {
 
-    private static final int MAX_RETRY_COUNT = 3;
     private static final String TAG = MockLocationProvider.class.getSimpleName();
+
+    private static final int MAX_RETRY_COUNT = 3;
 
     private final String providerName;
     private final Context ctx;
@@ -47,8 +48,8 @@ public class MockLocationProvider {
                 shutdown();
                 lm.addTestProvider(providerName, false, false, false, false, false, true, true, powerUsage, accuracy);
                 lm.setTestProviderEnabled(providerName, true);
-            } catch (Throwable throwable) {
-                Log.e(TAG, "startup: ",throwable );
+            } catch (Throwable t) {
+                Log.e(TAG, "startup: ", t);
                 startup(lm, powerUsage, accuracy, currentRetryCount + 1);
             }
         } else {

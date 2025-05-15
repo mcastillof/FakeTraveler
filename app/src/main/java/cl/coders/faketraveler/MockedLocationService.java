@@ -18,13 +18,14 @@ import java.util.TimerTask;
 public class MockedLocationService extends Service {
 
     private static final String TAG = MockedLocationService.class.getSimpleName();
+
+    protected final MutableLiveData<MockedState> mockedState = new MutableLiveData<>();
+    protected final MutableLiveData<Location> mockedLocation = new MutableLiveData<>();
+
     private final Timer timer = new Timer();
 
     private MockLocationProvider gpsProvider;
     private MockLocationProvider networkProvider;
-    protected MutableLiveData<MockedState> mockedState = new MutableLiveData<>();
-    protected MutableLiveData<Location> mockedLocation = new MutableLiveData<>();
-
 
     @Nullable
     @Override
@@ -44,7 +45,7 @@ public class MockedLocationService extends Service {
 
     @Override
     public void onDestroy() {
-        Log.d(TAG, "Mocked is Finish");
+        Log.d(TAG, "Mock is finished");
         timer.cancel();
         gpsProvider.shutdown();
         networkProvider.shutdown();
@@ -52,8 +53,7 @@ public class MockedLocationService extends Service {
         super.onDestroy();
     }
 
-    protected void startMockedService(double longitude, double latitude, double longitudeDistance, double latitudeDistance, long mockMilli,
-            int maxTime) {
+    protected void startMockedService(double longitude, double latitude, double longitudeDistance, double latitudeDistance, long mockMilli, int maxTime) {
         MockedTask mockedTask = new MockedTask(longitude, latitude, longitudeDistance, latitudeDistance, maxTime);
         timer.schedule(mockedTask, 0L, mockMilli);
         mockedState.setValue(MockedState.MOCKED);
@@ -72,7 +72,7 @@ public class MockedLocationService extends Service {
             this.latitude = latitude;
             this.longitudeMockedDistance = longitudeMockedDistance;
             this.latitudeMockedDistance = latitudeMockedDistance;
-            maxLocationTimes = maxTimes;
+            this.maxLocationTimes = maxTimes;
         }
 
         @Override
@@ -81,16 +81,15 @@ public class MockedLocationService extends Service {
             value.setLongitude(longitude);
             value.setLatitude(latitude);
             mockedLocation.postValue(value);
-            gpsProvider.pushLocation(latitude , longitude);
-            networkProvider.pushLocation(latitude , longitude);
-            currentTimes++;
+            gpsProvider.pushLocation(latitude, longitude);
+            networkProvider.pushLocation(latitude, longitude);
+            ++currentTimes;
             if (maxLocationTimes != 0 && maxLocationTimes == currentTimes) {
                 this.cancel();
                 stopSelf();
             }
             latitude += latitudeMockedDistance;
             longitude += longitudeMockedDistance;
-
         }
     }
 
@@ -101,14 +100,13 @@ public class MockedLocationService extends Service {
 
         public MockedBinder(MockedLocationService service) {
             this.service = service;
-            mockedState = service.mockedState;
-            mockedLocation = service.mockedLocation;
+            this.mockedState = service.mockedState;
+            this.mockedLocation = service.mockedLocation;
         }
 
         public void startMocked(double longitude, double latitude, double longitudeDistance, double latitudeDistance, long mockMilli, int maxTimes) {
             service.startMockedService(longitude, latitude, longitudeDistance, latitudeDistance, mockMilli, maxTimes);
         }
     }
-
 
 }
