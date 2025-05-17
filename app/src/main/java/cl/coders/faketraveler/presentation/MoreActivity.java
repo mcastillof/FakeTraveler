@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
-import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -39,25 +38,17 @@ public class MoreActivity extends AppCompatActivity {
 
         EditText etDMockLat = findViewById(R.id.et_DMockLat);
         etDMockLat.setText(DECIMAL_FORMAT.format(config.getDeltaLatitude()));
-        etDMockLat.addTextChangedListener(new TextWatcher() {
+        etDMockLat.addTextChangedListener(new AfterTextChangeListener() {
             @Override
             public void afterTextChanged(Editable s) {
                 Double dLatitude = TypeParser.parseDouble(s.toString());
                 config.edit().setDeltaLatitude(Objects.requireNonNullElse(dLatitude, 0D)).save();
             }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
         });
 
         EditText etDMockLon = findViewById(R.id.et_DMockLon);
         etDMockLon.setText(DECIMAL_FORMAT.format(config.getDeltaLongitude()));
-        etDMockLon.addTextChangedListener(new TextWatcher() {
+        etDMockLon.addTextChangedListener(new AfterTextChangeListener() {
             @Override
             public void afterTextChanged(Editable s) {
                 Double dLongitude = TypeParser.parseDouble(s.toString());
@@ -67,60 +58,31 @@ public class MoreActivity extends AppCompatActivity {
                     config.edit().setDeltaLongitude(dLongitude).save();
                 }
             }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-            }
         });
 
         EditText etMockCount = findViewById(R.id.et_MockCount);
         etMockCount.setText(String.format(Locale.ROOT, "%d", config.getMockedCount()));
-        etMockCount.addTextChangedListener(new TextWatcher() {
+        etMockCount.addTextChangedListener(new AfterTextChangeListener() {
             @Override
             public void afterTextChanged(Editable s) {
                 Integer mockCount = TypeParser.parseInteger(s.toString());
                 config.edit().setMockedCount(Objects.requireNonNullElse(mockCount, 0)).save();
             }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-            }
         });
 
         EditText etMockFrequency = findViewById(R.id.et_MockFrequency);
         etMockFrequency.setText(String.format(Locale.ROOT, "%d", config.getMockFrequency()));
-        etMockFrequency.addTextChangedListener(new TextWatcher() {
+        etMockFrequency.addTextChangedListener(new AfterTextChangeListener() {
             @Override
             public void afterTextChanged(Editable s) {
                 Integer mockFrequency = TypeParser.parseInteger(s.toString());
                 config.edit().setMockFrequency(Objects.requireNonNullElse(mockFrequency, 10)).save();
             }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
         });
 
         EditText etMapProvider = findViewById(R.id.et_MapProvider);
         etMapProvider.setText(config.getMapProvider());
-        etMapProvider.addTextChangedListener(new TextWatcher() {
+        etMapProvider.addTextChangedListener(new AfterTextChangeListener() {
             @Override
             public void afterTextChanged(Editable s) {
                 if (etMapProvider.getText().toString().isBlank()) {
@@ -128,15 +90,6 @@ public class MoreActivity extends AppCompatActivity {
                 } else {
                     config.edit().setMapProvider(s.toString()).save();
                 }
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         });
     }

@@ -15,7 +15,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -88,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 
         webView.loadUrl(Uri.parse("file:///android_asset/map.html").buildUpon().appendQueryParameter("lat", "" + getLatitude()).appendQueryParameter("lng", "" + getLongitude()).appendQueryParameter("zoom", "" + config.geZoom()).appendQueryParameter("provider", config.getMapProvider()).build().toString());
 
-        editTextLat.addTextChangedListener(new TextWatcher() {
+        editTextLat.addTextChangedListener(new AfterTextChangeListener() {
             @Override
             public void afterTextChanged(Editable s) {
                 if (srcChange == CHANGE_FROM_MAP) return;
@@ -100,17 +99,9 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 
                 }
             }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
         });
 
-        editTextLng.addTextChangedListener(new TextWatcher() {
+        editTextLng.addTextChangedListener(new AfterTextChangeListener() {
             @Override
             public void afterTextChanged(Editable s) {
                 if (!editTextLng.getText().toString().isEmpty() && !editTextLng.getText().toString().equals("-")) {
@@ -123,14 +114,6 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
                         }
                     }
                 }
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         });
     }
