@@ -4,22 +4,14 @@ import static cl.coders.faketraveler.presentation.MainActivity.SourceChange.CHAN
 import static cl.coders.faketraveler.presentation.MainActivity.SourceChange.CHANGE_FROM_MAP;
 import static cl.coders.faketraveler.presentation.MainActivity.SourceChange.LOAD;
 import static cl.coders.faketraveler.presentation.MainActivity.SourceChange.NONE;
-import static cl.coders.faketraveler.data.SharedPrefsUtil.getDouble;
-import static cl.coders.faketraveler.data.SharedPrefsUtil.migrateOldPreferences;
-import static cl.coders.faketraveler.data.SharedPrefsUtil.putDouble;
 
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.Location;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.text.Editable;
@@ -39,13 +31,18 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
+import cl.coders.faketraveler.data.repository.ConfigRepository;
 import cl.coders.faketraveler.data.service.MockedLocationService;
 import cl.coders.faketraveler.domain.MockedState;
 import cl.coders.faketraveler.R;
+import cl.coders.faketraveler.domain.repository.Config;
 
 
 public class MainActivity extends AppCompatActivity implements ServiceConnection {
+    private static final String TAG = MainActivity.class.getName();
+    private Config config;
 
+    @Deprecated
     public static final String sharedPrefKey = "cl.coders.faketraveler.sharedprefs";
     public static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.######", DecimalFormatSymbols.getInstance(Locale.ROOT));
 
@@ -54,26 +51,14 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     private EditText editTextLat;
     private EditText editTextLng;
     private Context context;
-    private int currentVersion;
 
     private SourceChange srcChange = NONE;
-
-    // Config
-    private int version;
-    private double lat;
-    private double lng;
-    private double zoom;
-    private int mockCount;
-    private int mockFrequency;
-    private double dLat;
-    private double dLng;
-    private long endTime;
-    private String mapProvider;
 
     @Override
     @SuppressLint("SetJavaScriptEnabled") // XSS unlikely an issue here...
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        config = new ConfigRepository(this);
         setContentView(R.layout.activity_main);
 
         context = getApplicationContext();
@@ -99,44 +84,20 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         webView.addJavascriptInterface(webAppInterface, "Android");
 
-        try {
-            PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                currentVersion = (int) (pInfo.getLongVersionCode() >> 32);
-            } else {
-                currentVersion = pInfo.versionCode;
-            }
-        } catch (NameNotFoundException e) {
-            Log.e(MainActivity.class.toString(), "Could not read version info!", e);
-        }
+        setLatLng(getLatitude(), getLongitude(), LOAD);
 
-        loadSharedPrefs();
-
-        setLatLng(lat, lng, LOAD);
-
-        webView.loadUrl(Uri
-                                .parse("file:///android_asset/map.html")
-                                .buildUpon()
-                                .appendQueryParameter("lat", "" + lat)
-                                .appendQueryParameter("lng",
-                                                      "" + lng)
-                                .appendQueryParameter("zoom", "" + zoom)
-                                .appendQueryParameter("provider", mapProvider)
-                                .build()
-                                .toString());
+        webView.loadUrl(Uri.parse("file:///android_asset/map.html").buildUpon().appendQueryParameter("lat", "" + getLatitude()).appendQueryParameter("lng", "" + getLongitude()).appendQueryParameter("zoom", "" + config.geZoom()).appendQueryParameter("provider", config.getMapProvider()).build().toString());
 
         editTextLat.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                if (!editTextLat.getText().toString().isEmpty() && !editTextLat.getText().toString().equals("-")) {
-                    if (srcChange != CHANGE_FROM_MAP) {
-                        try {
-                            lat = Double.parseDouble(editTextLat.getText().toString());
-                            setLatLng(lat, lng, CHANGE_FROM_EDITTEXT);
-                        } catch (Throwable t) {
-                            Log.e(MainActivity.class.toString(), "Could not read latitude!", t);
-                        }
-                    }
+                if (srcChange == CHANGE_FROM_MAP) return;
+                try {
+                    double latitude = Double.parseDouble(s.toString());
+                    config.edit().setLatitude(latitude);
+                } catch (Throwable t) {
+                    Log.e(TAG, "Could not read latitude!", t);
+
                 }
             }
 
@@ -153,10 +114,10 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
             @Override
             public void afterTextChanged(Editable s) {
                 if (!editTextLng.getText().toString().isEmpty() && !editTextLng.getText().toString().equals("-")) {
+                    // TODO ADD Map location View
                     if (srcChange != CHANGE_FROM_MAP) {
                         try {
-                            lng = Double.parseDouble(editTextLng.getText().toString());
-                            setLatLng(lat, lng, CHANGE_FROM_EDITTEXT);
+                            config.edit().setLongitude(Double.parseDouble(editTextLng.getText().toString())).save();
                         } catch (Throwable t) {
                             Log.e(MainActivity.class.toString(), "Could not read longitude!", t);
                         }
@@ -172,22 +133,20 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         });
+    }
 
-        //2do check running on start?
-        if (endTime > System.currentTimeMillis()) {
-            changeButtonToStop();
-        } else {
-            endTime = 0;
-            saveSettings();
-        }
+    private double getLongitude() {
+        return config.getLongitude(15);
+    }
 
+    private double getLatitude() {
+        return config.getLatitude(12);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         context = getApplicationContext();
-        loadSharedPrefs();
     }
 
     @Override
@@ -196,65 +155,20 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     }
 
     /**
-     * Check and (re-)initialize shared preferences.
-     */
-    private void loadSharedPrefs() {
-        migrateOldPreferences(context);
-
-        SharedPreferences sharedPref = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
-
-        version = sharedPref.getInt("version", 0);
-        lat = getDouble(sharedPref, "lat", 12);
-        lng = getDouble(sharedPref, "lng", 15);
-        zoom = getDouble(sharedPref, "zoom", 12);
-        mockCount = sharedPref.getInt("mockCount", 0);
-        mockFrequency = sharedPref.getInt("mockFrequency", 10);
-        dLat = getDouble(sharedPref, "dLat", 0);
-        dLng = getDouble(sharedPref, "dLng", 0);
-        endTime = sharedPref.getLong("endTime", 0);
-        mapProvider = sharedPref.getString("mapProvider", MapProviderUtil.getDefaultMapProvider(Locale.getDefault()));
-
-        if (version != currentVersion) {
-            version = currentVersion;
-            saveSettings();
-        }
-    }
-
-    private void saveSettings() {
-        Editor editor = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE).edit();
-        editor.putInt("version", version);
-        putDouble(editor, "lat", lat);
-        putDouble(editor, "lng", lng);
-        putDouble(editor, "zoom", zoom);
-        editor.putInt("mockCount", mockCount);
-        editor.putInt("mockFrequency", mockFrequency);
-        putDouble(editor, "dLat", dLat);
-        putDouble(editor, "dLng", dLng);
-        editor.putLong("endTime", endTime);
-        editor.putString("mapProvider", mapProvider);
-
-        editor.apply();
-    }
-
-    /**
      * Apply a mocked location, and start an alarm to keep doing it if mockCount is > 1
      * This method is called when "Apply" button is pressed.
      */
     protected void applyLocation() {
-        if (latIsEmpty() || lngIsEmpty()) {
-            toast(context.getResources().getString(R.string.MainActivity_NoLatLong));
+        Double longitude = getInputLongitude();
+        Double latitude = getInputLatitude();
+        if (longitude == null || latitude == null) {
             return;
         }
 
-        lat = Double.parseDouble(editTextLat.getText().toString());
-        lng = Double.parseDouble(editTextLng.getText().toString());
-
+        config.edit().setLatitude(latitude).setLongitude(longitude).save();
         toast(context.getResources().getString(R.string.MainActivity_MockApplied));
-        endTime = System.currentTimeMillis() + (mockCount - 1L) * mockFrequency * 1000L;
-        saveSettings();
-
         changeButtonToStop();
-        binder.startMocked(lng, lat, dLng / 1000000, dLat / 1000000, mockFrequency * 1000L, mockCount);
+        binder.startMocked(longitude, latitude, config.getDeltaLongitude() / 1000000, config.getDeltaLatitude() / 1000000, config.getMockFrequency() * 1000L, config.getMockedCount());
     }
 
     /**
@@ -272,17 +186,27 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     }
 
     /**
-     * Returns true editTextLat has no text
+     * @return Edit textview double longitude else return null
      */
-    boolean latIsEmpty() {
-        return editTextLat.getText().toString().isBlank();
+    private Double getInputLongitude() {
+        try {
+            return Double.parseDouble(editTextLng.getText().toString());
+        } catch (NumberFormatException e) {
+            Log.w(TAG, "parse longitude error", e);
+            return null;
+        }
     }
 
     /**
-     * Returns true editTextLng has no text
+     * @return Edit textview double latitude else return null
      */
-    boolean lngIsEmpty() {
-        return editTextLng.getText().toString().isBlank();
+    private Double getInputLatitude() {
+        try {
+            return Double.parseDouble(editTextLat.getText().toString());
+        } catch (NumberFormatException e) {
+            Log.w(TAG, "parse latitude error", e);
+            return null;
+        }
     }
 
     protected void setMapMarker(double lat, double lng) {
@@ -310,8 +234,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     }
 
     public void setZoom(double zoom) {
-        this.zoom = zoom;
-        saveSettings();
+        config.edit().setZoom(zoom).save();
     }
 
     /**
@@ -322,20 +245,17 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
      * @param srcChange CHANGE_FROM_EDITTEXT or CHANGE_FROM_MAP, indicates from where comes the change
      */
     public void setLatLng(double mLat, double mLng, SourceChange srcChange) {
-        lat = mLat;
-        lng = mLng;
+        config.edit().setLatitude(mLat).setLongitude(mLng).save();
 
         if (srcChange == CHANGE_FROM_EDITTEXT || srcChange == LOAD) {
-            setMapMarker(lat, lng);
+            setMapMarker(mLat, mLng);
         }
         if (srcChange == CHANGE_FROM_MAP || srcChange == LOAD) {
             this.srcChange = CHANGE_FROM_MAP;
-            editTextLat.setText(DECIMAL_FORMAT.format(lat));
-            editTextLng.setText(DECIMAL_FORMAT.format(lng));
+            editTextLat.setText(DECIMAL_FORMAT.format(mLat));
+            editTextLng.setText(DECIMAL_FORMAT.format(mLng));
             this.srcChange = NONE;
         }
-
-        saveSettings();
     }
 
     private MockedLocationService.MockedBinder binder = null;
