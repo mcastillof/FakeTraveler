@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -26,6 +27,7 @@ public class MockedLocationService extends Service {
 
     private MockLocationProvider gpsProvider;
     private MockLocationProvider networkProvider;
+    private MockLocationProvider fusedProvider;
 
     @Nullable
     @Override
@@ -34,6 +36,9 @@ public class MockedLocationService extends Service {
         try {
             gpsProvider = new MockLocationProvider(LocationManager.GPS_PROVIDER, this);
             networkProvider = new MockLocationProvider(LocationManager.NETWORK_PROVIDER, this);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                fusedProvider = new MockLocationProvider(LocationManager.FUSED_PROVIDER, this);
+            }
         } catch (SecurityException e) {
             Log.e(TAG, "Could not construct mock location providers!", e);
             mockedState.setValue(MockedState.MOCKED_ERROR);
@@ -49,6 +54,8 @@ public class MockedLocationService extends Service {
         timer.cancel();
         gpsProvider.shutdown();
         networkProvider.shutdown();
+        if(fusedProvider != null)
+            fusedProvider.shutdown();
         mockedState.setValue(MockedState.NO_MOCKED);
         super.onDestroy();
     }
@@ -83,6 +90,8 @@ public class MockedLocationService extends Service {
             mockedLocation.postValue(value);
             gpsProvider.pushLocation(latitude, longitude);
             networkProvider.pushLocation(latitude, longitude);
+            if(fusedProvider != null)
+                fusedProvider.pushLocation(latitude, longitude);
             ++currentTimes;
             if (maxLocationTimes != 0 && maxLocationTimes == currentTimes) {
                 this.cancel();
