@@ -7,9 +7,9 @@ import android.os.Build;
 import android.os.SystemClock;
 import android.util.Log;
 
-public class MockLocationProvider {
+public class MockedLocationProvider {
 
-    private static final String TAG = MockLocationProvider.class.getSimpleName();
+    private static final String TAG = MockedLocationProvider.class.getSimpleName();
 
     private static final int MAX_RETRY_COUNT = 3;
 
@@ -22,7 +22,7 @@ public class MockLocationProvider {
      * @param name provider
      * @param ctx  context
      */
-    public MockLocationProvider(String name, Context ctx) {
+    public MockedLocationProvider(String name, Context ctx) {
         this.providerName = name;
         this.ctx = ctx;
 
@@ -80,7 +80,7 @@ public class MockLocationProvider {
             mockLocation.setVerticalAccuracyMeters(0.1F);
             mockLocation.setSpeedAccuracyMetersPerSecond(0.01F);
         }
-        Log.d("TAG", "pushLocation: " + lat + " ," + lon);
+        Log.d(TAG, "pushLocation: " + lat + ", " + lon);
         lm.setTestProviderLocation(providerName, mockLocation);
     }
 

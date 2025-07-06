@@ -13,6 +13,11 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -20,50 +25,55 @@ public class MockedLocationService extends Service {
 
     private static final String TAG = MockedLocationService.class.getSimpleName();
 
-    protected final MutableLiveData<MockedState> mockedState = new MutableLiveData<>();
+    protected final MutableLiveData<MockState> mockState = new MutableLiveData<>();
     protected final MutableLiveData<Location> mockedLocation = new MutableLiveData<>();
 
-    private final Timer timer = new Timer();
+    private final List<MockedLocationProvider> providers = new ArrayList<>();
 
-    private MockLocationProvider gpsProvider;
-    private MockLocationProvider networkProvider;
-    private MockLocationProvider fusedProvider;
+    private final Timer timer = new Timer();
+    private final Set<TimerTask> tasks = Collections.synchronizedSet(new HashSet<>());
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        MockedBinder binder = new MockedBinder(this);
-        try {
-            gpsProvider = new MockLocationProvider(LocationManager.GPS_PROVIDER, this);
-            networkProvider = new MockLocationProvider(LocationManager.NETWORK_PROVIDER, this);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                fusedProvider = new MockLocationProvider(LocationManager.FUSED_PROVIDER, this);
-            }
-        } catch (SecurityException e) {
-            Log.e(TAG, "Could not construct mock location providers!", e);
-            mockedState.setValue(MockedState.MOCKED_ERROR);
-            stopSelf();
-        }
-        mockedState.setValue(MockedState.CAN_MOCKED);
-        return binder;
+        indicateBinding();
+        return new MockedBinder(this);
     }
 
     @Override
-    public void onDestroy() {
+    public boolean onUnbind(Intent intent) {
         Log.d(TAG, "Mock is finished");
-        timer.cancel();
-        gpsProvider.shutdown();
-        networkProvider.shutdown();
-        if(fusedProvider != null)
-            fusedProvider.shutdown();
-        mockedState.setValue(MockedState.NO_MOCKED);
-        super.onDestroy();
+        for (TimerTask t : tasks)
+            t.cancel();
+        tasks.clear();
+        for (MockedLocationProvider prov : providers)
+            prov.shutdown();
+        providers.clear();
+        mockState.postValue(MockState.NOT_MOCKED);
+        return super.onUnbind(intent);
+    }
+
+    private void indicateBinding() {
+        mockState.postValue(MockState.SERVICE_BOUND);
     }
 
     protected void startMockedService(double longitude, double latitude, double longitudeDistance, double latitudeDistance, long mockMilli, int maxTime) {
-        MockedTask mockedTask = new MockedTask(longitude, latitude, longitudeDistance, latitudeDistance, maxTime);
-        timer.schedule(mockedTask, 0L, mockMilli);
-        mockedState.setValue(MockedState.MOCKED);
+        try {
+            providers.clear();
+            providers.add(new MockedLocationProvider(LocationManager.GPS_PROVIDER, this));
+            providers.add(new MockedLocationProvider(LocationManager.NETWORK_PROVIDER, this));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                providers.add(new MockedLocationProvider(LocationManager.FUSED_PROVIDER, this));
+            }
+
+            MockedTask mockedTask = new MockedTask(longitude, latitude, longitudeDistance, latitudeDistance, maxTime);
+            timer.schedule(mockedTask, 0L, mockMilli);
+            tasks.add(mockedTask);
+            mockState.postValue(MockState.MOCKED);
+        } catch (SecurityException e) {
+            Log.e(TAG, "Could not construct mock location providers!", e);
+            mockState.postValue(MockState.MOCK_ERROR);
+        }
     }
 
     class MockedTask extends TimerTask {
@@ -88,14 +98,13 @@ public class MockedLocationService extends Service {
             value.setLongitude(longitude);
             value.setLatitude(latitude);
             mockedLocation.postValue(value);
-            gpsProvider.pushLocation(latitude, longitude);
-            networkProvider.pushLocation(latitude, longitude);
-            if(fusedProvider != null)
-                fusedProvider.pushLocation(latitude, longitude);
+            for (MockedLocationProvider prov : providers)
+                prov.pushLocation(latitude, longitude);
             ++currentTimes;
             if (maxLocationTimes != 0 && maxLocationTimes == currentTimes) {
                 this.cancel();
                 stopSelf();
+                mockState.postValue(MockState.NOT_MOCKED);
             }
             latitude += latitudeMockedDistance;
             longitude += longitudeMockedDistance;
@@ -104,16 +113,20 @@ public class MockedLocationService extends Service {
 
     public static class MockedBinder extends Binder {
         private final MockedLocationService service;
-        public final LiveData<MockedState> mockedState;
+        public final LiveData<MockState> mockState;
         public final LiveData<Location> mockedLocation;
 
         public MockedBinder(MockedLocationService service) {
             this.service = service;
-            this.mockedState = service.mockedState;
+            this.mockState = service.mockState;
             this.mockedLocation = service.mockedLocation;
         }
 
-        public void startMocked(double longitude, double latitude, double longitudeDistance, double latitudeDistance, long mockMilli, int maxTimes) {
+        public void continueMock() {
+            service.indicateBinding();
+        }
+
+        public void startMock(double longitude, double latitude, double longitudeDistance, double latitudeDistance, long mockMilli, int maxTimes) {
             service.startMockedService(longitude, latitude, longitudeDistance, latitudeDistance, mockMilli, maxTimes);
         }
     }

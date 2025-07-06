@@ -245,14 +245,11 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         lat = Double.parseDouble(editTextLat.getText().toString());
         lng = Double.parseDouble(editTextLng.getText().toString());
 
-        if (binder != null)
-            binder.startMocked(lng, lat, dLng / 1000000, dLat / 1000000, mockFrequency * 1000L, mockCount);
-
-        toast(context.getResources().getString(R.string.MainActivity_MockApplied));
-        endTime = System.currentTimeMillis() + (mockCount - 1L) * mockFrequency * 1000L;
-        saveSettings();
-
-        changeButtonToStop();
+        if (binder != null) {
+            binder.startMock(lng, lat, dLng / 1000000, dLat / 1000000, mockFrequency * 1000L, mockCount);
+            endTime = System.currentTimeMillis() + (mockCount - 1L) * mockFrequency * 1000L;
+            saveSettings();
+        }
     }
 
     /**
@@ -294,8 +291,12 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     void changeButtonToApply() {
         buttonApplyStop.setText(context.getResources().getString(R.string.ActivityMain_Apply));
         buttonApplyStop.setOnClickListener(view -> {
-            Intent intent = new Intent(this, MockedLocationService.class);
-            bindService(intent, this, BIND_AUTO_CREATE);
+            if (binder == null) {
+                Intent intent = new Intent(this, MockedLocationService.class);
+                bindService(intent, this, BIND_AUTO_CREATE);
+            } else {
+                binder.continueMock();
+            }
         });
     }
 
@@ -304,7 +305,10 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
      */
     void changeButtonToStop() {
         buttonApplyStop.setText(context.getResources().getString(R.string.ActivityMain_Stop));
-        buttonApplyStop.setOnClickListener(view -> unbindService(this));
+        buttonApplyStop.setOnClickListener(view -> {
+            unbindService(this);
+            disconnectService();
+        });
     }
 
     public void setZoom(double zoom) {
@@ -339,30 +343,34 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
         binder = (MockedLocationService.MockedBinder) service;
-        binder.mockedState.observe(this, this::onMockedStateChange);
+        binder.mockState.observe(this, this::onMockedStateChange);
         binder.mockedLocation.observe(this, this::onMockedLocationChange);
     }
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
-        binder.mockedState.removeObservers(this);
-        binder.mockedLocation.removeObservers(this);
-        binder = null;
-        changeButtonToStop();
+        disconnectService();
     }
 
-    private void onMockedStateChange(MockedState state) {
+    private void disconnectService() {
+        binder.mockState.removeObservers(this);
+        binder.mockedLocation.removeObservers(this);
+        binder = null;
+        changeButtonToApply();
+    }
+
+    private void onMockedStateChange(MockState state) {
         switch (state) {
-            case NO_MOCKED -> {
+            case NOT_MOCKED -> {
                 toast(R.string.MainActivity_MockStopped);
                 changeButtonToApply();
             }
-            case CAN_MOCKED -> applyLocation();
+            case SERVICE_BOUND -> applyLocation();
             case MOCKED -> {
                 changeButtonToStop();
                 toast(R.string.MainActivity_MockApplied);
             }
-            case MOCKED_ERROR -> toast(R.string.MainActivity_MockNotApplied);
+            case MOCK_ERROR -> toast(R.string.MainActivity_MockNotApplied);
         }
 
     }
