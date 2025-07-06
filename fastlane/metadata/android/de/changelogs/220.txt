@@ -1,0 +1,4 @@
+* Upgrade des Ziel-API-Levels auf 36 (Android 16)
+* Simuliere auch den "fused" Standortdienst (Dank an @dot-gov)
+* Services verwenden, um bessere Simulations-Mechanismen bereitzustellen (Dank an @jimie-chaos)
+* Chinesische Übersetzungen hinzugefügt (Dank an @jimie-chaos)

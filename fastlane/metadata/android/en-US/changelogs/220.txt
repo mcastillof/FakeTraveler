@@ -1,0 +1,4 @@
+* Upgrade target API level to 36 (Android 16)
+* Also mock fused location service (thanks to @dot-gov)
+* Use services to provide better mocking mechanisms (thanks to @jimie-chaos)
+* Add Chinese translations (thanks to @jimie-chaos)
