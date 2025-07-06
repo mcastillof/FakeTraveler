@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 
 android {
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     defaultConfig {
         applicationId = "cl.coders.faketraveler"
         minSdk = 21
-        compileSdk = 35
-        targetSdk = 35
+        compileSdk = 36
+        targetSdk = 36
         versionCode = 210
         versionName = "2.1.0"
     }
@@ -23,14 +23,14 @@ android {
 }
 
 dependencies {
-    implementation 'com.google.android.material:material:1.13.0-alpha13'
-    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'com.google.android.material:material:1.13.0-alpha14'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
 }
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
