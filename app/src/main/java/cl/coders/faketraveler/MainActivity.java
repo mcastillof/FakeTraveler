@@ -368,15 +368,12 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         binder.mockState.removeObservers(this);
         binder.mockedLocation.removeObservers(this);
         binder = null;
-        changeButtonToApply();
+        indicateMockStop();
     }
 
     private void onMockedStateChange(MockState state) {
         switch (state) {
-            case NOT_MOCKED -> {
-                toast(R.string.MainActivity_MockStopped);
-                changeButtonToApply();
-            }
+            case NOT_MOCKED -> indicateMockStop();
             case SERVICE_BOUND -> applyLocation();
             case MOCKED -> {
                 changeButtonToStop();
@@ -385,6 +382,11 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
             case MOCK_ERROR -> toast(R.string.MainActivity_MockNotApplied);
         }
 
+    }
+
+    private void indicateMockStop() {
+        toast(R.string.MainActivity_MockStopped);
+        changeButtonToApply();
     }
 
     private void onMockedLocationChange(Location location) {
