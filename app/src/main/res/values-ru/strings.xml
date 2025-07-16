@@ -18,14 +18,14 @@
 
     <!--  Strings from activity_more.xml layout  -->
     <string name="ActivityMore_HowToTittle">Как это использовать?</string>
-    <string name="ActivityMore_HowManyTimes">Сколько раз вы хотите изменять локацию? (0 = бесконечно)</string>
+    <string name="ActivityMore_HowManyTimes">Сколько раз вы хотите изменять локацию? (0&#160;=&#160;бесконечно)</string>
     <string name="ActivityMore_TimeInterval">Сколько секунд между каждым изменением?</string>
     <string name="ActivityMore_Copyright">Copyright 2018\-2025 Матиас Кастильо Фелмер и авторы</string>
     <string name="ActivityMore_SourceCode">Исходный код доступен на https://github.com/mcastillof/FakeTraveler.</string>
     <string name="ActivityMore_Bugs">Сообщить об ошибках на https://github.com/mcastillof/FakeTraveler/issues</string>
     <string name="ActivityMore_IconLicense">The launcher icon was created by @ArtistDev44 - thank you very much for your work!</string>
     <string name="ActivityMore_HowToInstructions">Длительное нажатие, где вы хотите быть на карте и нажмите кнопку Применить. Место будет проверено один или несколько раз в соответствии с приведенной ниже конфигурацией. Пока изменение работает, вы можете изменить местоположение, просто нажав и удерживая его там, где вы находитесь. Чтобы прекратить издеваться над местоположением, нажмите кнопку Стоп. Примечание: вы должны включить Fake Traveler в качестве приложения с фиктивным местоположением в опциях для разработчиков.</string>
-    <string name="ActivityMore_DMockLatLon">Mock movement? (1 / 1 000 000°, 0 = no)</string>
+    <string name="ActivityMore_DMockLatLon">Mock movement? (1&#160;/&#160;1 000 000°, 0&#160;=&#160;no)</string>
     <string name="ActivityMore_MapProvider">Map Provider (e.g., \'OpenStreetMap\')</string>
     <string name="ActivityMore_MapProviderInfo">Requires restart - a list of possible values can be found here: https://leaflet-extras.github.io/leaflet-providers/preview/</string>
     <string name="ActivityMore_LeafletLicense"><![CDATA[Both <a href="https://github.com/Leaflet/Leaflet/blob/main/LICENSE">Leaflet</a> and <a href="https://github.com/leaflet-extras/leaflet-providers/blob/master/license.md">Leaflet-providers</a> are licensed under the BSD 2-Clause License.]]></string>

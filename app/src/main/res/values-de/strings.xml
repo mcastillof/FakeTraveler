@@ -19,14 +19,14 @@
 
     <!--  Strings from activity_more.xml layout  -->
     <string name="ActivityMore_HowToTittle">Bedienungsanleitung</string>
-    <string name="ActivityMore_HowManyTimes">Wie oft möchten Sie den Standort simulieren? (0 = unbegrenzt)</string>
+    <string name="ActivityMore_HowManyTimes">Wie oft möchten Sie den Standort simulieren? (0&#160;=&#160;unbegrenzt)</string>
     <string name="ActivityMore_TimeInterval">Zeit zwischen jeder Simulation</string>
     <string name="ActivityMore_Copyright">Copyright 2018\-2025 Matías Castillo Felmer and contributors</string>
     <string name="ActivityMore_SourceCode">Quellcode verfügbar unter: https://github.com/mcastillof/FakeTraveler</string>
     <string name="ActivityMore_Bugs">Bugs melden unter: https://github.com/mcastillof/FakeTraveler/issues</string>
     <string name="ActivityMore_IconLicense">Das Launcher-Icon wurde von @ArtistDev44 erstellt - vielen Dank für deine Arbeit!</string>
     <string name="ActivityMore_HowToInstructions">Wählen Sie den gewünschten Standort durch langes Gedrückt-Halten auf der Karte aus. Klicken Sie auf "Anwenden". Der Standort wird je nach Einstellung ein- oder mehrmals simuliert. Während die Simulation läuft, können Sie jederzeit einen neuen Standort auswählen. Um die Simulation anzuhalten drücken Sie "Stopp". Hinweis: Um diese App nutzen zu können, müssen Sie sie als Simulierte-Standort-App in den Entwickleroptionen aktivieren.</string>
-    <string name="ActivityMore_DMockLatLon">Bewegung simulieren? (1 / 1 000 000°, 0 = nein)</string>
+    <string name="ActivityMore_DMockLatLon">Bewegung simulieren? (1&#160;/&#160;1 000 000°, 0&#160;=&#160;nein)</string>
     <string name="ActivityMore_MapProvider">Kartenanbieter (z. B. \'OpenStreetMap.DE\')</string>
     <string name="ActivityMore_MapProviderInfo">Benötigt Neustart - eine Liste der möglichen Werte finden Sie hier: https://leaflet-extras.github.io/leaflet-providers/preview/</string>
     <string name="ActivityMore_LeafletLicense"><![CDATA[Sowohl <a href="https://github.com/Leaflet/Leaflet/blob/main/LICENSE">Leaflet</a> als auch <a href="https://github.com/leaflet-extras/leaflet-providers/blob/master/license.md">Leaflet-providers</a> sind unter der BSD 2-Clause License lizenziert.]]></string>
