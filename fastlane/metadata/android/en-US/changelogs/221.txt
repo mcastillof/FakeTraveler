@@ -1,0 +1,4 @@
+* Update dependencies
+* Fully implement edge-to-edge layout
+* Make scripts and map work on older versions of Android
+* Minor bug fixes
