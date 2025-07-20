@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
@@ -7,20 +8,21 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <com.google.android.flexbox.FlexboxLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="14dp">
+        android:padding="14dp"
+        app:flexWrap="wrap">
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/editTextLat"
-            android:layout_width="match_parent"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_weight="10"
             android:ems="10"
             android:hint="@string/ActivityMain_Lat"
-            android:inputType="numberSigned|numberDecimal" />
+            android:inputType="numberSigned|numberDecimal"
+            app:layout_flexGrow="10" />
 
         <Space
             android:layout_width="10dp"
@@ -28,12 +30,13 @@
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/editTextLng"
-            android:layout_width="match_parent"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_weight="10"
             android:ems="10"
             android:hint="@string/ActivityMain_Long"
-            android:inputType="numberSigned|numberDecimal" />
+            android:inputType="numberSigned|numberDecimal"
+            app:layout_flexGrow="10" />
 
         <Space
             android:layout_width="10dp"
@@ -58,7 +61,7 @@
             android:text="&#9881;"
             android:textSize="18sp" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </com.google.android.flexbox.FlexboxLayout>
 
     <WebView
         android:id="@+id/webView0"
