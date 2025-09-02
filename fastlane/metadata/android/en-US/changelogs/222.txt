@@ -1,0 +1,2 @@
+* Update dependencies
+* Allow lat/lon fields to wrap onto next line
