@@ -56,4 +56,4 @@ Copyright © 2018 Matías Castillo Felmer
 > You should have received a copy of the GNU General Public License
 > along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-The launcher icon was created by @ArtistDev44 (see #77) - thank you very much for your work!
+The launcher icon was created by [@ArtistDev44](https://portfolio-guillaume-renoult.vercel.app/) (see #77) - thank you very much for your work!
