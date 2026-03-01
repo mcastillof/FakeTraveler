@@ -121,16 +121,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         }
 
         loadSharedPrefs();
-
-        setLatLng(lat, lng, LOAD);
-
-        webView.loadUrl(Uri.parse("file:///android_asset/map.html").buildUpon()
-                .appendQueryParameter("lat", "" + lat)
-                .appendQueryParameter("lng", "" + lng)
-                .appendQueryParameter("zoom", "" + zoom)
-                .appendQueryParameter("provider", mapProvider)
-                .build()
-                .toString());
+        applyIntentOrDefault(getIntent());
 
         editTextLat.addTextChangedListener(new TextWatcher() {
             @Override
@@ -198,6 +189,12 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        applyIntentOrDefault(intent);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
     }
@@ -242,6 +239,34 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         editor.putString("mapProvider", mapProvider);
 
         editor.apply();
+    }
+
+    private void applyIntentOrDefault(Intent intent) {
+        String intentData = intent.getDataString();
+        if (intentData != null) {
+            try {
+                GeoUri uri = GeoUri.parse(intentData);
+                Log.i(MainActivity.class.toString(), "Received geo intent: " + uri);
+                if (uri != null) {
+                    lat = uri.lat();
+                    lng = uri.lng();
+                    Double zoomTmp = uri.zoom();
+                    if (zoomTmp != null) zoom = zoomTmp;
+                }
+            } catch (Throwable t) {
+                Log.e(MainActivity.class.toString(), "Could not read geo intent!", t);
+            }
+        }
+
+        setLatLng(lat, lng, LOAD);
+
+        webView.loadUrl(Uri.parse("file:///android_asset/map.html").buildUpon()
+                .appendQueryParameter("lat", "" + lat)
+                .appendQueryParameter("lng", "" + lng)
+                .appendQueryParameter("zoom", "" + zoom)
+                .appendQueryParameter("provider", mapProvider)
+                .build()
+                .toString());
     }
 
     /**
