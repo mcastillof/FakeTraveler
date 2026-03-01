@@ -97,6 +97,15 @@ public class MockedLocationService extends Service {
             Location value = new Location(LocationManager.GPS_PROVIDER);
             value.setLongitude(longitude);
             value.setLatitude(latitude);
+            try {
+                value.setSpeed(1.2f);
+                value.setAccuracy(0.2f);
+                value.setTime(1000);
+                // value.setSpeedAccuracyMetersPerSecond(0.1f); // requires API level 26
+            } catch(Exception e) {
+                Log.e("err", "error setting acc+speed", e);
+            }
+
             mockedLocation.postValue(value);
             for (MockedLocationProvider prov : providers)
                 prov.pushLocation(latitude, longitude);
