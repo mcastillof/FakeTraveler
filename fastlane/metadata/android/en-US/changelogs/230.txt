@@ -1,0 +1,2 @@
+* App can now react to "geo:" intents (e.g., when sharing such links from OSM)
+* Update dependencies
