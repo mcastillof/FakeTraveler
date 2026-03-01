@@ -21,6 +21,7 @@
     <string name="ActivityMore_HowToTittle">How to use it?</string>
     <string name="ActivityMore_HowManyTimes">How many times you want to mock the location? (0&#160;=&#160;infinite)</string>
     <string name="ActivityMore_TimeInterval">How many seconds between every mock?</string>
+    <string name="ActivityMore_Speed">Mock movement as speed</string>
     <string name="ActivityMore_Copyright">Copyright 2018\-2025 Matías Castillo Felmer and contributors</string>
     <string name="ActivityMore_SourceCode">Source code available in https://github.com/mcastillof/FakeTraveler</string>
     <string name="ActivityMore_Bugs">Report bugs to https://github.com/mcastillof/FakeTraveler/issues</string>

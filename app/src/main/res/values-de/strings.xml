@@ -21,6 +21,7 @@
     <string name="ActivityMore_HowToTittle">Bedienungsanleitung</string>
     <string name="ActivityMore_HowManyTimes">Wie oft möchten Sie den Standort simulieren? (0&#160;=&#160;unbegrenzt)</string>
     <string name="ActivityMore_TimeInterval">Zeit zwischen jeder Simulation</string>
+    <string name="ActivityMore_Speed">Geschwindigkeit anhand von Bewegung simulieren</string>
     <string name="ActivityMore_Copyright">Copyright 2018\-2025 Matías Castillo Felmer and contributors</string>
     <string name="ActivityMore_SourceCode">Quellcode verfügbar unter: https://github.com/mcastillof/FakeTraveler</string>
     <string name="ActivityMore_Bugs">Bugs melden unter: https://github.com/mcastillof/FakeTraveler/issues</string>
