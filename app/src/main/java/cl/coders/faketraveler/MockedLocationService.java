@@ -57,7 +57,7 @@ public class MockedLocationService extends Service {
         mockState.postValue(MockState.SERVICE_BOUND);
     }
 
-    protected void startMockedService(double longitude, double latitude, double longitudeDistance, double latitudeDistance, long mockMilli, int maxTime) {
+    protected void startMockedService(double longitude, double latitude, double longitudeDistance, double latitudeDistance, long mockMilli, int maxTime, boolean mockSpeed) {
         try {
             providers.clear();
             providers.add(new MockedLocationProvider(LocationManager.GPS_PROVIDER, this));
@@ -66,7 +66,7 @@ public class MockedLocationService extends Service {
                 providers.add(new MockedLocationProvider(LocationManager.FUSED_PROVIDER, this));
             }
 
-            MockedTask mockedTask = new MockedTask(longitude, latitude, longitudeDistance, latitudeDistance, maxTime);
+            MockedTask mockedTask = new MockedTask(longitude, latitude, longitudeDistance, latitudeDistance, maxTime, mockSpeed);
             timer.schedule(mockedTask, 0L, mockMilli);
             tasks.add(mockedTask);
             mockState.postValue(MockState.MOCKED);
@@ -77,6 +77,7 @@ public class MockedLocationService extends Service {
     }
 
     class MockedTask extends TimerTask {
+        private float speed;
         private double longitude;
         private double latitude;
         private final double longitudeMockedDistance;
@@ -84,12 +85,17 @@ public class MockedLocationService extends Service {
         private final int maxLocationTimes;
         private int currentTimes = 0;
 
-        public MockedTask(double longitude, double latitude, double longitudeMockedDistance, double latitudeMockedDistance, int maxTimes) {
+        public MockedTask(double longitude, double latitude, double longitudeMockedDistance, double latitudeMockedDistance, int maxTimes, boolean mockSpeed) {
             this.longitude = longitude;
             this.latitude = latitude;
             this.longitudeMockedDistance = longitudeMockedDistance;
             this.latitudeMockedDistance = latitudeMockedDistance;
             this.maxLocationTimes = maxTimes;
+            if(mockSpeed) {
+                float[] speed = {0.0f};
+                Location.distanceBetween(latitude, longitude, latitude + latitudeMockedDistance, longitude + longitudeMockedDistance, speed);
+                this.speed = speed[0];
+            }
         }
 
         @Override
@@ -97,6 +103,13 @@ public class MockedLocationService extends Service {
             Location value = new Location(LocationManager.GPS_PROVIDER);
             value.setLongitude(longitude);
             value.setLatitude(latitude);
+            if (this.speed > 0) {
+                value.setSpeed(this.speed);
+                value.setAccuracy(0.1f);
+                value.setTime(System.currentTimeMillis());
+                // value.setSpeedAccuracyMetersPerSecond(0.1f); // requires API level 26
+            }
+
             mockedLocation.postValue(value);
             for (MockedLocationProvider prov : providers)
                 prov.pushLocation(latitude, longitude);
@@ -126,8 +139,8 @@ public class MockedLocationService extends Service {
             service.indicateBinding();
         }
 
-        public void startMock(double longitude, double latitude, double longitudeDistance, double latitudeDistance, long mockMilli, int maxTimes) {
-            service.startMockedService(longitude, latitude, longitudeDistance, latitudeDistance, mockMilli, maxTimes);
+        public void startMock(double longitude, double latitude, double longitudeDistance, double latitudeDistance, long mockMilli, int maxTimes, boolean mockSpeed) {
+            service.startMockedService(longitude, latitude, longitudeDistance, latitudeDistance, mockMilli, maxTimes, mockSpeed);
         }
     }
 

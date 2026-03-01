@@ -21,6 +21,7 @@
     <string name="ActivityMore_HowToTittle">Hvordan bruger man det?</string>
     <string name="ActivityMore_HowManyTimes">Hvor mange gange vil du imitere placeringen? (0&#160;=&#160;uendelig)</string>
     <string name="ActivityMore_TimeInterval">Hvor mange sekunder mellem hver imitering?</string>
+    <string name="ActivityMore_Speed">Imiteret bevægelse som hastighed</string>
     <string name="ActivityMore_Copyright">Copyright 2018\-2025 Matías Castillo Felmer og bidragsydere</string>
     <string name="ActivityMore_SourceCode">Source koden er tilgængelig på https://github.com/mcastillof/FakeTraveler</string>
     <string name="ActivityMore_Bugs">Rapportér bugs på https://github.com/mcastillof/FakeTraveler/issues</string>
