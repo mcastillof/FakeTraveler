@@ -22,6 +22,7 @@
     <string name="ActivityMore_HowToTittle">如何使用它？</string>
     <string name="ActivityMore_HowManyTimes">您想模拟该位置多少次？ （0 =无限）</string>
     <string name="ActivityMore_TimeInterval">每个模拟之间有几秒钟间隔？</string>
+    <string name="ActivityMore_Speed">Mock movement as speed</string>
     <string name="ActivityMore_Copyright">版权2018 \ -2025MatíasCastillo Felmer和贡献者</string>
     <string name="ActivityMore_SourceCode">源代码在https://github.com/mcastillof/faketraveler中可用</string>
     <string name="ActivityMore_Bugs">将错误报告到https://github.com/mcastillof/faketraveler/issues</string>

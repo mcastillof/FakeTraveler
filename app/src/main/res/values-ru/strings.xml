@@ -20,6 +20,7 @@
     <string name="ActivityMore_HowToTittle">Как это использовать?</string>
     <string name="ActivityMore_HowManyTimes">Сколько раз вы хотите изменять локацию? (0&#160;=&#160;бесконечно)</string>
     <string name="ActivityMore_TimeInterval">Сколько секунд между каждым изменением?</string>
+    <string name="ActivityMore_Speed">Mock movement as speed</string>
     <string name="ActivityMore_Copyright">Copyright 2018\-2025 Матиас Кастильо Фелмер и авторы</string>
     <string name="ActivityMore_SourceCode">Исходный код доступен на https://github.com/mcastillof/FakeTraveler.</string>
     <string name="ActivityMore_Bugs">Сообщить об ошибках на https://github.com/mcastillof/FakeTraveler/issues</string>

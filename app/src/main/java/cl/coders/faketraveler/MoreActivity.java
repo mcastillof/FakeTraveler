@@ -14,7 +14,7 @@ import android.text.Html;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
-import android.widget.EditText;
+import android.widget.CheckBox;import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -182,6 +182,15 @@ public class MoreActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         });
+
+        CheckBox mockSpeed = findViewById(R.id.cb_MockSpeed);
+        mockSpeed.setActivated(sharedPref.getBoolean("mockSpeed", true));
+        mockSpeed.setOnCheckedChangeListener((compoundButton, b) -> {
+            var editor = sharedPref.edit();
+            editor.putBoolean("mockSpeed", b);
+            editor.apply();
+        });
+
 
         EditText etMapProvider = findViewById(R.id.et_MapProvider);
         etMapProvider.setText(sharedPref.getString("mapProvider",
