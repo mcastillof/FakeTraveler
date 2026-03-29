@@ -103,7 +103,10 @@ public class MockedLocationService extends Service {
                 value.setSpeed(this.speed);
                 value.setAccuracy(0.1f);
                 value.setTime(System.currentTimeMillis());
-                // value.setSpeedAccuracyMetersPerSecond(0.1f); // requires API level 26
+
+                if (Build.VERSION.SDK_INT >= 26) {
+                    value.setSpeedAccuracyMetersPerSecond(0.01f);
+                }
             }
 
             mockedLocation.postValue(value);
