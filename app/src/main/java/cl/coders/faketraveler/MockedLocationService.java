@@ -57,7 +57,7 @@ public class MockedLocationService extends Service {
         mockState.postValue(MockState.SERVICE_BOUND);
     }
 
-    protected void startMockedService(double longitude, double latitude, double longitudeDistance, double latitudeDistance, long mockMilli, int maxTime, boolean mockSpeed) {
+    protected void startMockedService(double longitude, double latitude, double longitudeDistance, double latitudeDistance, long mockMilli, int maxTime, float mockSpeed) {
         try {
             providers.clear();
             providers.add(new MockedLocationProvider(LocationManager.GPS_PROVIDER, this));
@@ -85,17 +85,13 @@ public class MockedLocationService extends Service {
         private final int maxLocationTimes;
         private int currentTimes = 0;
 
-        public MockedTask(double longitude, double latitude, double longitudeMockedDistance, double latitudeMockedDistance, int maxTimes, boolean mockSpeed) {
+        public MockedTask(double longitude, double latitude, double longitudeMockedDistance, double latitudeMockedDistance, int maxTimes, float mockSpeed) {
             this.longitude = longitude;
             this.latitude = latitude;
             this.longitudeMockedDistance = longitudeMockedDistance;
             this.latitudeMockedDistance = latitudeMockedDistance;
             this.maxLocationTimes = maxTimes;
-            if(mockSpeed) {
-                float[] speed = {0.0f};
-                Location.distanceBetween(latitude, longitude, latitude + latitudeMockedDistance, longitude + longitudeMockedDistance, speed);
-                this.speed = speed[0];
-            }
+            this.speed = mockSpeed;
         }
 
         @Override
@@ -139,7 +135,7 @@ public class MockedLocationService extends Service {
             service.indicateBinding();
         }
 
-        public void startMock(double longitude, double latitude, double longitudeDistance, double latitudeDistance, long mockMilli, int maxTimes, boolean mockSpeed) {
+        public void startMock(double longitude, double latitude, double longitudeDistance, double latitudeDistance, long mockMilli, int maxTimes, float mockSpeed) {
             service.startMockedService(longitude, latitude, longitudeDistance, latitudeDistance, mockMilli, maxTimes, mockSpeed);
         }
     }
