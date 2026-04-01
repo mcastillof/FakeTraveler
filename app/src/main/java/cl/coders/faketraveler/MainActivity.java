@@ -192,6 +192,8 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+
+        loadSharedPrefs();
         applyIntentOrDefault(intent);
     }
 
