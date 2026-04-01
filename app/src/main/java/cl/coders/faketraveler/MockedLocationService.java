@@ -77,7 +77,7 @@ public class MockedLocationService extends Service {
     }
 
     class MockedTask extends TimerTask {
-        private float speed;
+        private final float speed;
         private double longitude;
         private double latitude;
         private final double longitudeMockedDistance;
@@ -99,12 +99,12 @@ public class MockedLocationService extends Service {
             Location value = new Location(LocationManager.GPS_PROVIDER);
             value.setLongitude(longitude);
             value.setLatitude(latitude);
-            if (this.speed > 0) {
-                value.setSpeed(this.speed);
+            if (speed > 0) {
+                value.setSpeed(speed);
                 value.setAccuracy(0.1f);
                 value.setTime(System.currentTimeMillis());
 
-                if (Build.VERSION.SDK_INT >= 26) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     value.setSpeedAccuracyMetersPerSecond(0.01f);
                 }
             }

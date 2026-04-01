@@ -14,7 +14,8 @@ import android.text.Html;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
-import android.widget.CheckBox;import android.widget.EditText;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -184,10 +185,14 @@ public class MoreActivity extends AppCompatActivity {
         });
 
         CheckBox mockSpeed = findViewById(R.id.cb_MockSpeed);
-        mockSpeed.setActivated(sharedPref.getBoolean("mockSpeed", true));
+        mockSpeed.setChecked(sharedPref.getBoolean("mockSpeed", true));
         mockSpeed.setOnCheckedChangeListener((compoundButton, b) -> {
-            var editor = sharedPref.edit();
-            editor.putBoolean("mockSpeed", b);
+            Context context1 = getApplicationContext();
+            SharedPreferences sharedPref1 = context1.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref1.edit();
+
+            editor.putBoolean("mockSpeed", mockSpeed.isChecked());
+
             editor.apply();
         });
 

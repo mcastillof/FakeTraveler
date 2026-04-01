@@ -289,8 +289,8 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 
         if (binder != null) {
             float[] speed = {0};
-            if(mockSpeed) {
-                Location.distanceBetween(lat, lng, lat + dLat/1000000, lng+dLng/1000000, speed);
+            if (mockSpeed) {
+                Location.distanceBetween(lat, lng, lat + dLat / 1000000, lng + dLng / 1000000, speed);
                 speed[0] /= mockFrequency * 1000L;
             }
             binder.startMock(lng, lat, dLng / 1000000, dLat / 1000000, mockFrequency * 1000L, mockCount, speed[0]);
