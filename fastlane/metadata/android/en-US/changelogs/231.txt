@@ -1,0 +1,4 @@
+* Now also mocks speeds (thanks to @tstenner)
+* Leaflet providers updated
+* Settings are now saved again
+* Support SDK 37
