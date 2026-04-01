@@ -18,6 +18,7 @@ var searchInput = document.getElementById("address_input");
 
 L.tileLayer.provider(provider, {
     className: 'map-tiles',
+    referrerPolicy: 'strict-origin-when-cross-origin',
 }).addTo(map);
 
 var icon = L.icon({

@@ -19,7 +19,8 @@ searchInput.addEventListener("keypress", function (event) {
   }
 });
 L.tileLayer.provider(provider, {
-  className: 'map-tiles'
+  className: 'map-tiles',
+  referrerPolicy: 'strict-origin-when-cross-origin'
 }).addTo(map);
 var icon = L.icon({
   iconUrl: 'marker-icon-2x.png',
