@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     private int mockFrequency;
     private double dLat;
     private double dLng;
+    private boolean mockSpeed;
     private long endTime;
     private String mapProvider;
 
@@ -215,6 +216,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         mockFrequency = sharedPref.getInt("mockFrequency", 10);
         dLat = getDouble(sharedPref, "dLat", 0);
         dLng = getDouble(sharedPref, "dLng", 0);
+        mockSpeed = sharedPref.getBoolean("mockSpeed", true);
         endTime = sharedPref.getLong("endTime", 0);
         mapProvider = sharedPref.getString("mapProvider", MapProviderUtil.getDefaultMapProvider(Locale.getDefault()));
 
@@ -235,6 +237,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         editor.putInt("mockFrequency", mockFrequency);
         putDouble(editor, "dLat", dLat);
         putDouble(editor, "dLng", dLng);
+        editor.putBoolean("mockSpeed", mockSpeed);
         editor.putLong("endTime", endTime);
         editor.putString("mapProvider", mapProvider);
 
@@ -283,7 +286,12 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         lng = Double.parseDouble(editTextLng.getText().toString());
 
         if (binder != null) {
-            binder.startMock(lng, lat, dLng / 1000000, dLat / 1000000, mockFrequency * 1000L, mockCount);
+            float[] speed = {0};
+            if(mockSpeed) {
+                Location.distanceBetween(lat, lng, lat + dLat/1000000, lng+dLng/1000000, speed);
+                speed[0] /= mockFrequency * 1000L;
+            }
+            binder.startMock(lng, lat, dLng / 1000000, dLat / 1000000, mockFrequency * 1000L, mockCount, speed[0]);
             endTime = System.currentTimeMillis() + (mockCount - 1L) * mockFrequency * 1000L;
             saveSettings();
         }

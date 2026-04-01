@@ -19,6 +19,7 @@
     <string name="ActivityMore_HowToTittle">¿Cómo se usa?</string>
     <string name="ActivityMore_HowManyTimes">¿Cuántas veces quieres falsificar la ubicación? (0&#160;=&#160;infinito)</string>
     <string name="ActivityMore_TimeInterval">¿Cuántos segundos entre cada falsificación?</string>
+    <string name="ActivityMore_Speed">Mock movement as speed</string>
     <string name="ActivityMore_Copyright">Todos los derechos reservados 2018\-2025 Matías Castillo Felmer y contribuidores</string>
     <string name="ActivityMore_SourceCode">Código fuente disponible en https://github.com/mcastillof/FakeTraveler</string>
     <string name="ActivityMore_Bugs">Reporte problemas en https://github.com/mcastillof/FakeTraveler/issues</string>

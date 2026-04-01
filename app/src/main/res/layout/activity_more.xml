@@ -116,6 +116,12 @@
                         android:text="0" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
+                <CheckBox
+                    android:id="@+id/cb_MockSpeed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ActivityMore_Speed" />
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_MapProvider"
                     android:layout_width="match_parent"
