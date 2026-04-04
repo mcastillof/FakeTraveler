@@ -288,13 +288,15 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         lng = Double.parseDouble(editTextLng.getText().toString());
 
         if (binder != null) {
+            long intervalSec = Math.max(1, mockFrequency);
+            long intervalMs = intervalSec * 1000L;
             float[] speed = {0};
             if (mockSpeed) {
                 Location.distanceBetween(lat, lng, lat + dLat / 1000000, lng + dLng / 1000000, speed);
-                speed[0] /= mockFrequency * 1000L;
+                speed[0] /= intervalMs;
             }
-            binder.startMock(lng, lat, dLng / 1000000, dLat / 1000000, mockFrequency * 1000L, mockCount, speed[0]);
-            endTime = System.currentTimeMillis() + (mockCount - 1L) * mockFrequency * 1000L;
+            binder.startMock(lng, lat, dLng / 1000000, dLat / 1000000, intervalMs, mockCount, speed[0]);
+            endTime = System.currentTimeMillis() + (mockCount - 1L) * intervalMs;
             saveSettings();
         }
     }
@@ -400,6 +402,9 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     }
 
     private void disconnectService() {
+        if (binder == null) {
+            return;
+        }
         binder.mockState.removeObservers(this);
         binder.mockedLocation.removeObservers(this);
         binder = null;
