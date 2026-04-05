@@ -406,6 +406,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     }
 
     private void disconnectService() {
+        if (binder == null) return;
         binder.mockState.removeObservers(this);
         binder.mockedLocation.removeObservers(this);
         binder = null;
