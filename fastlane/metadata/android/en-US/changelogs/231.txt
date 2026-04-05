@@ -1,4 +1,4 @@
 * Now also mocks speeds (thanks to @tstenner)
 * Leaflet providers updated
 * Settings are now saved again
-* Support SDK 37
+* Fix crash when mock frequency <= 0 (thanks to @gitexadelintershipprod)
