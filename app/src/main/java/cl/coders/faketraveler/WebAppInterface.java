@@ -5,12 +5,15 @@ import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_MAP;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 
+import androidx.annotation.NonNull;
+
 
 public class WebAppInterface {
 
+    @NonNull
     private final MainActivity mainActivity;
 
-    public WebAppInterface(MainActivity mA) {
+    public WebAppInterface(@NonNull MainActivity mA) {
         mainActivity = mA;
     }
 

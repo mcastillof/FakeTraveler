@@ -2,8 +2,11 @@ package cl.coders.faketraveler;
 
 import android.net.Uri;
 
-public record GeoUri(double lat, double lng, Double zoom) {
+import androidx.annotation.Nullable;
 
+public record GeoUri(double lat, double lng, @Nullable Double zoom) {
+
+    @Nullable
     public static GeoUri parse(String geoUri) {
         Uri uri = Uri.parse(geoUri);
         if (!"geo".equals(uri.getScheme())) return null;

@@ -9,7 +9,7 @@ import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -23,17 +23,23 @@ import java.util.TimerTask;
 
 public class MockedLocationService extends Service {
 
+    @NonNull
     private static final String TAG = MockedLocationService.class.getSimpleName();
 
+    @NonNull
     protected final MutableLiveData<MockState> mockState = new MutableLiveData<>();
+    @NonNull
     protected final MutableLiveData<Location> mockedLocation = new MutableLiveData<>();
 
+    @NonNull
     private final List<MockedLocationProvider> providers = new ArrayList<>();
 
+    @NonNull
     private final Timer timer = new Timer();
+    @NonNull
     private final Set<TimerTask> tasks = Collections.synchronizedSet(new HashSet<>());
 
-    @Nullable
+    @NonNull
     @Override
     public IBinder onBind(Intent intent) {
         indicateBinding();
@@ -124,11 +130,14 @@ public class MockedLocationService extends Service {
     }
 
     public static class MockedBinder extends Binder {
+        @NonNull
         private final MockedLocationService service;
+        @NonNull
         public final LiveData<MockState> mockState;
+        @NonNull
         public final LiveData<Location> mockedLocation;
 
-        public MockedBinder(MockedLocationService service) {
+        public MockedBinder(@NonNull MockedLocationService service) {
             this.service = service;
             this.mockState = service.mockState;
             this.mockedLocation = service.mockedLocation;

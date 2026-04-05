@@ -7,13 +7,18 @@ import android.os.Build;
 import android.os.SystemClock;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 public class MockedLocationProvider {
 
+    @NonNull
     private static final String TAG = MockedLocationProvider.class.getSimpleName();
 
     private static final int MAX_RETRY_COUNT = 3;
 
+    @NonNull
     private final String providerName;
+    @NonNull
     private final Context ctx;
 
     /**
@@ -22,7 +27,7 @@ public class MockedLocationProvider {
      * @param name provider
      * @param ctx  context
      */
-    public MockedLocationProvider(String name, Context ctx) {
+    public MockedLocationProvider(@NonNull String name, @NonNull Context ctx) {
         this.providerName = name;
         this.ctx = ctx;
 
@@ -38,11 +43,11 @@ public class MockedLocationProvider {
         startup(lm, powerUsage, accuracy);
     }
 
-    private void startup(LocationManager lm, int powerUsage, int accuracy) {
+    private void startup(@NonNull LocationManager lm, int powerUsage, int accuracy) {
         startup(lm, powerUsage, accuracy, 0);
     }
 
-    private void startup(LocationManager lm, int powerUsage, int accuracy, int currentRetryCount) {
+    private void startup(@NonNull LocationManager lm, int powerUsage, int accuracy, int currentRetryCount) {
         if (currentRetryCount < MAX_RETRY_COUNT) {
             try {
                 shutdown();

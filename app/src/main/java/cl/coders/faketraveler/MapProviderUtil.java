@@ -1,5 +1,7 @@
 package cl.coders.faketraveler;
 
+import androidx.annotation.NonNull;
+
 import java.util.Locale;
 
 public final class MapProviderUtil {
@@ -8,6 +10,7 @@ public final class MapProviderUtil {
         throw new UnsupportedOperationException();
     }
 
+    @NonNull
     public static String getDefaultMapProvider(Locale locale) {
         String lang = locale.getLanguage();
         if (lang.equals("de")) return "OpenStreetMap.DE";

@@ -30,6 +30,8 @@ import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -45,7 +47,9 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements ServiceConnection {
 
+    @NonNull
     public static final String sharedPrefKey = "cl.coders.faketraveler.sharedprefs";
+    @NonNull
     public static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.######", DecimalFormatSymbols.getInstance(Locale.ROOT));
 
     private MaterialButton buttonApplyStop;
@@ -55,8 +59,10 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     private Context context;
     private int currentVersion;
 
+    @NonNull
     private SourceChange srcChange = NONE;
 
+    @Nullable
     private MockedLocationService.MockedBinder binder = null;
 
     // Config

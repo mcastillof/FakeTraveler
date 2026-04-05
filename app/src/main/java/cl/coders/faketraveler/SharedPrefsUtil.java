@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 /**
  * Copied from <a href="https://stackoverflow.com/a/18098090/5894824">StackOverflow</a>.
  */
@@ -16,15 +18,16 @@ public final class SharedPrefsUtil {
         throw new UnsupportedOperationException();
     }
 
-    public static Editor putDouble(Editor edit, String key, double value) {
+    @NonNull
+    public static Editor putDouble(@NonNull Editor edit, @NonNull String key, double value) {
         return edit.putLong(key, Double.doubleToRawLongBits(value));
     }
 
-    public static double getDouble(SharedPreferences prefs, String key, double defaultValue) {
+    public static double getDouble(@NonNull SharedPreferences prefs, @NonNull String key, double defaultValue) {
         return Double.longBitsToDouble(prefs.getLong(key, Double.doubleToLongBits(defaultValue)));
     }
 
-    static void migrateOldPreferences(Context context) {
+    static void migrateOldPreferences(@NonNull Context context) {
         SharedPreferences oldPrefs = context.getSharedPreferences("cl.coders.mockposition.sharedpreferences", Context.MODE_PRIVATE);
         if (!oldPrefs.contains("version")) return; // Either non-existent or already migrated
 
