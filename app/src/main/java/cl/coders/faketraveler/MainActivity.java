@@ -222,6 +222,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         zoom = getDouble(sharedPref, "zoom", 12);
         mockCount = sharedPref.getInt("mockCount", 0);
         mockFrequency = sharedPref.getInt("mockFrequency", 10);
+        if (mockFrequency <= 0) mockFrequency = 1;
         dLat = getDouble(sharedPref, "dLat", 0);
         dLng = getDouble(sharedPref, "dLng", 0);
         mockSpeed = sharedPref.getBoolean("mockSpeed", true);
