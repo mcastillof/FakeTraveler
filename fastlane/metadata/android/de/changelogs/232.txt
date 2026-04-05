@@ -1,0 +1,4 @@
+* Fälscht jetzt auch Geschwindigkeiten (Dank an @tstenner)
+* Leaflet Providers aktualisiert
+* Einstellungen werden nun wieder gespeichert
+* Behebung eines Absturzes bei Fälsch-Frequenzen <= 0 (Dank an @gitexadelintershipprod)
