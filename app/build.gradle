@@ -8,8 +8,8 @@ android {
     defaultConfig {
         applicationId = "cl.coders.faketraveler"
         minSdk = 21
-        compileSdk = 37
-        targetSdk = 37
+        compileSdk = 36
+        targetSdk = 36
         versionCode = 231
         versionName = "2.3.1"
     }
