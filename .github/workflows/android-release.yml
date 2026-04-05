@@ -1,0 +1,54 @@
+name: Android CD
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+
+jobs:
+  Release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - uses: gradle/actions/wrapper-validation@v5
+
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Generate and submit dependency graphs
+        uses: gradle/actions/dependency-submission@v5
+        with:
+          dependency-graph: generate-and-submit
+
+      - name: Build with Gradle
+        run: ./gradlew assembleRelease
+
+      - name: Archive App
+        uses: actions/upload-artifact@v7
+        with:
+          path: |
+            app/build/outputs/apk/release/*.apk
+
+      - name: Prepare Changelog Path
+        id: changelog_meta
+        run: |
+          # Remove leading 'v' dots from the tag (e.g., v1.2.3 -> 123)
+          CLEAN_TAG=$(echo "${{ github.ref_name }}" | sed 's/^v//i' | tr -d '.')
+          FILE_PATH="fastlane/metadata/android/en-US/changelogs/${CLEAN_TAG}.txt"
+          echo "path=$FILE_PATH" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ github.ref_name }}
+          files: app/build/outputs/apk/release/*.apk
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body_path: ${{ steps.changelog_meta.outputs.path }}

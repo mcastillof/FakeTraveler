@@ -17,10 +17,9 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: 'gradle'
-      - name: Generate and submit dependency graphs
+      - name: Generate dependency graphs
         uses: gradle/actions/dependency-submission@v5
         with:
-          dependency-graph: generate-and-submit
-        if: github.event_name != 'pull_request'
+          dependency-graph: generate
       - name: Build with Gradle
         run: ./gradlew build
