@@ -28,7 +28,6 @@ import android.util.Log;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,6 +38,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -287,7 +287,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
      */
     protected void applyLocation() {
         if (latIsEmpty() || lngIsEmpty()) {
-            toast(context.getResources().getString(R.string.MainActivity_NoLatLong));
+            showSnackbar(context.getResources().getString(R.string.MainActivity_NoLatLong));
             return;
         }
 
@@ -307,17 +307,17 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     }
 
     /**
-     * Shows a toast
+     * Shows a snackbar
      */
-    void toast(String str) {
-        Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
+    void showSnackbar(String str) {
+        Snackbar.make(findViewById(R.id.main_layout), str, Snackbar.LENGTH_SHORT).show();
     }
 
     /**
-     * Shows a toast
+     * Shows a snackbar
      */
-    void toast(@StringRes int strRes) {
-        Toast.makeText(context, strRes, Toast.LENGTH_SHORT).show();
+    void showSnackbar(@StringRes int strRes) {
+        Snackbar.make(findViewById(R.id.main_layout), strRes, Snackbar.LENGTH_SHORT).show();
     }
 
     /**
@@ -420,15 +420,15 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
             case SERVICE_BOUND -> applyLocation();
             case MOCKED -> {
                 changeButtonToStop();
-                toast(R.string.MainActivity_MockApplied);
+                showSnackbar(R.string.MainActivity_MockApplied);
             }
-            case MOCK_ERROR -> toast(R.string.MainActivity_MockNotApplied);
+            case MOCK_ERROR -> showSnackbar(R.string.MainActivity_MockNotApplied);
         }
 
     }
 
     private void indicateMockStop() {
-        toast(R.string.MainActivity_MockStopped);
+        showSnackbar(R.string.MainActivity_MockStopped);
         changeButtonToApply();
     }
 
