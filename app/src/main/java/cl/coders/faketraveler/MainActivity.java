@@ -23,11 +23,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,6 +43,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -56,6 +63,10 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     private WebView webView;
     private EditText editTextLat;
     private EditText editTextLng;
+    private View mapContainer;
+    private View latLonControls;
+    private ScrollView settingsContainer;
+    private BottomNavigationView bottomNav;
     private Context context;
     private int currentVersion;
 
@@ -98,18 +109,34 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         WebAppInterface webAppInterface = new WebAppInterface(this);
 
         buttonApplyStop = findViewById(R.id.button_applyStop);
-        MaterialButton buttonSettings = findViewById(R.id.button_settings);
         editTextLat = findViewById(R.id.editTextLat);
         editTextLng = findViewById(R.id.editTextLng);
+        mapContainer = findViewById(R.id.map_container);
+        latLonControls = findViewById(R.id.latlon_controls);
+        settingsContainer = findViewById(R.id.settings_container);
+        bottomNav = findViewById(R.id.bottom_nav);
 
         buttonApplyStop.setOnClickListener(view -> {
             Intent intent = new Intent(this, MockedLocationService.class);
             bindService(intent, this, BIND_AUTO_CREATE);
         });
-        buttonSettings.setOnClickListener(view -> {
-            Intent myIntent = new Intent(getBaseContext(), MoreActivity.class);
-            startActivity(myIntent);
+
+        bottomNav.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_search) {
+                showSearchTab();
+                return true;
+            } else if (id == R.id.nav_latlon) {
+                showLatLonTab();
+                return true;
+            } else if (id == R.id.nav_settings) {
+                showSettingsTab();
+                return true;
+            }
+            return false;
         });
+        // Search is selected by default
+        bottomNav.setSelectedItemId(R.id.nav_search);
 
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebChromeClient(new WebChromeClient());
@@ -186,6 +213,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
             saveSettings();
         }
 
+        initSettingsTab();
     }
 
     @Override
@@ -438,6 +466,176 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 
     public enum SourceChange {
         NONE, LOAD, CHANGE_FROM_EDITTEXT, CHANGE_FROM_MAP
+    }
+
+    // ---------------------- Tab handling ----------------------
+
+    private void showSearchTab() {
+        mapContainer.setVisibility(View.VISIBLE);
+        latLonControls.setVisibility(View.GONE);
+        settingsContainer.setVisibility(View.GONE);
+        setMapSearchBarVisible(true);
+    }
+
+    private void showLatLonTab() {
+        mapContainer.setVisibility(View.VISIBLE);
+        latLonControls.setVisibility(View.VISIBLE);
+        settingsContainer.setVisibility(View.GONE);
+        setMapSearchBarVisible(false);
+    }
+
+    private void showSettingsTab() {
+        mapContainer.setVisibility(View.GONE);
+        latLonControls.setVisibility(View.GONE);
+        settingsContainer.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Toggles the map.html in-page search box (since the Search tab uses it and the
+     * Lat/Lon tab should not show it).
+     */
+    private void setMapSearchBarVisible(boolean visible) {
+        if (webView == null) return;
+        String display = visible ? "flex" : "none";
+        webView.evaluateJavascript(
+                "(function(){var s=document.getElementById('search');if(s){s.style.display='" + display + "';}})();",
+                null);
+    }
+
+    // ---------------------- Settings tab ----------------------
+
+    private void initSettingsTab() {
+        SharedPreferences sharedPref = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
+
+        TextView tvLeafletLicense = findViewById(R.id.tv_LeafletLicense);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            tvLeafletLicense.setText(Html.fromHtml(getString(R.string.Settings_LeafletLicense),
+                    Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            tvLeafletLicense.setText(Html.fromHtml(getString(R.string.Settings_LeafletLicense)));
+        }
+        tvLeafletLicense.setMovementMethod(LinkMovementMethod.getInstance());
+
+        EditText etDMockLat = findViewById(R.id.et_DMockLat);
+        etDMockLat.setText(DECIMAL_FORMAT.format(getDouble(sharedPref, "dLat", 0)));
+        etDMockLat.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                SharedPreferences sp = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
+                Editor editor = sp.edit();
+                if (etDMockLat.getText().toString().isBlank()) {
+                    putDouble(editor, "dLat", 0);
+                } else {
+                    try {
+                        putDouble(editor, "dLat", Double.parseDouble(etDMockLat.getText().toString()));
+                    } catch (Throwable t) {
+                        Log.e(MainActivity.class.toString(), "Could not parse dLat!", t);
+                    }
+                }
+                editor.apply();
+            }
+
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
+
+        EditText etDMockLon = findViewById(R.id.et_DMockLon);
+        etDMockLon.setText(DECIMAL_FORMAT.format(getDouble(sharedPref, "dLng", 0)));
+        etDMockLon.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                SharedPreferences sp = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
+                Editor editor = sp.edit();
+                if (etDMockLon.getText().toString().isBlank()) {
+                    putDouble(editor, "dLng", 0);
+                } else {
+                    try {
+                        putDouble(editor, "dLng", Double.parseDouble(etDMockLon.getText().toString()));
+                    } catch (Throwable t) {
+                        Log.e(MainActivity.class.toString(), "Could not parse dLng!", t);
+                    }
+                }
+                editor.apply();
+            }
+
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
+
+        EditText etMockCount = findViewById(R.id.et_MockCount);
+        etMockCount.setText(String.format(Locale.ROOT, "%d", sharedPref.getInt("mockCount", 0)));
+        etMockCount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                SharedPreferences sp = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
+                Editor editor = sp.edit();
+                if (etMockCount.getText().toString().isBlank()) {
+                    editor.putInt("mockCount", 0);
+                } else {
+                    try {
+                        editor.putInt("mockCount", Integer.parseInt(etMockCount.getText().toString()));
+                    } catch (Throwable t) {
+                        Log.e(MainActivity.class.toString(), "Could not parse mockCount!", t);
+                    }
+                }
+                editor.apply();
+            }
+
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
+
+        EditText etMockFrequency = findViewById(R.id.et_MockFrequency);
+        etMockFrequency.setText(String.format(Locale.ROOT, "%d", sharedPref.getInt("mockFrequency", 10)));
+        etMockFrequency.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                SharedPreferences sp = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
+                Editor editor = sp.edit();
+                if (etMockFrequency.getText().toString().isBlank()) {
+                    editor.putInt("mockFrequency", 10);
+                } else {
+                    try {
+                        editor.putInt("mockFrequency", Integer.parseInt(etMockFrequency.getText().toString()));
+                    } catch (Throwable t) {
+                        Log.e(MainActivity.class.toString(), "Could not parse mockFrequency!", t);
+                    }
+                }
+                editor.apply();
+            }
+
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
+
+        CheckBox cbMockSpeed = findViewById(R.id.cb_MockSpeed);
+        cbMockSpeed.setChecked(sharedPref.getBoolean("mockSpeed", true));
+        cbMockSpeed.setOnCheckedChangeListener((compoundButton, b) -> {
+            SharedPreferences sp = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
+            Editor editor = sp.edit();
+            editor.putBoolean("mockSpeed", cbMockSpeed.isChecked());
+            editor.apply();
+        });
+
+        EditText etMapProvider = findViewById(R.id.et_MapProvider);
+        etMapProvider.setText(sharedPref.getString("mapProvider",
+                MapProviderUtil.getDefaultMapProvider(Locale.getDefault())));
+        etMapProvider.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                SharedPreferences sp = context.getSharedPreferences(sharedPrefKey, Context.MODE_PRIVATE);
+                Editor editor = sp.edit();
+                if (etMapProvider.getText().toString().isBlank()) {
+                    editor.putString("mapProvider", MapProviderUtil.getDefaultMapProvider(Locale.getDefault()));
+                } else {
+                    editor.putString("mapProvider", etMapProvider.getText().toString());
+                }
+                editor.apply();
+            }
+
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
     }
 
 }

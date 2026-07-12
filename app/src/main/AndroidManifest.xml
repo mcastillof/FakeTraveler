@@ -45,9 +45,6 @@
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="cl.coders.faketraveler.MoreActivity"
-            android:parentActivityName="cl.coders.faketraveler.MainActivity" />
 
         <service
             android:name=".MockedLocationService"
