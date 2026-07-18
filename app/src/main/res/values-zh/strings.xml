@@ -18,18 +18,17 @@
     <string name="MainActivity_MockLocRunning">模拟位置服务运行中。</string>
     <string name="MainActivity_MockStopped">模拟已停止</string>
 
-    <!--  Strings from activity_more.xml layout  -->
-    <string name="ActivityMore_HowToTittle">如何使用它？</string>
-    <string name="ActivityMore_HowManyTimes">您想模拟该位置多少次？ （0 =无限）</string>
-    <string name="ActivityMore_TimeInterval">每个模拟之间有几秒钟间隔？</string>
-    <string name="ActivityMore_Speed">Mock movement as speed</string>
-    <string name="ActivityMore_Copyright">版权2018 \ -2025MatíasCastillo Felmer和贡献者</string>
-    <string name="ActivityMore_SourceCode">源代码在https://github.com/mcastillof/faketraveler中可用</string>
-    <string name="ActivityMore_Bugs">将错误报告到https://github.com/mcastillof/faketraveler/issues</string>
-    <string name="ActivityMore_IconLicense">启动器图标是由 @ArtistDev44创建的 - 非常感谢您的工作！</string>
-    <string name="ActivityMore_HowToInstructions">长按您要位于地图中的位置，然后按“应用”按钮。该位置将相应地模拟一次或多次以在下面的配置。当模拟运行时，您可以通过长时间按照自己的位置来更改位置。要停止模拟位置，请按“停止”按钮。注意：您必须在开发人员选项中启用虚拟旅者为模拟位置应用程序。</string>
-    <string name="ActivityMore_DMockLatLon">模拟运动？ （1/1 000 000°，0 =否）</string>
-    <string name="ActivityMore_MapProvider">地图提供商（例如，\'openstreetMap \'）</string>
-    <string name="ActivityMore_MapProviderInfo">需要重新启动 - 可以在此处找到可能的值列表：https：//leaflet-extras.github.io/leaflet-providers/preview/</string>
-    <string name="ActivityMore_LeafletLicense"><![CDATA[Both <a href="https://github.com/Leaflet/Leaflet/blob/main/LICENSE">Leaflet</a> and <a href="https://github.com/leaflet-extras/leaflet-providers/blob/master/license.md">Leaflet-providers</a> are licensed under the BSD 2-Clause License.]]></string>
+    <string name="Settings_HowToTittle">如何使用它？</string>
+    <string name="Settings_HowManyTimes">您想模拟该位置多少次？ （0 =无限）</string>
+    <string name="Settings_TimeInterval">每个模拟之间有几秒钟间隔？</string>
+    <string name="Settings_Speed">Mock movement as speed</string>
+    <string name="Settings_Copyright">版权2018 \ -2025MatíasCastillo Felmer和贡献者</string>
+    <string name="Settings_SourceCode">源代码在https://github.com/mcastillof/faketraveler中可用</string>
+    <string name="Settings_Bugs">将错误报告到https://github.com/mcastillof/faketraveler/issues</string>
+    <string name="Settings_IconLicense">启动器图标是由 @ArtistDev44创建的 - 非常感谢您的工作！</string>
+    <string name="Settings_HowToInstructions">长按您要位于地图中的位置，然后按“应用”按钮。该位置将相应地模拟一次或多次以在下面的配置。当模拟运行时，您可以通过长时间按照自己的位置来更改位置。要停止模拟位置，请按“停止”按钮。注意：您必须在开发人员选项中启用虚拟旅者为模拟位置应用程序。</string>
+    <string name="Settings_DMockLatLon">模拟运动？ （1/1 000 000°，0 =否）</string>
+    <string name="Settings_MapProvider">地图提供商（例如，\'openstreetMap \'）</string>
+    <string name="Settings_MapProviderInfo">需要重新启动 - 可以在此处找到可能的值列表：https：//leaflet-extras.github.io/leaflet-providers/preview/</string>
+    <string name="Settings_LeafletLicense"><![CDATA[Both <a href="https://github.com/Leaflet/Leaflet/blob/main/LICENSE">Leaflet</a> and <a href="https://github.com/leaflet-extras/leaflet-providers/blob/master/license.md">Leaflet-providers</a> are licensed under the BSD 2-Clause License.]]></string>
 </resources>
