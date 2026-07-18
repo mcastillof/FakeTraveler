@@ -24,7 +24,20 @@
     <string name="MainActivity_MockLocRunning">Mocking location service running.</string>
     <string name="MainActivity_MockStopped">Mocking stopped.</string>
 
+    <string name="MockingService_ChannelName">Location mocking</string>
+    <string name="MockingService_ChannelDesc">Ongoing notification while a mocked location is being published.</string>
+    <string name="MockingService_Title">Fake Traveler</string>
+    <string name="MockingService_Text">Mocking location…</string>
+
     <string name="Settings_HowToTittle">How to use it?</string>
+    <string name="Settings_Mode">Mode</string>
+    <string name="Settings_Mode_Point">Point</string>
+    <string name="Settings_Mode_File">File</string>
+    <string name="Settings_OpenKmz">Open KMZ file</string>
+    <string name="Settings_KmzFileSize">File size: %1$s</string>
+    <string name="Settings_KmzPlacemarkName">Placemark: %1$s</string>
+    <string name="Settings_MovementSpeed">Movement speed (km/h)</string>
+    <string name="Settings_SecondsBeforeStart">Seconds before start (hold on the starting point, e.g. to switch to your navigation app)</string>
     <string name="Settings_HowManyTimes">How many times you want to mock the location? (0&#160;=&#160;infinite)</string>
     <string name="Settings_TimeInterval">How many seconds between every mock?</string>
     <string name="Settings_Speed">Mock movement as speed</string>
