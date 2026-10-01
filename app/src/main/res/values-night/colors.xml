@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Widget colors (Dark) -->
+    <color name="widget_background">#212121</color>
+    <color name="widget_border">#424242</color>
+    <color name="widget_text_primary">#EEEEEE</color>
+    <color name="widget_text_secondary">#9E9E9E</color>
+    <color name="widget_status_active">#66BB6A</color>
+    <color name="widget_status_inactive">#9E9E9E</color>
+    <color name="widget_button_start_bg">#1E88E5</color>
+    <color name="widget_button_start_text">#FFFFFF</color>
+    <color name="widget_button_stop_bg">#E53935</color>
+    <color name="widget_button_stop_text">#FFFFFF</color>
+</resources>

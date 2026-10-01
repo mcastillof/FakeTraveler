@@ -9,6 +9,9 @@
         tools:ignore="MockLocation,ProtectedPermissions" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
@@ -51,7 +54,23 @@
 
         <service
             android:name=".MockedLocationService"
-            android:enabled="true" />
+            android:enabled="true"
+            android:foregroundServiceType="location" />
+
+        <receiver
+            android:name=".FakeTravelerWidget"
+            android:exported="true"
+            android:label="@string/widget_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="cl.coders.faketraveler.action.TOGGLE_MOCK" />
+                <action android:name="cl.coders.faketraveler.action.STOP_MOCK" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_fake_traveler_info" />
+        </receiver>
 
     </application>
 

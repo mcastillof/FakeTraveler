@@ -16,6 +16,7 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.Location;
 import android.net.Uri;
@@ -42,6 +43,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -102,14 +105,13 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         editTextLat = findViewById(R.id.editTextLat);
         editTextLng = findViewById(R.id.editTextLng);
 
-        buttonApplyStop.setOnClickListener(view -> {
-            Intent intent = new Intent(this, MockedLocationService.class);
-            bindService(intent, this, BIND_AUTO_CREATE);
-        });
+        buttonApplyStop.setOnClickListener(view -> applyLocation());
         buttonSettings.setOnClickListener(view -> {
             Intent myIntent = new Intent(getBaseContext(), MoreActivity.class);
             startActivity(myIntent);
         });
+
+        checkPermissions();
 
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebChromeClient(new WebChromeClient());
@@ -178,12 +180,16 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
             }
         });
 
-        //2do check running on start?
-        if (endTime > System.currentTimeMillis()) {
+        if (MockedLocationService.isMocking() || (endTime > System.currentTimeMillis())) {
             changeButtonToStop();
+            if (binder == null) {
+                Intent intent = new Intent(this, MockedLocationService.class);
+                bindService(intent, this, BIND_AUTO_CREATE);
+            }
         } else {
             endTime = 0;
             saveSettings();
+            changeButtonToApply();
         }
 
     }
@@ -193,6 +199,16 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         super.onResume();
         context = getApplicationContext();
         loadSharedPrefs();
+
+        if (MockedLocationService.isMocking()) {
+            changeButtonToStop();
+            if (binder == null) {
+                Intent intent = new Intent(this, MockedLocationService.class);
+                bindService(intent, this, BIND_AUTO_CREATE);
+            }
+        } else {
+            changeButtonToApply();
+        }
     }
 
     @Override
@@ -205,6 +221,13 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 
     @Override
     public void onDestroy() {
+        if (binder != null) {
+            try {
+                unbindService(this);
+            } catch (IllegalArgumentException ignored) {
+            }
+            binder = null;
+        }
         super.onDestroy();
     }
 
@@ -293,16 +316,12 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 
         lat = Double.parseDouble(editTextLat.getText().toString());
         lng = Double.parseDouble(editTextLng.getText().toString());
+        saveSettings();
 
-        if (binder != null) {
-            float[] speed = {0};
-            if (mockSpeed) {
-                Location.distanceBetween(lat, lng, lat + dLat / 1000000, lng + dLng / 1000000, speed);
-                speed[0] /= mockFrequency * 1000L;
-            }
-            binder.startMock(lng, lat, dLng / 1000000, dLat / 1000000, mockFrequency * 1000L, mockCount, speed[0]);
-            endTime = System.currentTimeMillis() + (mockCount - 1L) * mockFrequency * 1000L;
-            saveSettings();
+        MockedLocationService.startMockService(this);
+        if (binder == null) {
+            Intent intent = new Intent(this, MockedLocationService.class);
+            bindService(intent, this, BIND_AUTO_CREATE);
         }
     }
 
@@ -344,14 +363,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
      */
     void changeButtonToApply() {
         buttonApplyStop.setText(context.getResources().getString(R.string.ActivityMain_Apply));
-        buttonApplyStop.setOnClickListener(view -> {
-            if (binder == null) {
-                Intent intent = new Intent(this, MockedLocationService.class);
-                bindService(intent, this, BIND_AUTO_CREATE);
-            } else {
-                binder.continueMock();
-            }
-        });
+        buttonApplyStop.setOnClickListener(view -> applyLocation());
     }
 
     /**
@@ -360,8 +372,16 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     void changeButtonToStop() {
         buttonApplyStop.setText(context.getResources().getString(R.string.ActivityMain_Stop));
         buttonApplyStop.setOnClickListener(view -> {
-            unbindService(this);
-            disconnectService();
+            MockedLocationService.stopMockService(this);
+            if (binder != null) {
+                try {
+                    unbindService(this);
+                } catch (IllegalArgumentException ignored) {
+                }
+                disconnectService();
+            } else {
+                indicateMockStop();
+            }
         });
     }
 
@@ -392,6 +412,13 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         }
 
         saveSettings();
+        if (context != null) {
+            FakeTravelerWidget.updateAllWidgets(context);
+        }
+
+        if (MockedLocationService.isMocking()) {
+            MockedLocationService.startMockService(context != null ? context : this);
+        }
     }
 
     @Override
@@ -417,12 +444,19 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     private void onMockedStateChange(MockState state) {
         switch (state) {
             case NOT_MOCKED -> indicateMockStop();
-            case SERVICE_BOUND -> applyLocation();
+            case SERVICE_BOUND -> {
+                if (!MockedLocationService.isMocking()) {
+                    applyLocation();
+                }
+            }
             case MOCKED -> {
                 changeButtonToStop();
                 showSnackbar(R.string.MainActivity_MockApplied);
             }
-            case MOCK_ERROR -> showSnackbar(R.string.MainActivity_MockNotApplied);
+            case MOCK_ERROR -> {
+                changeButtonToApply();
+                showSnackbar(R.string.MainActivity_MockNotApplied);
+            }
         }
 
     }
@@ -430,6 +464,26 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     private void indicateMockStop() {
         showSnackbar(R.string.MainActivity_MockStopped);
         changeButtonToApply();
+    }
+
+    private void checkPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            List<String> permissions = new ArrayList<>();
+            if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
+            }
+            if (checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(android.Manifest.permission.ACCESS_COARSE_LOCATION);
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                    permissions.add(android.Manifest.permission.POST_NOTIFICATIONS);
+                }
+            }
+            if (!permissions.isEmpty()) {
+                requestPermissions(permissions.toArray(new String[0]), 101);
+            }
+        }
     }
 
     private void onMockedLocationChange(Location location) {
