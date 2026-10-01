@@ -32,4 +32,16 @@
     <string name="ActivityMore_MapProvider">地图提供商（例如，\'openstreetMap \'）</string>
     <string name="ActivityMore_MapProviderInfo">需要重新启动 - 可以在此处找到可能的值列表：https：//leaflet-extras.github.io/leaflet-providers/preview/</string>
     <string name="ActivityMore_LeafletLicense"><![CDATA[Both <a href="https://github.com/Leaflet/Leaflet/blob/main/LICENSE">Leaflet</a> and <a href="https://github.com/leaflet-extras/leaflet-providers/blob/master/license.md">Leaflet-providers</a> are licensed under the BSD 2-Clause License.]]></string>
+
+    <!--  Widget & Notification strings  -->
+    <string name="widget_name">Fake Traveler</string>
+    <string name="widget_description">使用上次配置启用/停用模拟位置</string>
+    <string name="widget_status_active">模拟中</string>
+    <string name="widget_status_inactive">未模拟</string>
+    <string name="widget_action_start">启动</string>
+    <string name="widget_action_stop">停止</string>
+    <string name="notification_channel_name">模拟位置服务</string>
+    <string name="notification_channel_desc">模拟位置运行时的状态通知</string>
+    <string name="notification_title">Fake Traveler</string>
+    <string name="notification_text">正在模拟位置：%1$s, %2$s</string>
 </resources>

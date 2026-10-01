@@ -3,4 +3,16 @@
     <color name="colorPrimary">@android:color/primary_text_dark</color>
     <color name="colorPrimaryDark">@android:color/primary_text_dark</color>
     <color name="colorAccent">@android:color/primary_text_dark</color>
+
+    <!-- Widget colors (Light) -->
+    <color name="widget_background">#FFFFFF</color>
+    <color name="widget_border">#E0E0E0</color>
+    <color name="widget_text_primary">#212121</color>
+    <color name="widget_text_secondary">#757575</color>
+    <color name="widget_status_active">#2E7D32</color>
+    <color name="widget_status_inactive">#757575</color>
+    <color name="widget_button_start_bg">#1976D2</color>
+    <color name="widget_button_start_text">#FFFFFF</color>
+    <color name="widget_button_stop_bg">#D32F2F</color>
+    <color name="widget_button_stop_text">#FFFFFF</color>
 </resources>

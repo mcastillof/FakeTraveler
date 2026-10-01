@@ -227,4 +227,10 @@ public class MoreActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        FakeTravelerWidget.updateAllWidgets(this);
+        super.onDestroy();
+    }
+
 }

@@ -31,5 +31,15 @@
     <string name="ActivityMore_MapProviderInfo">Requires restart - a list of possible values can be found here: https://leaflet-extras.github.io/leaflet-providers/preview/</string>
     <string name="ActivityMore_LeafletLicense"><![CDATA[Both <a href="https://github.com/Leaflet/Leaflet/blob/main/LICENSE">Leaflet</a> and <a href="https://github.com/leaflet-extras/leaflet-providers/blob/master/license.md">Leaflet-providers</a> are licensed under the BSD 2-Clause License.]]></string>
 
-
+    <!--  Widget & Notification strings  -->
+    <string name="widget_name">Fake Traveler</string>
+    <string name="widget_description">Ativar/desativar localização simulada com a última configuração</string>
+    <string name="widget_status_active">Simulação ativa</string>
+    <string name="widget_status_inactive">Simulação inativa</string>
+    <string name="widget_action_start">Iniciar</string>
+    <string name="widget_action_stop">Parar</string>
+    <string name="notification_channel_name">Serviço de localização simulada</string>
+    <string name="notification_channel_desc">Notificação enquanto a localização simulada está ativa</string>
+    <string name="notification_title">Fake Traveler</string>
+    <string name="notification_text">Simulando localização: %1$s, %2$s</string>
 </resources>

@@ -31,4 +31,16 @@
     <string name="ActivityMore_MapProvider">Map Provider (e.g., \'OpenStreetMap\')</string>
     <string name="ActivityMore_MapProviderInfo">Requires restart - a list of possible values can be found here: https://leaflet-extras.github.io/leaflet-providers/preview/</string>
     <string name="ActivityMore_LeafletLicense"><![CDATA[Both <a href="https://github.com/Leaflet/Leaflet/blob/main/LICENSE">Leaflet</a> and <a href="https://github.com/leaflet-extras/leaflet-providers/blob/master/license.md">Leaflet-providers</a> are licensed under the BSD 2-Clause License.]]></string>
+
+    <!--  Widget & Notification strings  -->
+    <string name="widget_name">Fake Traveler</string>
+    <string name="widget_description">Toggle mock location with last saved configuration</string>
+    <string name="widget_status_active">Mocking active</string>
+    <string name="widget_status_inactive">Mocking inactive</string>
+    <string name="widget_action_start">Start</string>
+    <string name="widget_action_stop">Stop</string>
+    <string name="notification_channel_name">Mock Location Service</string>
+    <string name="notification_channel_desc">Status notification while mock location is actively running</string>
+    <string name="notification_title">Fake Traveler</string>
+    <string name="notification_text">Mocking location: %1$s, %2$s</string>
 </resources>
